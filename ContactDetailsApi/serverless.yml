@@ -24,7 +24,7 @@ functions:
     handler: ContactDetailsApi::ContactDetailsApi.LambdaEntryPoint::FunctionHandlerAsync
     role: lambdaExecutionRole
     environment:
-# TODO: Create ssm variables for this API's postgres mirror then rename base-api below to match api name
+# TODO: Create ssm variables for this API's postgres mirror
       CONNECTION_STRING: Host=${ssm:/contact-details-api/${self:provider.stage}/postgres-hostname};Port=${ssm:/contact-details-api/${self:provider.stage}/postgres-port};Database=contact-details-api-mirror;Username=${ssm:/contact-details-api/${self:provider.stage}/postgres-username};Password=${ssm:/contact-details-api/${self:provider.stage}/postgres-password}
     events:
       - http:
