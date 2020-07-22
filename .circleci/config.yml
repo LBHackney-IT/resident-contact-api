@@ -77,13 +77,13 @@ commands:
       - run:
           name: Build lambda
           command: |
-            cd ./ContactDetailsApi/
+            cd ./residentContactApi/
             chmod +x ./build.sh
             ./build.sh
       - run:
           name: Deploy lambda
           command: |
-            cd ./ContactDetailsApi/
+            cd ./residentContactApi/
             sls deploy --stage <<parameters.stage>> --conceal
 
 jobs:
@@ -104,10 +104,10 @@ jobs:
       - setup_remote_docker
       - run:
           name: build
-          command: docker-compose build contact-details-api-test
+          command: docker-compose build resident-contact-api-test
       - run:
           name: Run tests
-          command: docker-compose run contact-details-api-test
+          command: docker-compose run resident-contact-api-test
   assume-role-development:
     executor: docker-python
     steps:
