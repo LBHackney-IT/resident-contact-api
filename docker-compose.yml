@@ -1,8 +1,8 @@
 version: "3.2"
 
 services:
-  contact-details-api:
-    image: contact-details-api
+  resident-contact-api:
+    image: resident-contact-api
     build:
       context: residentContactApi/
       dockerfile: ./Dockerfile
@@ -19,8 +19,8 @@ services:
     volumes:
       - ./database:/docker-entrypoint-initdb.d
 
-  contact-details-api-test:
-    image: contact-details-api-test
+  resident-contact-api-test:
+    image: resident-contact-api-test
     build:
       context: .
       dockerfile: residentContactApi.Tests/Dockerfile
