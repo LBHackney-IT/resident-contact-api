@@ -97,17 +97,17 @@ jobs:
       - run:
           name: Run formatter check
           command: ./dotnet-format-local/dotnet-format --dry-run --check
-  build-and-test:
-    executor: docker-python
-    steps:
-      - checkout
-      - setup_remote_docker
-      - run:
-          name: build
-          command: docker-compose build resident-contact-api-test
-      - run:
-          name: Run tests
-          command: docker-compose run resident-contact-api-test
+  # build-and-test:
+  #   executor: docker-python
+  #   steps:
+  #     - checkout
+  #     - setup_remote_docker
+  #     - run:
+  #         name: build
+  #         command: docker-compose build resident-contact-api-test
+  #     - run:
+  #         name: Run tests
+  #         command: docker-compose run resident-contact-api-test
   assume-role-development:
     executor: docker-python
     steps:
