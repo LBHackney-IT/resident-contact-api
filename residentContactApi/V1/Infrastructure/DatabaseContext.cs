@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace residentContactApi.V1.Infrastructure
+namespace ResidentContactApi.V1.Infrastructure
 {
 
     public class DatabaseContext : DbContext

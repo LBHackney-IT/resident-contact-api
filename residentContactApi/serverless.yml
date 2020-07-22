@@ -19,9 +19,9 @@ package:
   artifact: ./bin/release/netcoreapp3.1/resident-contact-api.zip
 
 functions:
-  residentContactApi:
+  ResidentContactApi:
     name: ${self:service}-${self:provider.stage}
-    handler: residentContactApi::residentContactApi.LambdaEntryPoint::FunctionHandlerAsync
+    handler: ResidentContactApi::ResidentContactApi.LambdaEntryPoint::FunctionHandlerAsync
     role: lambdaExecutionRole
     environment:
 # TODO: Create ssm variables for this API's postgres mirror

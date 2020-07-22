@@ -1,7 +1,7 @@
 using Amazon.Lambda.AspNetCoreServer;
 using Microsoft.AspNetCore.Hosting;
 
-namespace residentContactApi
+namespace ResidentContactApi
 {
     public class LambdaEntryPoint : APIGatewayProxyFunction
     {

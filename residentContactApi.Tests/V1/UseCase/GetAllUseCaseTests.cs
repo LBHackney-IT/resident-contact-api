@@ -1,15 +1,15 @@
 using System.Linq;
 using AutoFixture;
-using residentContactApi.V1.Boundary.Response;
-using residentContactApi.V1.Domain;
-using residentContactApi.V1.Factories;
-using residentContactApi.V1.Gateways;
-using residentContactApi.V1.UseCase;
+using ResidentContactApi.V1.Boundary.Response;
+using ResidentContactApi.V1.Domain;
+using ResidentContactApi.V1.Factories;
+using ResidentContactApi.V1.Gateways;
+using ResidentContactApi.V1.UseCase;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 
-namespace residentContactApi.Tests.V1.UseCase
+namespace ResidentContactApi.Tests.V1.UseCase
 {
     public class GetAllUseCaseTests
     {

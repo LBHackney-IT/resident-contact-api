@@ -1,6 +1,6 @@
 using System;
 
-namespace residentContactApi.Tests
+namespace ResidentContactApi.Tests
 {
     public static class ConnectionString
     {

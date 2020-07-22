@@ -1,9 +1,9 @@
-using residentContactApi.V1.Factories;
-using residentContactApi.V1.Infrastructure;
+using ResidentContactApi.V1.Factories;
+using ResidentContactApi.V1.Infrastructure;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace residentContactApi.Tests.V1.Factories
+namespace ResidentContactApi.Tests.V1.Factories
 {
     [TestFixture]
     public class EntityFactoryTest

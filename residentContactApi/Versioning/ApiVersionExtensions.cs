@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace residentContactApi.Versioning
+namespace ResidentContactApi.Versioning
 {
     public static class ApiVersionExtensions
     {

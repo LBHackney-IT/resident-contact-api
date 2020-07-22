@@ -1,11 +1,11 @@
 using AutoFixture;
-using residentContactApi.Tests.V1.Helper;
-using residentContactApi.V1.Domain;
-using residentContactApi.V1.Gateways;
+using ResidentContactApi.Tests.V1.Helper;
+using ResidentContactApi.V1.Domain;
+using ResidentContactApi.V1.Gateways;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace residentContactApi.Tests.V1.Gateways
+namespace ResidentContactApi.Tests.V1.Gateways
 {
     //TODO: Rename Tests to match gateway name
     //For instruction on how to run tests please see the wiki: https://github.com/LBHackney-IT/lbh-base-api/wiki/Running-the-test-suite.

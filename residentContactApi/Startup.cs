@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using residentContactApi.V1.Gateways;
-using residentContactApi.V1.Infrastructure;
-using residentContactApi.V1.UseCase;
-using residentContactApi.V1.UseCase.Interfaces;
-using residentContactApi.Versioning;
+using ResidentContactApi.V1.Gateways;
+using ResidentContactApi.V1.Infrastructure;
+using ResidentContactApi.V1.UseCase;
+using ResidentContactApi.V1.UseCase.Interfaces;
+using ResidentContactApi.Versioning;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +20,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace residentContactApi
+namespace ResidentContactApi
 {
     public class Startup
     {

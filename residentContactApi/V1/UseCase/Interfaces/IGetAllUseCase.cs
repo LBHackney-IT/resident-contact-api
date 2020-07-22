@@ -1,6 +1,6 @@
-using residentContactApi.V1.Boundary.Response;
+using ResidentContactApi.V1.Boundary.Response;
 
-namespace residentContactApi.V1.UseCase.Interfaces
+namespace ResidentContactApi.V1.UseCase.Interfaces
 {
     public interface IGetAllUseCase
     {

@@ -1,13 +1,13 @@
 using System.Data.Common;
-using residentContactApi;
-using residentContactApi.V1.Infrastructure;
+using ResidentContactApi;
+using ResidentContactApi.V1.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace residentContactApi.Tests
+namespace ResidentContactApi.Tests
 {
     public class MockWebApplicationFactory<TStartup>
         : WebApplicationFactory<TStartup> where TStartup : class

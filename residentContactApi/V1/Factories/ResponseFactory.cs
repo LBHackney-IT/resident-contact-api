@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
-using residentContactApi.V1.Boundary.Response;
-using residentContactApi.V1.Domain;
+using ResidentContactApi.V1.Boundary.Response;
+using ResidentContactApi.V1.Domain;
 
-namespace residentContactApi.V1.Factories
+namespace ResidentContactApi.V1.Factories
 {
     public static class ResponseFactory
     {

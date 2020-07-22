@@ -1,12 +1,12 @@
 using System.Threading;
-using residentContactApi.V1.UseCase;
+using ResidentContactApi.V1.UseCase;
 using Bogus;
 using FluentAssertions;
 using Microsoft.Extensions.HealthChecks;
 using Moq;
 using NUnit.Framework;
 
-namespace residentContactApi.Tests.V1.UseCase
+namespace ResidentContactApi.Tests.V1.UseCase
 {
     [TestFixture]
     public class DbHealthCheckUseCaseTests

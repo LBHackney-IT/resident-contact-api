@@ -1,11 +1,11 @@
 using System.Net.Http;
-using residentContactApi.V1.Infrastructure;
+using ResidentContactApi.V1.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Npgsql;
 using NUnit.Framework;
 
-namespace residentContactApi.Tests
+namespace ResidentContactApi.Tests
 {
     public class IntegrationTests<TStartup> where TStartup : class
     {

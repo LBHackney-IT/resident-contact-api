@@ -1,7 +1,7 @@
-using residentContactApi.V1.Boundary;
+using ResidentContactApi.V1.Boundary;
 using Microsoft.Extensions.HealthChecks;
 
-namespace residentContactApi.V1.UseCase
+namespace ResidentContactApi.V1.UseCase
 {
     public class DbHealthCheckUseCase
     {

@@ -1,9 +1,9 @@
-using residentContactApi.V1.Boundary.Response;
-using residentContactApi.V1.Factories;
-using residentContactApi.V1.Gateways;
-using residentContactApi.V1.UseCase.Interfaces;
+using ResidentContactApi.V1.Boundary.Response;
+using ResidentContactApi.V1.Factories;
+using ResidentContactApi.V1.Gateways;
+using ResidentContactApi.V1.UseCase.Interfaces;
 
-namespace residentContactApi.V1.UseCase
+namespace ResidentContactApi.V1.UseCase
 {
     //TODO: Rename class name and interface name to reflect the entity they are representing eg. GetAllClaimantsUseCase
     public class GetAllUseCase : IGetAllUseCase

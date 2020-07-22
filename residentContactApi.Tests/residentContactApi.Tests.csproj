@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\residentContactApi\residentContactApi.csproj" />
+    <ProjectReference Include="..\ResidentContactApi\ResidentContactApi.csproj" />
   </ItemGroup>
 
 </Project>

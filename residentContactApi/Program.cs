@@ -2,7 +2,7 @@ using System;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
-namespace residentContactApi
+namespace ResidentContactApi
 {
     public static class Program
     {

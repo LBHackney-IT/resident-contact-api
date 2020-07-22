@@ -1,11 +1,11 @@
 using System.Collections.Generic;
-using residentContactApi.V1.Controllers;
-using residentContactApi.V1.UseCase;
+using ResidentContactApi.V1.Controllers;
+using ResidentContactApi.V1.UseCase;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 
-namespace residentContactApi.Tests.V1.Controllers
+namespace ResidentContactApi.Tests.V1.Controllers
 {
 
     [TestFixture]

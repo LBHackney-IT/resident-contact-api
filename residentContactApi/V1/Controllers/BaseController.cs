@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace residentContactApi.V1.Controllers
+namespace ResidentContactApi.V1.Controllers
 {
     public class BaseController : Controller
     {

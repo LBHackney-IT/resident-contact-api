@@ -1,5 +1,5 @@
 
-namespace residentContactApi.V1.UseCase
+namespace ResidentContactApi.V1.UseCase
 {
     public static class ThrowOpsErrorUsecase
     {

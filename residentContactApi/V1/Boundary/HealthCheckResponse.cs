@@ -1,4 +1,4 @@
-namespace residentContactApi.V1.Boundary
+namespace ResidentContactApi.V1.Boundary
 {
     public class HealthCheckResponse
     {

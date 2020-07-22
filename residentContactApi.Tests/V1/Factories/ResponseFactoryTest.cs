@@ -1,8 +1,8 @@
-using residentContactApi.V1.Domain;
-using residentContactApi.V1.Factories;
+using ResidentContactApi.V1.Domain;
+using ResidentContactApi.V1.Factories;
 using NUnit.Framework;
 
-namespace residentContactApi.Tests.V1.Factories
+namespace ResidentContactApi.Tests.V1.Factories
 {
     public class ResponseFactoryTest
     {

@@ -6,16 +6,16 @@ ENV DOTNET_CLI_TELEMETRY_OPTOUT='true'
 WORKDIR /app
 
 # Copy csproj and restore as distinct layers
-COPY ./residentContactApi.sln ./
-COPY ./residentContactApi/residentContactApi.csproj ./residentContactApi/
-COPY ./residentContactApi.Tests/residentContactApi.Tests.csproj ./residentContactApi.Tests/
+COPY ./ResidentContactApi.sln ./
+COPY ./ResidentContactApi/ResidentContactApi.csproj ./ResidentContactApi/
+COPY ./ResidentContactApi.Tests/ResidentContactApi.Tests.csproj ./ResidentContactApi.Tests/
 
-RUN dotnet restore ./residentContactApi/residentContactApi.csproj
-RUN dotnet restore ./residentContactApi.Tests/residentContactApi.Tests.csproj
+RUN dotnet restore ./ResidentContactApi/ResidentContactApi.csproj
+RUN dotnet restore ./ResidentContactApi.Tests/ResidentContactApi.Tests.csproj
 
 # Copy everything else and build
 COPY . .
 
-RUN dotnet build -c debug -o out residentContactApi.Tests/residentContactApi.Tests.csproj
+RUN dotnet build -c debug -o out ResidentContactApi.Tests/ResidentContactApi.Tests.csproj
 
 CMD dotnet test

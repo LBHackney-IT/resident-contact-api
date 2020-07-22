@@ -1,9 +1,9 @@
 using System.Linq;
-using residentContactApi.Tests.V1.Helper;
-using residentContactApi.V1.Infrastructure;
+using ResidentContactApi.Tests.V1.Helper;
+using ResidentContactApi.V1.Infrastructure;
 using NUnit.Framework;
 
-namespace residentContactApi.Tests.V1.Infrastructure
+namespace ResidentContactApi.Tests.V1.Infrastructure
 {
     [TestFixture]
     public class DatabaseContextTest : DatabaseTests

@@ -1,9 +1,9 @@
-using residentContactApi.V1.Gateways;
-using residentContactApi.V1.UseCase;
+using ResidentContactApi.V1.Gateways;
+using ResidentContactApi.V1.UseCase;
 using Moq;
 using NUnit.Framework;
 
-namespace residentContactApi.Tests.V1.UseCase
+namespace ResidentContactApi.Tests.V1.UseCase
 {
     public class GetByIdUseCaseTests
     {

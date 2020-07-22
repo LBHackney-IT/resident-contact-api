@@ -1,8 +1,8 @@
-using residentContactApi.V1.UseCase;
+using ResidentContactApi.V1.UseCase;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace residentContactApi.Tests.V1.UseCase
+namespace ResidentContactApi.Tests.V1.UseCase
 {
     [TestFixture]
     public class ThrowOpsErrorUsecaseTests

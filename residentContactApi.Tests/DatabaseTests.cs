@@ -1,9 +1,9 @@
-using residentContactApi.V1.Infrastructure;
+using ResidentContactApi.V1.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using NUnit.Framework;
 
-namespace residentContactApi.Tests
+namespace ResidentContactApi.Tests
 {
     [TestFixture]
     public class DatabaseTests

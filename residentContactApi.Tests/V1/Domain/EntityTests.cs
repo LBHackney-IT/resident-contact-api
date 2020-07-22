@@ -1,9 +1,9 @@
 using System;
-using residentContactApi.V1.Domain;
+using ResidentContactApi.V1.Domain;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace residentContactApi.Tests.V1.Domain
+namespace ResidentContactApi.Tests.V1.Domain
 {
     [TestFixture]
     public class EntityTests

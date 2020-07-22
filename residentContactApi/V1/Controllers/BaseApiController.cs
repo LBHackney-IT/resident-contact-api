@@ -1,9 +1,9 @@
-using residentContactApi.V1.Boundary.Response;
-using residentContactApi.V1.UseCase.Interfaces;
+using ResidentContactApi.V1.Boundary.Response;
+using ResidentContactApi.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace residentContactApi.V1.Controllers
+namespace ResidentContactApi.V1.Controllers
 {
     [ApiController]
     //TODO: Rename to match the APIs endpoint
@@ -11,11 +11,11 @@ namespace residentContactApi.V1.Controllers
     [Produces("application/json")]
     [ApiVersion("1.0")]
     //TODO: rename class to match the API name
-    public class residentContactApiController : BaseController
+    public class ResidentContactApiController : BaseController
     {
         private readonly IGetAllUseCase _getAllUseCase;
         private readonly IGetByIdUseCase _getByIdUseCase;
-        public residentContactApiController(IGetAllUseCase getAllUseCase, IGetByIdUseCase getByIdUseCase)
+        public ResidentContactApiController(IGetAllUseCase getAllUseCase, IGetByIdUseCase getByIdUseCase)
         {
             _getAllUseCase = getAllUseCase;
             _getByIdUseCase = getByIdUseCase;

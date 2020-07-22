@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using residentContactApi.V1.Domain;
-using residentContactApi.V1.Factories;
-using residentContactApi.V1.Infrastructure;
+using ResidentContactApi.V1.Domain;
+using ResidentContactApi.V1.Factories;
+using ResidentContactApi.V1.Infrastructure;
 
-namespace residentContactApi.V1.Gateways
+namespace ResidentContactApi.V1.Gateways
 {
     //TODO: Rename to match the data source that is being accessed in the gateway eg. MosaicGateway
     public class ExampleGateway : IExampleGateway

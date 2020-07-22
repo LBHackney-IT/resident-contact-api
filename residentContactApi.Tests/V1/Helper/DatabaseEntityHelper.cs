@@ -1,8 +1,8 @@
 using AutoFixture;
-using residentContactApi.V1.Domain;
-using residentContactApi.V1.Infrastructure;
+using ResidentContactApi.V1.Domain;
+using ResidentContactApi.V1.Infrastructure;
 
-namespace residentContactApi.Tests.V1.Helper
+namespace ResidentContactApi.Tests.V1.Helper
 {
     public static class DatabaseEntityHelper
     {

@@ -4,7 +4,7 @@ services:
   resident-contact-api:
     image: resident-contact-api
     build:
-      context: residentContactApi/
+      context: ResidentContactApi/
       dockerfile: ./Dockerfile
     ports:
       - 3000:3000
@@ -23,7 +23,7 @@ services:
     image: resident-contact-api-test
     build:
       context: .
-      dockerfile: residentContactApi.Tests/Dockerfile
+      dockerfile: ResidentContactApi.Tests/Dockerfile
     environment:
       - DB_HOST=test-database
       - DB_PORT=5432
