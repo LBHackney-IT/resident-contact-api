@@ -4,6 +4,6 @@ namespace ResidentContactApi.V1.UseCase.Interfaces
 {
     public interface IGetByIdUseCase
     {
-        ResponseObject Execute(int id);
+        ContactDetailsResponse Execute(int id);
     }
 }
