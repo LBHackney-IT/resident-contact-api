@@ -17,6 +17,5 @@ namespace ResidentContactApi.V1.Boundary.Response
         public DateTime DateAdded { get; set; }
         public string ModifiedBy { get; set; }
         public DateTime DateLastModified { get; set; }
-        public List<ResidentResponse> Residents { get; set; }
     }
 }
