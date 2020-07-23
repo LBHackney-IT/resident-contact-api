@@ -2,12 +2,14 @@ using ResidentContactApi.V1.Boundary.Response;
 using ResidentContactApi.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ResidentContactApi.V1.Boundary.Response.ContactDetails;
+using ResidentContactApi.V1.Boundary.Requests;
 
 namespace ResidentContactApi.V1.Controllers
 {
     [ApiController]
     //TODO: Rename to match the APIs endpoint
-    [Route("api/v1/residents")]
+    [Route("api/v1/residents-contacts")]
     [Produces("application/json")]
     [ApiVersion("1.0")]
     //TODO: rename class to match the API name
@@ -27,11 +29,11 @@ namespace ResidentContactApi.V1.Controllers
         /// </summary>
         /// <response code="200">...</response>
         /// <response code="400">Invalid Query Parameter.</response>
-        [ProducesResponseType(typeof(ResponseObjectList), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ContactDetailsResponseList), StatusCodes.Status200OK)]
         [HttpGet]
-        public IActionResult ListContacts()
+        public IActionResult ListContacts(ResidentQueryParam rqp)
         {
-            return Ok(_getAllUseCase.Execute());
+            return Ok(_getAllUseCase.Execute(rqp));
         }
 
         /// <summary>
@@ -39,7 +41,7 @@ namespace ResidentContactApi.V1.Controllers
         /// </summary>
         /// <response code="200">...</response>
         /// <response code="404">No ? found for the specified ID</response>
-        [ProducesResponseType(typeof(ResponseObject), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ContactDetailsResponse), StatusCodes.Status200OK)]
         [HttpGet]
         //TODO: rename to match the identifier that will be used
         [Route("{yourId}")]

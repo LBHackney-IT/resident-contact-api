@@ -114,13 +114,13 @@ namespace ResidentContactApi
         {
             var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
 
-            services.AddDbContext<DatabaseContext>(
+            services.AddDbContext<ResidentContactContext>(
                 opt => opt.UseNpgsql(connectionString));
         }
 
         private static void RegisterGateways(IServiceCollection services)
         {
-            services.AddScoped<IExampleGateway, ExampleGateway>();
+            services.AddScoped<IContactDetailsGateway, ContactDetailsGateway>();
         }
 
         private static void RegisterUseCases(IServiceCollection services)
