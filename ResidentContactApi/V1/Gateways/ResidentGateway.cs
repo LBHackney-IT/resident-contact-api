@@ -16,7 +16,7 @@ namespace ResidentContactApi.V1.Gateways
         {
             _residentContactContext = residentContactContext;
         }
-        public Task<List<ResidentResponse>> GetResidents(ResidentQueryParam rqp)
+        public Task<List<ResidentDomain>> GetResidents(ResidentQueryParam rqp)
         {
             return null;
         }

@@ -11,7 +11,7 @@ namespace ResidentContactApi.Tests.V1.Domain
         [Test]
         public void EntitiesHaveAnId()
         {
-            var entity = new ContactDetailsResponse();
+            var entity = new ContactDetailsDomain();
             entity.Id.Should().BeGreaterOrEqualTo(0);
         }
 

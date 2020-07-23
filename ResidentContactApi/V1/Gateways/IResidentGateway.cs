@@ -9,6 +9,6 @@ namespace ResidentContactApi.V1.Gateways
 {
     public interface IResidentGateway
     {
-        Task<List<ResidentResponse>> GetResidents(ResidentQueryParam rqp);
+        Task<List<ResidentDomain>> GetResidents(ResidentQueryParam rqp);
     }
 }

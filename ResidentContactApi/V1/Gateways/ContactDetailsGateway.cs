@@ -7,7 +7,6 @@ using ResidentContactApi.V1.Infrastructure;
 
 namespace ResidentContactApi.V1.Gateways
 {
-    //TODO: Rename to match the data source that is being accessed in the gateway eg. MosaicGateway
     public class ContactDetailsGateway : IContactDetailsGateway
     {
         private readonly ResidentContactContext _residentContactContext;
@@ -16,7 +15,7 @@ namespace ResidentContactApi.V1.Gateways
         {
             _residentContactContext = residentContactContext;
         }
-        public Task<List<ContactDetailsResponse>> GetContactDetails(ResidentQueryParam rqp)
+        public Task<List<ContactDetailsDomain>> GetContactDetails(ResidentQueryParam rqp)
         {
             return null;
         }

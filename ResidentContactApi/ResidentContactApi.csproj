@@ -7,10 +7,10 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <NoWarn>$(NoWarn);1591</NoWarn>
         <CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
-        <RunCodeAnalysis>false</RunCodeAnalysis>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
     </PropertyGroup>
-
+    
   <ItemGroup>
     <PackageReference Include="Amazon.Lambda.AspNetCoreServer" Version="5.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.HealthChecks" Version="1.0.0" />

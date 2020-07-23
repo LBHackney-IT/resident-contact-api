@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace ResidentContactApi.V1.Domain
 {
-    public class ResidentResponseList
+    public class ContactDetailsDomainList
     {
-        public List<ResidentResponse> Residents { get; set; }
+        public List<ContactDetailsDomain> ContactDetails { get; set; }
     }
 }

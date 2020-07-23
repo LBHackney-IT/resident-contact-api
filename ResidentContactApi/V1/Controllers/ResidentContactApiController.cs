@@ -9,7 +9,7 @@ namespace ResidentContactApi.V1.Controllers
 {
     [ApiController]
     //TODO: Rename to match the APIs endpoint
-    [Route("residents-contacts")]
+    [Route("api/v1/residents-contacts")]
     [Produces("application/json")]
     [ApiVersion("1.0")]
     //TODO: rename class to match the API name

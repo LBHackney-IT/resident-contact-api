@@ -1,7 +1,7 @@
 using System.Linq;
 using AutoFixture;
 using ResidentContactApi.V1.Boundary.Response;
-using ContactDetailsResponse = ResidentContactApi.V1.Domain.ContactDetailsResponse;
+using ContactDetailsResponse = ResidentContactApi.V1.Domain.ContactDetailsDomain;
 using ResidentContactApi.V1.Factories;
 using ResidentContactApi.V1.Gateways;
 using ResidentContactApi.V1.UseCase;

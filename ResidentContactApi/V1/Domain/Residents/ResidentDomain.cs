@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ResidentContactApi.V1.Domain
 {
-    public class ResidentResponse
+    public class ResidentDomain
     {
         public int Id { get; set; }
         public string FirstName { get; set; }

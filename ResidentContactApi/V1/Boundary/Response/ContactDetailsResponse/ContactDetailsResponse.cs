@@ -9,13 +9,14 @@ namespace ResidentContactApi.V1.Boundary.Response
     public class ContactDetailsResponse
     {
         public int Id { get; set; }
-        public int ContactTimenum { get; set; }
-        public string ContactTypeName { get; set; }
+        public int ContactValue { get; set; }
+        public string ContactType { get; set; }
         public bool IsDefault { get; set; }
-        public bool Active { get; set; }
+        public bool IsActive { get; set; }
         public string AddedBy { get; set; }
         public DateTime DateAdded { get; set; }
         public string ModifiedBy { get; set; }
-        public ResidentResponse ResidentId { get; set; }
+        public DateTime DateLastModified { get; set; }
+        public List<ResidentResponse> Residents { get; set; }
     }
 }
