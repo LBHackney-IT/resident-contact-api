@@ -14,14 +14,14 @@ namespace ResidentContactApi.Tests.V1.UseCase
 {
     public class GetAllUseCaseTests
     {
-        private Mock<IContactDetailsGateway> _mockGateway;
+        private Mock<IResidentGateway> _mockGateway;
         private GetAllUseCase _classUnderTest;
         private Fixture _fixture;
 
         [SetUp]
         public void SetUp()
         {
-            _mockGateway = new Mock<IContactDetailsGateway>();
+            _mockGateway = new Mock<IResidentGateway>();
             _classUnderTest = new GetAllUseCase(_mockGateway.Object);
             _fixture = new Fixture();
         }
