@@ -8,12 +8,12 @@ namespace ResidentContactApi.Tests.V1.Helper
     {
         public static DatabaseEntity CreateDatabaseEntity()
         {
-            var entity = new Fixture().Create<ContactDetailsDomain>();
+            var entity = new Fixture().Create<ResidentDomain>();
 
             return CreateDatabaseEntityFrom(entity);
         }
 
-        public static DatabaseEntity CreateDatabaseEntityFrom(ContactDetailsDomain entity)
+        public static DatabaseEntity CreateDatabaseEntityFrom(ResidentDomain entity)
         {
             return new DatabaseEntity
             {

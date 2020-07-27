@@ -20,5 +20,7 @@ namespace ResidentContactApi.V1.Gateways
         {
             return null;
         }
+
+
     }
 }
