@@ -65,6 +65,7 @@ namespace ResidentContactApi.Tests.V1.Controllers
         }
 
         [Test]
+        [Ignore("TO DO")]
         public void ViewRecordTest()
         {
 

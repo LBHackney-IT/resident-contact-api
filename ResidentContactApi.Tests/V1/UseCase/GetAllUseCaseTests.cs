@@ -9,6 +9,9 @@ using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using ResidentContactApi.V1.Boundary.Response.ContactDetails;
+using ResidentContactApi.V1.Boundary.Response.Residents;
+using ResidentContactApi.V1.Domain;
+using ResidentContactApi.V1.Boundary.Requests;
 
 namespace ResidentContactApi.Tests.V1.UseCase
 {
@@ -26,17 +29,24 @@ namespace ResidentContactApi.Tests.V1.UseCase
             _fixture = new Fixture();
         }
 
-        //[Test]
-        //public void GetsAllFromTheGateway()
-        //{
-        //    var stubbedEntities = _fixture.CreateMany<ContactDetailsResponse>().ToList();
-        //    _mockGateway.Setup(x => x.GetAll()).Returns(stubbedEntities);
+        [Test]
+        public void ReturnsResidentInformationList()
+        {
+            var stubbedResidents = _fixture.CreateMany<ResidentDomain>();
 
-        //    var expectedResponse = new ContactDetailsResponseList { ContactDetails = stubbedEntities.ToResponse() };
+            _mockGateway.Setup(x =>
+                    x.GetResidents("ciasom", "tessellate"))
+                .Returns(stubbedResidents.ToList());
+            var rqp = new ResidentQueryParam
+            {
+                FirstName = "ciasom",
+                LastName = "tessellate"
+            };
 
-        //    _classUnderTest.Execute().Should().BeEquivalentTo(expectedResponse);
-        //}
+            var response = _classUnderTest.Execute(rqp);
 
-        //TODO: Add extra tests here for extra functionality added to the use case
+            response.Should().NotBeNull();
+            response.Residents.Should().BeEquivalentTo(stubbedResidents.ToResponse());
+        }
     }
 }
