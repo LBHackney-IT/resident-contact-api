@@ -23,25 +23,7 @@ namespace ResidentContactApi.Tests.V1.Gateways
             _classUnderTest = new ResidentGateway(DatabaseContext);
         }
 
-        [Test]
-        [Ignore("TO DO")]
-        public void GetEntityByIdReturnsNullIfEntityDoesntExist()
-        {
 
-        }
-
-        [Test]
-        [Ignore("TO DO")]
-        public void GetEntityByIdReturnsTheEntityIfItExists()
-        {
-
-        }
-        [Test]
-        [Ignore("TO DO")]
-        public void GetAllResidentsIfThereAreNoResidentsReturnsAnEmptyList()
-        {
-            _classUnderTest.GetResidents("bob", "brown").Should().BeEmpty();
-        }
 
 
         //TODO: Add tests here for the get all method.

@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Mvc;
 using ResidentContactApi.V1.Boundary.Requests;
 using ResidentContactApi.V1.Boundary.Response.Residents;
+using ResidentContactApi.V1.Domain;
 using ResidentContactApi.V1.Factories;
 using ResidentContactApi.V1.Gateways;
 using ResidentContactApi.V1.UseCase.Interfaces;
@@ -17,6 +19,11 @@ namespace ResidentContactApi.V1.UseCase
         public ResidentResponseList Execute(ResidentQueryParam rqp)
         {
             var residents = _residentGateway.GetResidents(rqp.FirstName, rqp.LastName).ToResponse();
+
+            if (residents == null)
+            {
+                throw new InvalidQueryParameterException();
+            }
             return new ResidentResponseList
             {
                 Residents = residents

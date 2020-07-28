@@ -5,6 +5,7 @@ using NUnit.Framework;
 using ResidentContactApi.V1.Boundary.Requests;
 using ResidentContactApi.V1.Boundary.Response.Residents;
 using ResidentContactApi.V1.Controllers;
+using ResidentContactApi.V1.Domain;
 using ResidentContactApi.V1.UseCase.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -65,9 +66,33 @@ namespace ResidentContactApi.Tests.V1.Controllers
         }
 
         [Test]
-        [Ignore("TO DO")]
-        public void ViewRecordTest()
+        public void ShouldThrowExceptionIfNoResultsFromUseCase()
         {
+            var residentInfo = new List<ResidentResponse>()
+            {
+                new ResidentResponse()
+                {
+                    Id = 1234,
+                    FirstName = "test",
+                    LastName = "test",
+                    DateOfBirth = new DateTime()
+                }
+            };
+
+            var residentInformationList = new ResidentResponseList()
+            {
+                Residents = residentInfo
+            };
+
+            var rqp = new ResidentQueryParam
+            {
+                FirstName = "Ciasom",
+                LastName = "Tessellate",
+            };
+            _mockGetAllUseCase.Setup(x => x.Execute(rqp)).Throws<InvalidQueryParameterException>();
+            var response = _classUnderTest.ListContacts(rqp) as StatusCodeResult;
+
+            response.StatusCode.Should().Be(400);
 
         }
     }

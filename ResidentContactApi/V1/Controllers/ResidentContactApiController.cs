@@ -37,9 +37,9 @@ namespace ResidentContactApi.V1.Controllers
                 return Ok(_getAllUseCase.Execute(rqp));
 
             }
-            catch (InvalidQueryParameterException e)
+            catch (InvalidQueryParameterException)
             {
-                return BadRequest(e.Message);
+                return StatusCode(StatusCodes.Status400BadRequest);
             }
         }
 
