@@ -8,8 +8,8 @@ namespace ResidentContactApi.V1.Domain
     public class ContactDetailsDomain
     {
         public int Id { get; set; }
-        public int ContactValue { get; set; }
-        public string ContactType { get; set; }
+        public string ContactValue { get; set; }
+        public int ContactType { get; set; }
         public bool IsDefault { get; set; }
         public bool IsActive { get; set; }
         public string AddedBy { get; set; }

@@ -35,5 +35,16 @@ namespace ResidentContactApi.V1.Infrastructure
         [MaxLength(40)]
         public string ModifiedBy { get; set; }
 
+        [Column("type_lookup_id")]
+        [MaxLength(40)]
+        public int ContactType { get; set; }
+
+        [Column("contact_details_value")]
+        [MaxLength(40)]
+        public string ContactValue { get; set; }
+
+        [Column("date_modified")]
+        public DateTime DateLastModified { get; set; }
+
     }
 }
