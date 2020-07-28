@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using ResidentContactApi.V1.Boundary.Requests;
 using ResidentContactApi.V1.Domain;
@@ -15,9 +16,17 @@ namespace ResidentContactApi.V1.Gateways
         {
             _residentContactContext = residentContactContext;
         }
-        public List<ContactDetailsDomain> GetContactDetails(ResidentQueryParam rqp)
+        public List<ContactDetailsDomain> GetContactDetails()
         {
-            return null;
+            var residents = _residentContactContext.ContactDetails
+                .ToDomain();
+
+
+            if (!residents.Any())
+                return new List<ContactDetailsDomain>();
+
+            return residents;
+
         }
 
 

@@ -7,6 +7,6 @@ namespace ResidentContactApi.V1.Gateways
 {
     public interface IContactDetailsGateway
     {
-        List<ContactDetailsDomain> GetContactDetails(ResidentQueryParam rqp);
+        List<ContactDetailsDomain> GetContactDetails();
     }
 }
