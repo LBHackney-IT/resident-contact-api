@@ -27,4 +27,8 @@
     <ProjectReference Include="..\ResidentContactApi\ResidentContactApi.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="V1\Infrastructure\" />
+  </ItemGroup>
+
 </Project>
