@@ -7,10 +7,10 @@ namespace ResidentContactApi.Tests.V1.Helper
 {
     public static class TestHelper
     {
-        public static ResidentsInfra CreateDatabasePersonEntity(string firstname = null, string lastname = null)
+        public static Resident CreateDatabasePersonEntity(string firstname = null, string lastname = null)
         {
             var faker = new Fixture();
-            var fp = faker.Build<ResidentsInfra>()
+            var fp = faker.Build<Resident>()
                 .Create();
             fp.DateOfBirth = new DateTime
                 (fp.DateOfBirth.Year, fp.DateOfBirth.Month, fp.DateOfBirth.Day);

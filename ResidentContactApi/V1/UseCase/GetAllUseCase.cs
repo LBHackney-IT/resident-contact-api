@@ -18,12 +18,8 @@ namespace ResidentContactApi.V1.UseCase
 
         public ResidentResponseList Execute(ResidentQueryParam rqp)
         {
-            var residents = _residentGateway.GetResidents(rqp.FirstName, rqp.LastName).ToResponse();
+            var residents = _residentGateway.GetResidents(rqp.FirstName.Trim(), rqp.LastName.Trim()).ToResponse();
 
-            if (residents == null)
-            {
-                throw new InvalidQueryParameterException();
-            }
             return new ResidentResponseList
             {
                 Residents = residents

@@ -43,7 +43,7 @@ namespace ResidentContactApi.Tests.V1.Gateways
             var databaseEntity1 = TestHelper.CreateDatabasePersonEntity(firstname: "shape");
             var databaseEntity2 = TestHelper.CreateDatabasePersonEntity(firstname: "Ciasom");
 
-            var personslist = new List<ResidentsInfra>
+            var personslist = new List<Resident>
             {
                 databaseEntity,
                 databaseEntity1,
@@ -64,7 +64,7 @@ namespace ResidentContactApi.Tests.V1.Gateways
             var databaseEntity1 = TestHelper.CreateDatabasePersonEntity(lastname: "tessalate");
             var databaseEntity2 = TestHelper.CreateDatabasePersonEntity(lastname: "Brown");
 
-            var personslist = new List<ResidentsInfra>
+            var personslist = new List<Resident>
             {
                 databaseEntity,
                 databaseEntity1,

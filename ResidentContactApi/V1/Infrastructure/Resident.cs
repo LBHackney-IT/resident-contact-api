@@ -8,26 +8,22 @@ using System.Threading.Tasks;
 namespace ResidentContactApi.V1.Infrastructure
 {
     [Table("residents")]
-    public class ResidentsInfra
+    public class Resident
     {
         [Column("id")]
-        [MaxLength(40)]
         [Key]
         public int Id { get; set; }
 
         [Column("firstname")]
-        [MaxLength(255)]
         public string FirstName { get; set; }
 
         [Column("lastname")]
-        [MaxLength(255)]
         public string LastName { get; set; }
 
-        [Column("dateOfBirth")]
+        [Column("date_of_birth")]
         public DateTime DateOfBirth { get; set; }
 
         [Column("gender")]
-        [MaxLength(1)]
         public string Gender { get; set; }
     }
 }

@@ -33,13 +33,14 @@ namespace ResidentContactApi.V1.Factories
             return new ContactDetailsResponse
             {
                 Id = contactDetails.Id,
-                ContactType = contactDetails.ContactType,
+                Type = contactDetails.Type,
                 ContactValue = contactDetails.ContactValue,
                 AddedBy = contactDetails.AddedBy,
                 IsActive = contactDetails.IsActive,
                 IsDefault = contactDetails.IsDefault,
                 DateLastModified = contactDetails.DateLastModified,
-                ModifiedBy = contactDetails.ModifiedBy
+                ModifiedBy = contactDetails.ModifiedBy,
+                SubType = contactDetails.SubType
 
             };
         }

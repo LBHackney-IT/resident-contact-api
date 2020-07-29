@@ -31,7 +31,6 @@ namespace ResidentContactApi
 
         public IConfiguration Configuration { get; }
         private static List<ApiVersionDescription> _apiVersions { get; set; }
-        //TODO update the below to the name of your API
         private const string ApiName = "Resident Contact API";
 
         // This method gets called by the runtime. Use this method to add services to the container.

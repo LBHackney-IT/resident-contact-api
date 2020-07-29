@@ -68,21 +68,6 @@ namespace ResidentContactApi.Tests.V1.Controllers
         [Test]
         public void ShouldThrowExceptionIfNoResultsFromUseCase()
         {
-            var residentInfo = new List<ResidentResponse>()
-            {
-                new ResidentResponse()
-                {
-                    Id = 1234,
-                    FirstName = "test",
-                    LastName = "test",
-                    DateOfBirth = new DateTime()
-                }
-            };
-
-            var residentInformationList = new ResidentResponseList()
-            {
-                Residents = residentInfo
-            };
 
             var rqp = new ResidentQueryParam
             {
@@ -92,7 +77,7 @@ namespace ResidentContactApi.Tests.V1.Controllers
             _mockGetAllUseCase.Setup(x => x.Execute(rqp)).Throws<InvalidQueryParameterException>();
             var response = _classUnderTest.ListContacts(rqp) as StatusCodeResult;
 
-            response.StatusCode.Should().Be(400);
+            response.StatusCode.Should().Be(500);
 
         }
     }
