@@ -32,15 +32,8 @@ namespace ResidentContactApi.V1.Controllers
         [HttpGet]
         public IActionResult ListContacts([FromQuery] ResidentQueryParam rqp)
         {
-            try
-            {
                 return Ok(_getAllUseCase.Execute(rqp));
 
-            }
-            catch (InvalidQueryParameterException e)
-            {
-                return BadRequest(e.Message);
-            }
         }
 
         /// <summary>
