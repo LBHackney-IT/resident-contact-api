@@ -64,22 +64,6 @@ namespace ResidentContactApi.Tests.V1.Controllers
             response.StatusCode.Should().Be(200);
             response.Value.Should().BeEquivalentTo(residentInformationList);
         }
-
-        [Test]
-        public void ShouldThrowExceptionIfNoResultsFromUseCase()
-        {
-
-            var rqp = new ResidentQueryParam
-            {
-                FirstName = "Ciasom",
-                LastName = "Tessellate",
-            };
-            _mockGetAllUseCase.Setup(x => x.Execute(rqp)).Throws<InvalidQueryParameterException>();
-            var response = _classUnderTest.ListContacts(rqp) as StatusCodeResult;
-
-            response.StatusCode.Should().Be(500);
-
-        }
     }
 
 }

@@ -6,14 +6,9 @@ namespace ResidentContactApi.V1.Enums
         Address,
         UPRN,
         Fax,
-        Email
+        Email,
+        NotApplicable
 
     }
 
-    public enum ContactSubTypeEnum
-    {
-        Mobile,
-        Work,
-        Home
-    }
 }

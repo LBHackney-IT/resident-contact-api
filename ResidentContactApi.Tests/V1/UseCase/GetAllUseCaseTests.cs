@@ -32,7 +32,10 @@ namespace ResidentContactApi.Tests.V1.UseCase
         [Test]
         public void ReturnsResidentInformationList()
         {
-            var stubbedResidents = _fixture.CreateMany<ResidentDomain>();
+            var stubbedResidents = _fixture
+                .Build<ResidentDomain>()
+                .Without(contact => contact.Contacts)
+                .CreateMany();
 
             _mockGateway.Setup(x =>
                     x.GetResidents("ciasom", "tessellate"))

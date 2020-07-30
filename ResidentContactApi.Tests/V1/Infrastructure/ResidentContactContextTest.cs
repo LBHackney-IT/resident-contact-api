@@ -23,5 +23,7 @@ namespace ResidentContactApi.Tests.V1.Infrastructure
 
             result.Should().BeEquivalentTo(databaseEntity);
         }
+
+
     }
 }

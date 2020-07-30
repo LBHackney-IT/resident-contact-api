@@ -13,5 +13,6 @@ namespace ResidentContactApi.V1.Infrastructure
         public DbSet<Contact> ContactDetails { get; set; }
 
 
+
     }
 }

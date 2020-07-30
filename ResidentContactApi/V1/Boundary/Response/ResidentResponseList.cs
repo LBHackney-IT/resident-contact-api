@@ -8,7 +8,5 @@ namespace ResidentContactApi.V1.Boundary.Response.Residents
     public class ResidentResponseList
     {
         public List<ResidentResponse> Residents { get; set; }
-
-
     }
 }

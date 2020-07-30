@@ -26,6 +26,7 @@ namespace ResidentContactApi.V1.Controllers
         /// ...
         /// </summary>
         /// <response code="200">Successful response</response>
+        /// <response code="400">Invalid Query Parameter.</response>
         /// <response code="500">There was an error processing your request, please try again.</response>
         [ProducesResponseType(typeof(ResidentResponseList), StatusCodes.Status200OK)]
         [HttpGet]
@@ -36,9 +37,9 @@ namespace ResidentContactApi.V1.Controllers
                 return Ok(_getAllUseCase.Execute(rqp));
 
             }
-            catch (InvalidQueryParameterException)
+            catch (InvalidQueryParameterException e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return BadRequest(e.Message);
             }
         }
 

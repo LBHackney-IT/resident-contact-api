@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using ResidentContactApi.V1.Boundary.Requests;
 using ResidentContactApi.V1.Boundary.Response.Residents;
 using ResidentContactApi.V1.Domain;
@@ -24,10 +26,8 @@ namespace ResidentContactApi.V1.Gateways
             var residents = _residentContactContext.Residents
                 .Where(a => string.IsNullOrEmpty(firstName) || a.FirstName.Trim().ToLower().Contains(firstName.ToLower()))
                 .Where(a => string.IsNullOrEmpty(lastName) || a.LastName.Trim().ToLower().Contains(lastName.ToLower()))
+                .Include(a => a.Contacts)
                 .ToDomain();
-
-            if (!residents.Any())
-                return new List<ResidentDomain>();
 
             return residents;
 

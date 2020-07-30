@@ -10,14 +10,15 @@ namespace ResidentContactApi.V1.Factories
 {
     public static class EntityFactory
     {
+
         public static ResidentDomain ToDomain(this Resident databaseEntity)
         {
             return new ResidentDomain
             {
-
                 FirstName = databaseEntity.FirstName.Trim(),
                 LastName = databaseEntity.LastName.Trim(),
-                Gender = databaseEntity.Gender
+                Gender = databaseEntity.Gender,
+                Contacts = databaseEntity.Contacts?.ToDomain()
             };
         }
 
@@ -29,11 +30,12 @@ namespace ResidentContactApi.V1.Factories
         public static ContactDetailsDomain ToDomain(this Contact contactDetails)
         {
             var canParseType = Enum.TryParse<ContactTypeEnum>(contactDetails.ContactType, out var type);
-            var canParseType2 = Enum.TryParse<ContactTypeEnum>(contactDetails.SubContactType, out var subtype);
-            return canParseType && canParseType2 ? new ContactDetailsDomain
+            var canParseSubType = Enum.TryParse<ContactSubTypeEnum>(contactDetails.SubContactType, out var subtype);
+            return new ContactDetailsDomain
             {
+                Type = canParseType ? type : ContactTypeEnum.NotApplicable,
+                SubType = canParseSubType ? subtype : ContactSubTypeEnum.NotApplicable,
                 Id = contactDetails.Id,
-                Type = type,
                 ContactValue = contactDetails.ContactValue,
                 AddedBy = contactDetails.AddedBy,
                 IsActive = contactDetails.IsActive,
@@ -41,9 +43,10 @@ namespace ResidentContactApi.V1.Factories
                 DateLastModified = contactDetails.DateLastModified,
                 ModifiedBy = contactDetails.ModifiedBy,
                 DateAdded = contactDetails.DateAdded,
-                SubType = subtype
+                ResidentId = contactDetails.ResidentId
 
-            } : null;
+
+            };
 
         }
 

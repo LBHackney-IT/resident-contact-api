@@ -119,7 +119,7 @@ namespace ResidentContactApi
 
         private static void RegisterGateways(IServiceCollection services)
         {
-            services.AddScoped<IContactDetailsGateway, ContactDetailsGateway>();
+            services.AddScoped<IResidentGateway, ResidentGateway>();
         }
 
         private static void RegisterUseCases(IServiceCollection services)

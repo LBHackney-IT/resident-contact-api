@@ -14,6 +14,7 @@ namespace ResidentContactApi.V1.Infrastructure
         [Key]
         public int Id { get; set; }
 
+
         [Column("is_default")]
         public bool IsDefault { get; set; }
 
@@ -40,6 +41,11 @@ namespace ResidentContactApi.V1.Infrastructure
 
         [Column("subtype_lookup_id")]
         public string SubContactType { get; set; }
+
+        [Column("Resident_id")]
+        public int ResidentId { get; set; }
+
+        public Resident Resident { get; set; }
 
     }
 }

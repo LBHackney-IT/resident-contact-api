@@ -25,5 +25,7 @@ namespace ResidentContactApi.V1.Infrastructure
 
         [Column("gender")]
         public string Gender { get; set; }
+
+        public List<Contact> Contacts { get; set; }
     }
 }
