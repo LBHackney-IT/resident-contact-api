@@ -32,7 +32,7 @@ namespace ResidentContactApi.V1.Controllers
         [HttpGet]
         public IActionResult ListContacts([FromQuery] ResidentQueryParam rqp)
         {
-                return Ok(_getAllUseCase.Execute(rqp));
+            return Ok(_getAllUseCase.Execute(rqp));
 
         }
 
