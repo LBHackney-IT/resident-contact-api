@@ -11,6 +11,8 @@ using ResidentContactApi.V1.Infrastructure;
 using System.Collections.Generic;
 using ResidentContactApi.V1.Factories;
 using Bogus;
+using ResidentContactApi.V1.Enums;
+using System;
 
 namespace ResidentContactApi.Tests.V1.Gateways
 {
@@ -161,6 +163,67 @@ namespace ResidentContactApi.Tests.V1.Gateways
 
         }
 
+        [Test]
+        public void GetResidentByIdWhenNoMatchingRecordReturnNull()
+        {
+            var response = _classUnderTest.GetResidentById(123);
+
+            response.Should().BeNull();
+        }
+
+        [Test]
+        public void GetResidentByIdReturnsResidentDetails()
+        {
+            var databaseEntity = AddPersonRecordToDatabase();
+            var response = _classUnderTest.GetResidentById(databaseEntity.Id);
+
+            response.FirstName.Should().Be(databaseEntity.FirstName);
+            response.LastName.Should().Be(databaseEntity.LastName);
+            response.Gender.Should().Be(databaseEntity.Gender);
+            response.Should().NotBe(null);
+
+        }
+
+        [Test]
+        public void GetResidentByIdReturnsContactDetail()
+        {
+            var databaseEntity = AddPersonRecordToDatabase();
+            var contact = TestHelper.CreateDatabaseContactEntity(databaseEntity.Id);
+            ResidentContactContext.Add(contact);
+            ResidentContactContext.SaveChanges();
+
+            var response = _classUnderTest.GetResidentById(databaseEntity.Id);
+
+            var canParseType = Enum.TryParse<ContactTypeEnum>(contact.ContactType, out var type);
+            var canParseSubType = Enum.TryParse<ContactSubTypeEnum>(contact.SubContactType, out var subtype);
+
+            var expectedDomainResponse = new ContactDetailsDomain
+            {
+                Type = canParseType ? type : ContactTypeEnum.NotApplicable,
+                SubType = canParseSubType ? subtype : ContactSubTypeEnum.NotApplicable,
+                Id = contact.Id,
+                ContactValue = contact.ContactValue,
+                AddedBy = contact.AddedBy,
+                IsActive = contact.IsActive,
+                IsDefault = contact.IsDefault,
+                DateLastModified = contact.DateLastModified,
+                ModifiedBy = contact.ModifiedBy,
+                DateAdded = contact.DateAdded,
+                ResidentId = contact.ResidentId
+            };
+
+            response.Contacts.Should().BeEquivalentTo(new List<ContactDetailsDomain> { expectedDomainResponse });
+
+        }
+
+        private Resident AddPersonRecordToDatabase(string lastname = null, string firstname = null)
+        {
+            var databaseEntity = TestHelper.CreateDatabasePersonEntity(firstname, lastname);
+            ResidentContactContext.Residents.Add(databaseEntity);
+            ResidentContactContext.SaveChanges();
+            return databaseEntity;
+
+        }
 
 
     }

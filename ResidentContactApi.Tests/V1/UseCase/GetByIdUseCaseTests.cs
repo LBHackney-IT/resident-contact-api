@@ -2,6 +2,12 @@ using ResidentContactApi.V1.Gateways;
 using ResidentContactApi.V1.UseCase;
 using Moq;
 using NUnit.Framework;
+using ResidentContactApi.V1.Domain;
+using FluentAssertions;
+using AutoFixture;
+using ResidentContactApi.V1.Factories;
+using System;
+using ResidentContactApi.V1.Boundary.Response.Residents;
 
 namespace ResidentContactApi.Tests.V1.UseCase
 {
@@ -9,6 +15,8 @@ namespace ResidentContactApi.Tests.V1.UseCase
     {
         private Mock<IResidentGateway> _mockGateway;
         private GetByIdUseCase _classUnderTest;
+        private readonly Fixture _fixture = new Fixture();
+
 
         [SetUp]
         public void SetUp()
@@ -17,7 +25,57 @@ namespace ResidentContactApi.Tests.V1.UseCase
             _classUnderTest = new GetByIdUseCase(_mockGateway.Object);
         }
 
-        //TODO: test to check that the use case retrieves the correct record from the database.
-        //Guidance on unit testing and example of mocking can be found here https://github.com/LBHackney-IT/lbh-base-api/wiki/Writing-Unit-Tests
+        [Test]
+        public void ReturnResidentInformationRecordWithContactForSpecifiedId()
+        {
+            var stubbedResidentInfo = _fixture
+                .Build<ResidentDomain>()
+                .Without(contact => contact.Contacts)
+                .Create();
+
+            var id = _fixture.Create<int>();
+
+            _mockGateway.Setup(x => x.GetResidentById(id)).Returns(stubbedResidentInfo);
+
+            var response = _classUnderTest.Execute(id);
+            var expectedResponse = stubbedResidentInfo.ToResponse();
+
+            response.Should().NotBeNull();
+            response.Should().BeEquivalentTo(expectedResponse);
+
+        }
+
+        [Test]
+
+        public void ReturnResidentInformationRecordWithoutContactForSpecifiedId()
+        {
+            var stubbedResidentInfo = _fixture
+                .Build<ResidentDomain>()
+                .Without(contact => contact.Contacts)
+                .Create();
+
+            var id = _fixture.Create<int>();
+
+            stubbedResidentInfo.Contacts = null;
+
+            _mockGateway.Setup(x => x.GetResidentById(id)).Returns(stubbedResidentInfo);
+
+            var response = _classUnderTest.Execute(id);
+            var expectedResponse = stubbedResidentInfo.ToResponse();
+
+            response.Should().NotBeNull();
+            response.Should().BeEquivalentTo(expectedResponse);
+        }
+
+        [Test]
+        public void IfGatewayReturnsNullThrowNotFoundException()
+        {
+            ResidentDomain resultFromGateway = null;
+
+            _mockGateway.Setup(x => x.GetResidentById(It.IsAny<int>())).Returns(resultFromGateway);
+
+            Func<ResidentResponse> testDelegate = () => _classUnderTest.Execute(1234);
+            testDelegate.Should().Throw<ResidentNotFoundException>();
+        }
     }
 }

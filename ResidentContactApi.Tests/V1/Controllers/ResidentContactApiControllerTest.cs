@@ -64,6 +64,26 @@ namespace ResidentContactApi.Tests.V1.Controllers
             response.StatusCode.Should().Be(200);
             response.Value.Should().BeEquivalentTo(residentInformationList);
         }
+
+        [Test]
+
+        public void ViewRecordTest()
+        {
+            var singleResidentInfo = new ResidentResponse()
+            {
+                Id = 1234,
+                FirstName = "test",
+                LastName = "test",
+                DateOfBirth = new DateTime()
+            };
+
+            _mockGetByIdUseCase.Setup(x => x.Execute(1234)).Returns(singleResidentInfo);
+            var response = _classUnderTest.ViewRecord(1234) as OkObjectResult;
+
+            response.Should().NotBeNull();
+            response.StatusCode.Should().Be(200);
+            response.Value.Should().BeEquivalentTo(singleResidentInfo);
+        }
     }
 
 }

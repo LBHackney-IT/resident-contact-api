@@ -10,5 +10,6 @@ namespace ResidentContactApi.V1.Gateways
     public interface IResidentGateway
     {
         List<ResidentDomain> GetResidents(string firstName, string lastName);
+        ResidentDomain GetResidentById(int id);
     }
 }

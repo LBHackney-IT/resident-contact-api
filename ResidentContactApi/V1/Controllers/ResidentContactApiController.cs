@@ -51,11 +51,10 @@ namespace ResidentContactApi.V1.Controllers
         /// <response code = "400">Please enter a valide request.</response>
         [ProducesResponseType(typeof(ResidentResponse), StatusCodes.Status200OK)]
         [HttpGet]
-        //TODO: rename to match the identifier that will be used
-        [Route("{yourId}")]
-        public IActionResult ViewRecord(int yourId)
+        [Route("/contacts/{id}")]
+        public IActionResult ViewRecord(int id)
         {
-            return Ok(_getByIdUseCase.Execute(yourId));
+            return Ok(_getByIdUseCase.Execute(id));
         }
     }
 }
