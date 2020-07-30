@@ -1,5 +1,5 @@
 using ResidentContactApi.V1.Boundary.Requests;
-using ResidentContactApi.V1.Domain;
+using ResidentDomain = ResidentContactApi.V1.Domain.ResidentDomain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +9,6 @@ namespace ResidentContactApi.V1.Gateways
 {
     public interface IResidentGateway
     {
-        Task<List<ResidentDomain>> GetResidents(ResidentQueryParam rqp);
+        List<ResidentDomain> GetResidents(string firstName, string lastName);
     }
 }

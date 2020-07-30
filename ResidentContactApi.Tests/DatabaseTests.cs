@@ -9,21 +9,28 @@ namespace ResidentContactApi.Tests
     public class DatabaseTests
     {
         private IDbContextTransaction _transaction;
-        protected ResidentContactContext DatabaseContext { get; private set; }
 
-        [SetUp]
+        private DbContextOptionsBuilder _builder;
+
+        protected ResidentContactContext ResidentContactContext { get; set; }
+
+        [OneTimeSetUp]
         public void RunBeforeAnyTests()
         {
-            var builder = new DbContextOptionsBuilder();
-            builder.UseNpgsql(ConnectionString.TestDatabase());
-            DatabaseContext = new ResidentContactContext(builder.Options);
+            _builder = new DbContextOptionsBuilder();
+            _builder.UseNpgsql(ConnectionString.TestDatabase());
+        }
 
-            DatabaseContext.Database.EnsureCreated();
-            _transaction = DatabaseContext.Database.BeginTransaction();
+        [SetUp]
+        public void SetUp()
+        {
+            ResidentContactContext = new ResidentContactContext(_builder.Options);
+            ResidentContactContext.Database.EnsureCreated();
+            _transaction = ResidentContactContext.Database.BeginTransaction();
         }
 
         [TearDown]
-        public void RunAfterAnyTests()
+        public void TearDown()
         {
             _transaction.Rollback();
             _transaction.Dispose();

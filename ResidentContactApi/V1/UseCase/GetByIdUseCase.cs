@@ -7,8 +7,8 @@ namespace ResidentContactApi.V1.UseCase
 {
     public class GetByIdUseCase : IGetByIdUseCase
     {
-        private IContactDetailsGateway _gateway;
-        public GetByIdUseCase(IContactDetailsGateway gateway)
+        private IResidentGateway _gateway;
+        public GetByIdUseCase(IResidentGateway gateway)
         {
             _gateway = gateway;
         }

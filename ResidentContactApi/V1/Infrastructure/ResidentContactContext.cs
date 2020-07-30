@@ -9,6 +9,10 @@ namespace ResidentContactApi.V1.Infrastructure
         {
         }
 
-        public DbSet<DatabaseEntity> DatabaseEntities { get; set; }
+        public DbSet<Resident> Residents { get; set; }
+        public DbSet<Contact> ContactDetails { get; set; }
+
+
+
     }
 }

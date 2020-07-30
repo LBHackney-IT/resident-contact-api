@@ -9,34 +9,47 @@ using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using ResidentContactApi.V1.Boundary.Response.ContactDetails;
+using ResidentContactApi.V1.Boundary.Response.Residents;
+using ResidentContactApi.V1.Domain;
+using ResidentContactApi.V1.Boundary.Requests;
 
 namespace ResidentContactApi.Tests.V1.UseCase
 {
     public class GetAllUseCaseTests
     {
-        private Mock<IContactDetailsGateway> _mockGateway;
+        private Mock<IResidentGateway> _mockGateway;
         private GetAllUseCase _classUnderTest;
         private Fixture _fixture;
 
         [SetUp]
         public void SetUp()
         {
-            _mockGateway = new Mock<IContactDetailsGateway>();
+            _mockGateway = new Mock<IResidentGateway>();
             _classUnderTest = new GetAllUseCase(_mockGateway.Object);
             _fixture = new Fixture();
         }
 
-        //[Test]
-        //public void GetsAllFromTheGateway()
-        //{
-        //    var stubbedEntities = _fixture.CreateMany<ContactDetailsResponse>().ToList();
-        //    _mockGateway.Setup(x => x.GetAll()).Returns(stubbedEntities);
+        [Test]
+        public void ReturnsResidentInformationList()
+        {
+            var stubbedResidents = _fixture
+                .Build<ResidentDomain>()
+                .Without(contact => contact.Contacts)
+                .CreateMany();
 
-        //    var expectedResponse = new ContactDetailsResponseList { ContactDetails = stubbedEntities.ToResponse() };
+            _mockGateway.Setup(x =>
+                    x.GetResidents("ciasom", "tessellate"))
+                .Returns(stubbedResidents.ToList());
+            var rqp = new ResidentQueryParam
+            {
+                FirstName = "ciasom",
+                LastName = "tessellate"
+            };
 
-        //    _classUnderTest.Execute().Should().BeEquivalentTo(expectedResponse);
-        //}
+            var response = _classUnderTest.Execute(rqp);
 
-        //TODO: Add extra tests here for extra functionality added to the use case
+            response.Should().NotBeNull();
+            response.Residents.Should().BeEquivalentTo(stubbedResidents.ToResponse());
+        }
     }
 }

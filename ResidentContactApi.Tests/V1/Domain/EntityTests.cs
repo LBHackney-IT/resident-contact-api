@@ -2,6 +2,7 @@ using System;
 using ResidentContactApi.V1.Domain;
 using FluentAssertions;
 using NUnit.Framework;
+using ResidentContactApi.V1.Boundary.Response;
 
 namespace ResidentContactApi.Tests.V1.Domain
 {
@@ -16,13 +17,13 @@ namespace ResidentContactApi.Tests.V1.Domain
         }
 
         [Test]
-        public void EntitiesHaveACreatedAt()
+        public void EntitiesHaveADateAdded()
         {
-            //var entity = new ContactDetailsResponse();
-            //var date = new DateTime(2019, 02, 21);
-            //entity.CreatedAt = date;
+            var entity = new ContactDetailsResponse();
+            var date = new DateTime(2019, 02, 21);
+            entity.DateAdded = date;
 
-            //entity.CreatedAt.Should().BeSameDateAs(date);
+            entity.DateAdded.Should().BeSameDateAs(date);
         }
     }
 }
