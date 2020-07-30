@@ -42,7 +42,7 @@ namespace ResidentContactApi.V1.Infrastructure
         [Column("subtype_lookup_id")]
         public string SubContactType { get; set; }
 
-        [Column("Resident_id")]
+        [Column("resident_id")]
         public int ResidentId { get; set; }
 
         public Resident Resident { get; set; }
