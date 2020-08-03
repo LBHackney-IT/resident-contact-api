@@ -4,6 +4,7 @@ using ResidentContactApi.V1.Domain;
 using ResidentContactApi.V1.Factories;
 using ResidentContactApi.V1.Gateways;
 using ResidentContactApi.V1.UseCase.Interfaces;
+using System.Linq;
 
 namespace ResidentContactApi.V1.UseCase
 {
@@ -17,6 +18,7 @@ namespace ResidentContactApi.V1.UseCase
         public ResidentResponse Execute(int id)
         {
             var residentInfo = _gateway.GetResidentById(id);
+
             if (residentInfo == null) throw new ResidentNotFoundException();
             return residentInfo.ToResponse();
         }

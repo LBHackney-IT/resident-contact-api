@@ -37,5 +37,32 @@ namespace ResidentContactApi.Tests.V1.Factories
             };
             domain.ToResponse().Should().BeEquivalentTo(expectedResponse);
         }
+
+        [Test]
+        public void ReturnContactDetailsInResidentResponse()
+        {
+            var domain = new ResidentDomain
+            {
+                Id = 1234,
+                FirstName = "Name",
+                LastName = "Last",
+                DateOfBirth = new DateTime(),
+                Gender = "Female",
+                Contacts = new List<ContactDetailsDomain>()
+
+            };
+
+            var expectedResponse = new ResidentResponse
+            {
+                Id = 1234,
+                FirstName = "Name",
+                LastName = "Last",
+                DateOfBirth = new DateTime(),
+                Gender = "Female",
+                Contacts = new List<ContactDetailsResponse>()
+            };
+            domain.ToResponse().Should().BeEquivalentTo(expectedResponse);
+
+        }
     }
 }
