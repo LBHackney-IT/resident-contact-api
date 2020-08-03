@@ -54,7 +54,14 @@ namespace ResidentContactApi.V1.Controllers
         [Route("/contacts/{id}")]
         public IActionResult ViewRecord(int id)
         {
-            return Ok(_getByIdUseCase.Execute(id));
+            try
+            {
+                return Ok(_getByIdUseCase.Execute(id));
+            }
+            catch (ResidentNotFoundException e)
+            {
+                return BadRequest(e.Message);
+            }
         }
     }
 }

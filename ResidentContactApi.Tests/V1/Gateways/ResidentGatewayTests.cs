@@ -194,23 +194,7 @@ namespace ResidentContactApi.Tests.V1.Gateways
 
             var response = _classUnderTest.GetResidentById(databaseEntity.Id);
 
-            var canParseType = Enum.TryParse<ContactTypeEnum>(contact.ContactType, out var type);
-            var canParseSubType = Enum.TryParse<ContactSubTypeEnum>(contact.SubContactType, out var subtype);
-
-            var expectedDomainResponse = new ContactDetailsDomain
-            {
-                Type = canParseType ? type : ContactTypeEnum.NotApplicable,
-                SubType = canParseSubType ? subtype : ContactSubTypeEnum.NotApplicable,
-                Id = contact.Id,
-                ContactValue = contact.ContactValue,
-                AddedBy = contact.AddedBy,
-                IsActive = contact.IsActive,
-                IsDefault = contact.IsDefault,
-                DateLastModified = contact.DateLastModified,
-                ModifiedBy = contact.ModifiedBy,
-                DateAdded = contact.DateAdded,
-                ResidentId = contact.ResidentId
-            };
+            var expectedDomainResponse = contact.ToDomain();
 
             response.Contacts.Should().BeEquivalentTo(new List<ContactDetailsDomain> { expectedDomainResponse });
 

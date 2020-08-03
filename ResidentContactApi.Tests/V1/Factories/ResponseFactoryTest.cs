@@ -37,32 +37,5 @@ namespace ResidentContactApi.Tests.V1.Factories
             };
             domain.ToResponse().Should().BeEquivalentTo(expectedResponse);
         }
-
-        [Test]
-        public void CanMapResidentInformationWithOnlyPersonalInformationFromDomainToResponse()
-        {
-            var domain = new ResidentDomain
-            {
-                Id = 1234,
-                FirstName = "Name",
-                LastName = "Last",
-                DateOfBirth = new DateTime(),
-                Gender = "Male",
-                Contacts = null
-            };
-
-
-            var expectedResponse = new ResidentResponse
-            {
-                Id = 1234,
-                FirstName = "Name",
-                LastName = "Last",
-                DateOfBirth = new DateTime(),
-                Gender = "Male",
-                Contacts = null
-
-            };
-            domain.ToResponse().Should().BeEquivalentTo(expectedResponse);
-        }
     }
 }

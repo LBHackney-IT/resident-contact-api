@@ -1,5 +1,6 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
 using Moq;
 using NUnit.Framework;
 using ResidentContactApi.V1.Boundary.Requests;
@@ -83,6 +84,18 @@ namespace ResidentContactApi.Tests.V1.Controllers
             response.Should().NotBeNull();
             response.StatusCode.Should().Be(200);
             response.Value.Should().BeEquivalentTo(singleResidentInfo);
+        }
+
+        [Test]
+        public void ThrowsNotFoundError()
+        {
+            var id = 1234;
+            _mockGetByIdUseCase.Setup(x => x.Execute(It.IsAny<int>())).Throws<ResidentNotFoundException>();
+            var response = _classUnderTest.ViewRecord(id) as BadRequestObjectResult;
+
+            response.Should().NotBeNull();
+            response.StatusCode.Should().Be(400);
+
         }
     }
 

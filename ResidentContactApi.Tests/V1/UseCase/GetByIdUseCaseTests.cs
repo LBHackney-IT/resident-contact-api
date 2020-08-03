@@ -8,6 +8,7 @@ using AutoFixture;
 using ResidentContactApi.V1.Factories;
 using System;
 using ResidentContactApi.V1.Boundary.Response.Residents;
+using System.Linq;
 
 namespace ResidentContactApi.Tests.V1.UseCase
 {
@@ -32,6 +33,10 @@ namespace ResidentContactApi.Tests.V1.UseCase
                 .Build<ResidentDomain>()
                 .Without(contact => contact.Contacts)
                 .Create();
+            stubbedResidentInfo.Contacts = _fixture
+                .Build<ContactDetailsDomain>()
+                .Without(resident => resident.Resident)
+                .CreateMany().ToList();
 
             var id = _fixture.Create<int>();
 

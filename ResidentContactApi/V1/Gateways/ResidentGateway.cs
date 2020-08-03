@@ -51,7 +51,6 @@ namespace ResidentContactApi.V1.Gateways
             var person = resident.ToDomain();
             var contactDomain = contacts.Select(contact => contact.ToDomain()).ToList();
 
-            person.Contacts = contactDomain;
             person.Contacts = contactDomain.Any()
                 ? contactDomain
                 : null;
