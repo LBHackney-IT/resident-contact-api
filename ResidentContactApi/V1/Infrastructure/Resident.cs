@@ -14,10 +14,10 @@ namespace ResidentContactApi.V1.Infrastructure
         [Key]
         public int Id { get; set; }
 
-        [Column("firstname")]
+        [Column("first_name")]
         public string FirstName { get; set; }
 
-        [Column("lastname")]
+        [Column("last_name")]
         public string LastName { get; set; }
 
         [Column("date_of_birth")]

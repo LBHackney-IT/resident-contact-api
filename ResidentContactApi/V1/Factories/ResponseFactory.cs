@@ -15,11 +15,11 @@ namespace ResidentContactApi.V1.Factories
         {
             return new ResidentResponse
             {
+                Id = domain.Id,
                 FirstName = domain.FirstName,
                 LastName = domain.LastName,
                 DateOfBirth = domain.DateOfBirth,
-                Gender = domain.Gender,
-
+                Gender = domain.Gender
 
             };
         }
