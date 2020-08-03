@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using ResidentContactApi.V1.Boundary.Requests;
-using ResidentContactApi.V1.Boundary.Response.Residents;
 using ResidentContactApi.V1.Domain;
 using ResidentContactApi.V1.Factories;
 using ResidentContactApi.V1.Infrastructure;

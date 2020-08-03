@@ -1,18 +1,12 @@
-using AutoFixture;
 using ResidentContactApi.Tests.V1.Helper;
 using ResidentContactApi.V1.Domain;
 using ResidentContactApi.V1.Gateways;
 using FluentAssertions;
 using NUnit.Framework;
-using System.ComponentModel.Design.Serialization;
-using ResidentContactApi.V1.Boundary.Response.Residents;
-using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using ResidentContactApi.V1.Infrastructure;
 using System.Collections.Generic;
-using ResidentContactApi.V1.Factories;
-using Bogus;
 using ResidentContactApi.V1.Enums;
-using System;
+using ResidentContactApi.V1.Factories;
 
 namespace ResidentContactApi.Tests.V1.Gateways
 {
@@ -160,7 +154,6 @@ namespace ResidentContactApi.Tests.V1.Gateways
             listOfPersons.Count.Should().Be(2);
             listOfPersons.Should().ContainEquivalentOf(domain);
             listOfPersons.Should().ContainEquivalentOf(domain2);
-
         }
 
         [Test]
@@ -179,7 +172,7 @@ namespace ResidentContactApi.Tests.V1.Gateways
 
             response.FirstName.Should().Be(databaseEntity.FirstName);
             response.LastName.Should().Be(databaseEntity.LastName);
-            response.Gender.Should().Be(databaseEntity.Gender);
+            response.Gender.Should().Be(GenderTypeEnum.F);
             response.Should().NotBe(null);
 
         }
@@ -208,7 +201,5 @@ namespace ResidentContactApi.Tests.V1.Gateways
             return databaseEntity;
 
         }
-
-
     }
 }

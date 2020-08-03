@@ -30,7 +30,7 @@ namespace ResidentContactApi.V1.Infrastructure
         [Column("modified_by")]
         public string ModifiedBy { get; set; }
 
-        [Column("type_lookup_id")]
+        [Column("type")]
         public string ContactType { get; set; }
 
         [Column("contact_details_value")]
@@ -39,7 +39,7 @@ namespace ResidentContactApi.V1.Infrastructure
         [Column("date_modified")]
         public DateTime DateLastModified { get; set; }
 
-        [Column("subtype_lookup_id")]
+        [Column("subtype")]
         public string SubContactType { get; set; }
 
         [Column("resident_id")]

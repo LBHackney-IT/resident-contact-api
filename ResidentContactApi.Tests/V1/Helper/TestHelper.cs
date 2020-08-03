@@ -14,9 +14,10 @@ namespace ResidentContactApi.Tests.V1.Helper
             var faker = new Fixture();
             var fp = faker.Build<Resident>()
                 .Without(contact => contact.Contacts)
+                .With(contact => contact.Gender, 'F')
                 .Create();
             fp.DateOfBirth = new DateTime
-                (fp.DateOfBirth.Year, fp.DateOfBirth.Month, fp.DateOfBirth.Day);
+                (fp.DateOfBirth.Value.Year, fp.DateOfBirth.Value.Month, fp.DateOfBirth.Value.Day);
             fp.FirstName = firstname ?? fp.FirstName;
             fp.LastName = lastname ?? fp.LastName;
             if (id != null) fp.Id = (int) id;

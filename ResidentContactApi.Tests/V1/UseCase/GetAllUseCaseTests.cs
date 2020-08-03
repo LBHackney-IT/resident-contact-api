@@ -8,8 +8,6 @@ using ResidentContactApi.V1.UseCase;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using ResidentContactApi.V1.Boundary.Response.ContactDetails;
-using ResidentContactApi.V1.Boundary.Response.Residents;
 using ResidentContactApi.V1.Domain;
 using ResidentContactApi.V1.Boundary.Requests;
 

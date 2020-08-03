@@ -13,12 +13,14 @@ namespace ResidentContactApi.V1.Factories
 
         public static ResidentDomain ToDomain(this Resident databaseEntity)
         {
+            var canParseGender = Enum.TryParse<GenderTypeEnum>(databaseEntity.Gender?.ToString(), out var gender);
+
             return new ResidentDomain
             {
                 Id = databaseEntity.Id,
-                FirstName = databaseEntity.FirstName.Trim(),
-                LastName = databaseEntity.LastName.Trim(),
-                Gender = databaseEntity.Gender,
+                FirstName = databaseEntity.FirstName?.Trim(),
+                LastName = databaseEntity.LastName?.Trim(),
+                Gender = canParseGender ? gender : GenderTypeEnum.Unknown,
                 DateOfBirth = databaseEntity.DateOfBirth,
                 Contacts = databaseEntity.Contacts?.ToDomain()
             };
@@ -46,15 +48,12 @@ namespace ResidentContactApi.V1.Factories
                 ModifiedBy = contactDetails.ModifiedBy,
                 DateAdded = contactDetails.DateAdded,
                 ResidentId = contactDetails.ResidentId
-
-
             };
-
         }
 
-        public static List<ContactDetailsDomain> ToDomain(this IEnumerable<Contact> people)
+        public static List<ContactDetailsDomain> ToDomain(this IEnumerable<Contact> contacts)
         {
-            return people.Select(p => p.ToDomain()).ToList();
+            return contacts.Select(p => p.ToDomain()).ToList();
         }
     }
 }

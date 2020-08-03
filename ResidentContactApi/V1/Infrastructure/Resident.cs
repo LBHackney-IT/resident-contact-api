@@ -21,11 +21,10 @@ namespace ResidentContactApi.V1.Infrastructure
         public string LastName { get; set; }
 
         [Column("date_of_birth")]
-        public DateTime DateOfBirth { get; set; }
+        public DateTime? DateOfBirth { get; set; }
 
         [Column("gender")]
-        [MaxLength(1)]
-        public string Gender { get; set; }
+        public char? Gender { get; set; }
 
         public List<Contact> Contacts { get; set; }
     }

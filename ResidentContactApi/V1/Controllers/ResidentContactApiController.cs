@@ -2,10 +2,8 @@ using ResidentContactApi.V1.Boundary.Response;
 using ResidentContactApi.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using ResidentContactApi.V1.Boundary.Response.ContactDetails;
 using ResidentContactApi.V1.Boundary.Requests;
 using ResidentContactApi.V1.Domain;
-using ResidentContactApi.V1.Boundary.Response.Residents;
 
 namespace ResidentContactApi.V1.Controllers
 {
