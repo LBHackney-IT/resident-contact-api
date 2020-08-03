@@ -9,6 +9,7 @@ using ResidentContactApi.V1.Factories;
 using System;
 using ResidentContactApi.V1.Boundary.Response.Residents;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace ResidentContactApi.Tests.V1.UseCase
 {
@@ -45,6 +46,7 @@ namespace ResidentContactApi.Tests.V1.UseCase
             var response = _classUnderTest.Execute(id);
             var expectedResponse = stubbedResidentInfo.ToResponse();
 
+            response.Contacts.Should().BeEquivalentTo(expectedResponse.Contacts);
             response.Should().NotBeNull();
             response.Should().BeEquivalentTo(expectedResponse);
 
