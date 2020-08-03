@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using ResidentContactApi.V1.Boundary.Response.Residents;
 using ResidentContactApi.V1.Boundary.Response;
 using FluentAssertions;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Query.ExpressionTranslators.Internal;
 
 namespace ResidentContactApi.Tests.V1.Factories
 {
@@ -48,7 +49,16 @@ namespace ResidentContactApi.Tests.V1.Factories
                 LastName = "Last",
                 DateOfBirth = new DateTime(),
                 Gender = "Female",
-                Contacts = new List<ContactDetailsDomain>()
+                Contacts = new List<ContactDetailsDomain>
+                {
+                   new ContactDetailsDomain
+                   {
+                       Id = 1234,
+                       AddedBy = "Test"
+                   }
+
+                }
+
 
             };
 
@@ -59,7 +69,14 @@ namespace ResidentContactApi.Tests.V1.Factories
                 LastName = "Last",
                 DateOfBirth = new DateTime(),
                 Gender = "Female",
-                Contacts = new List<ContactDetailsResponse>()
+                Contacts = new List<ContactDetailsResponse>
+                {
+                    new ContactDetailsResponse
+                    {
+                        Id = 1234,
+                        AddedBy = "Test"
+                    }
+                }
             };
             domain.ToResponse().Should().BeEquivalentTo(expectedResponse);
 
