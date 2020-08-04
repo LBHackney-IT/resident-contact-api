@@ -24,6 +24,7 @@ namespace ResidentContactApi.V1.Infrastructure
         public DateTime DateOfBirth { get; set; }
 
         [Column("gender")]
+        [MaxLength(1)]
         public string Gender { get; set; }
 
         public List<Contact> Contacts { get; set; }

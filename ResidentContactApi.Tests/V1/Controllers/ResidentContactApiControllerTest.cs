@@ -91,10 +91,10 @@ namespace ResidentContactApi.Tests.V1.Controllers
         {
             var id = 1234;
             _mockGetByIdUseCase.Setup(x => x.Execute(It.IsAny<int>())).Throws<ResidentNotFoundException>();
-            var response = _classUnderTest.ViewRecord(id) as BadRequestObjectResult;
+            var response = _classUnderTest.ViewRecord(id) as NotFoundObjectResult;
 
             response.Should().NotBeNull();
-            response.StatusCode.Should().Be(400);
+            response.StatusCode.Should().Be(404);
 
         }
     }

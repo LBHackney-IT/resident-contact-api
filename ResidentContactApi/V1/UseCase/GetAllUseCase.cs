@@ -18,7 +18,7 @@ namespace ResidentContactApi.V1.UseCase
 
         public ResidentResponseList Execute(ResidentQueryParam rqp)
         {
-            var residents = _residentGateway.GetResidents(rqp.FirstName.Trim(), rqp.LastName.Trim()).ToResponse();
+            var residents = _residentGateway.GetResidents(rqp.FirstName, rqp.LastName).ToResponse();
 
             return new ResidentResponseList
             {

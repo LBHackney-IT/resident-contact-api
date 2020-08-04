@@ -15,9 +15,11 @@ namespace ResidentContactApi.V1.Factories
         {
             return new ResidentDomain
             {
+                Id = databaseEntity.Id,
                 FirstName = databaseEntity.FirstName.Trim(),
                 LastName = databaseEntity.LastName.Trim(),
                 Gender = databaseEntity.Gender,
+                DateOfBirth = databaseEntity.DateOfBirth,
                 Contacts = databaseEntity.Contacts?.ToDomain()
             };
         }

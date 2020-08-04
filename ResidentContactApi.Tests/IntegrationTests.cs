@@ -10,7 +10,7 @@ namespace ResidentContactApi.Tests
     public class IntegrationTests<TStartup> where TStartup : class
     {
         protected HttpClient Client { get; private set; }
-        protected ResidentContactContext DatabaseContext { get; private set; }
+        protected ResidentContactContext ResidentContactContext { get; private set; }
 
         private MockWebApplicationFactory<TStartup> _factory;
         private NpgsqlConnection _connection;
@@ -36,9 +36,9 @@ namespace ResidentContactApi.Tests
         {
             _factory = new MockWebApplicationFactory<TStartup>(_connection);
             Client = _factory.CreateClient();
-            DatabaseContext = new ResidentContactContext(_builder.Options);
-            DatabaseContext.Database.EnsureCreated();
-            _transaction = DatabaseContext.Database.BeginTransaction();
+            ResidentContactContext = new ResidentContactContext(_builder.Options);
+            ResidentContactContext.Database.EnsureCreated();
+            _transaction = ResidentContactContext.Database.BeginTransaction();
         }
 
         [TearDown]

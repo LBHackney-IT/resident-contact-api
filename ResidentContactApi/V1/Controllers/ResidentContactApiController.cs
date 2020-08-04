@@ -10,7 +10,7 @@ using ResidentContactApi.V1.Boundary.Response.Residents;
 namespace ResidentContactApi.V1.Controllers
 {
     [ApiController]
-    [Route("api/v1/residents-contacts")]
+    [Route("api/v1/contacts")]
     [Produces("application/json")]
     [ApiVersion("1.0")]
     public class ResidentContactApiController : BaseController
@@ -44,7 +44,7 @@ namespace ResidentContactApi.V1.Controllers
         /// <response code = "400">Please enter a valide request.</response>
         [ProducesResponseType(typeof(ResidentResponse), StatusCodes.Status200OK)]
         [HttpGet]
-        [Route("/contacts/{id}")]
+        [Route("{id}")]
         public IActionResult ViewRecord(int id)
         {
             try
@@ -53,7 +53,7 @@ namespace ResidentContactApi.V1.Controllers
             }
             catch (ResidentNotFoundException e)
             {
-                return BadRequest(e.Message);
+                return NotFound(e.Message);
             }
         }
     }

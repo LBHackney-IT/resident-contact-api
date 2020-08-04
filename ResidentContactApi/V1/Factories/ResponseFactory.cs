@@ -41,7 +41,9 @@ namespace ResidentContactApi.V1.Factories
                 IsDefault = contactDetails.IsDefault,
                 DateLastModified = contactDetails.DateLastModified,
                 ModifiedBy = contactDetails.ModifiedBy,
-                SubType = contactDetails.SubType
+                SubType = contactDetails.SubType,
+                DateAdded = contactDetails.DateAdded,
+                ResidentId = contactDetails.ResidentId
 
             };
         }
