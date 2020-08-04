@@ -15,11 +15,12 @@ namespace ResidentContactApi.V1.Factories
         {
             return new ResidentResponse
             {
+                Id = domain.Id,
                 FirstName = domain.FirstName,
                 LastName = domain.LastName,
                 DateOfBirth = domain.DateOfBirth,
                 Gender = domain.Gender,
-
+                Contacts = domain.Contacts?.Select(x => x.ToResponse()).ToList()
 
             };
         }
@@ -28,7 +29,7 @@ namespace ResidentContactApi.V1.Factories
             return people.Select(p => p.ToResponse()).ToList();
         }
 
-        private static ContactDetailsResponse ToResponse(this ContactDetailsDomain contactDetails)
+        public static ContactDetailsResponse ToResponse(this ContactDetailsDomain contactDetails)
         {
             return new ContactDetailsResponse
             {

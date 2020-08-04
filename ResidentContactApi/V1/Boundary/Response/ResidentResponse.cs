@@ -13,7 +13,7 @@ namespace ResidentContactApi.V1.Boundary.Response.Residents
         public string LastName { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string Gender { get; set; }
-        public ContactDetailsResponse Contacts { get; set; }
+        public List<ContactDetailsResponse> Contacts { get; set; }
 
     }
 }

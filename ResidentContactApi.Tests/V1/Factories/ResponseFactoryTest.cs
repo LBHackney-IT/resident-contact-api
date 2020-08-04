@@ -1,19 +1,85 @@
 using ResidentContactApi.V1.Domain;
 using ResidentContactApi.V1.Factories;
 using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using ResidentContactApi.V1.Boundary.Response.Residents;
+using ResidentContactApi.V1.Boundary.Response;
+using FluentAssertions;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Query.ExpressionTranslators.Internal;
 
 namespace ResidentContactApi.Tests.V1.Factories
 {
     public class ResponseFactoryTest
     {
-        //TODO: add assertions for all the fields being mapped in `ResponseFactory.ToResponse()`. Also be sure to add test cases for
-        // any edge cases that might exist.
         [Test]
-        public void CanMapADatabaseEntityToADomainObject()
+        public void CanMapResidentInformationFromDomainToResponse()
         {
-            var domain = new ResidentDomain();
-            var response = domain.ToResponse();
-            //TODO: check here that all of the fields have been mapped correctly. i.e. response.fieldOne.Should().Be("one")
+            var domain = new ResidentDomain
+            {
+
+                Id = 1234,
+                FirstName = "Name",
+                LastName = "Last",
+                DateOfBirth = new DateTime(),
+                Gender = "Female",
+                Contacts = null
+
+            };
+
+            var expectedResponse = new ResidentResponse
+            {
+                Id = 1234,
+                FirstName = "Name",
+                LastName = "Last",
+                DateOfBirth = new DateTime(),
+                Gender = "Female",
+                Contacts = null
+            };
+            domain.ToResponse().Should().BeEquivalentTo(expectedResponse);
+        }
+
+        [Test]
+        public void ReturnContactDetailsInResidentResponse()
+        {
+            var domain = new ResidentDomain
+            {
+                Id = 1234,
+                FirstName = "Name",
+                LastName = "Last",
+                DateOfBirth = new DateTime(),
+                Gender = "Female",
+                Contacts = new List<ContactDetailsDomain>
+                {
+                   new ContactDetailsDomain
+                   {
+                       Id = 1234,
+                       AddedBy = "Test"
+                   }
+
+                }
+
+
+            };
+
+            var expectedResponse = new ResidentResponse
+            {
+                Id = 1234,
+                FirstName = "Name",
+                LastName = "Last",
+                DateOfBirth = new DateTime(),
+                Gender = "Female",
+                Contacts = new List<ContactDetailsResponse>
+                {
+                    new ContactDetailsResponse
+                    {
+                        Id = 1234,
+                        AddedBy = "Test"
+                    }
+                }
+            };
+            domain.ToResponse().Should().BeEquivalentTo(expectedResponse);
+
         }
     }
 }

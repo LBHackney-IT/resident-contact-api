@@ -1,15 +1,42 @@
 using ResidentContactApi.V1.Factories;
-using ResidentContactApi.V1.Infrastructure;
 using FluentAssertions;
 using NUnit.Framework;
+using AutoFixture;
+using ResidentContactApi.Tests.V1.Helper;
+using ResidentContactApi.V1.Domain;
+using Bogus;
+using System;
 
 namespace ResidentContactApi.Tests.V1.Factories
 {
     [TestFixture]
     public class EntityFactoryTest
     {
-        //TODO: add assertions for all the fields being mapped in `EntityFactory.ToDomain()`. Also be sure to add test cases for
-        // any edge cases that might exist.
+        private Fixture _fixture;
+
+        [SetUp]
+        public void SetUp()
+        {
+            _fixture = new Fixture();
+        }
+
+        [Test]
+        public void ItMapsAPersonDatabaseRecordIntoResidentInformationDomainObject()
+        {
+            var personRecord = TestHelper.CreateDatabasePersonEntity();
+            var domain = personRecord.ToDomain();
+            domain.Should().BeEquivalentTo(new ResidentDomain
+            {
+                FirstName = personRecord.FirstName,
+                LastName = personRecord.LastName,
+                DateOfBirth = new DateTime(),
+                Gender = personRecord.Gender
+            });
+        }
+
+
+
+
 
     }
 }
