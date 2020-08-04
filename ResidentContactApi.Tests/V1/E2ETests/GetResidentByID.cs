@@ -26,7 +26,7 @@ namespace ResidentContactApi.Tests.V1.E2ETests
         {
             var residentId = _fixture.Create<int>();
             var expectedResponse = E2ETestsHelper.AddPersonWithRelatedEntitiestoDb(ResidentContactContext, residentId);
-            var uri = new Uri($"api/v1/residents/{residentId}", UriKind.Relative);
+            var uri = new Uri($"api/v1/contacts/{residentId}", UriKind.Relative);
             var response = Client.GetAsync(uri);
             var statuscode = response.Result.StatusCode;
             statuscode.Should().Be(200);
@@ -41,7 +41,7 @@ namespace ResidentContactApi.Tests.V1.E2ETests
         [Test]
         public void GetResidentByIdReturns404IfNotFound()
         {
-            var uri = new Uri($"api/v1/residents/132", UriKind.Relative);
+            var uri = new Uri($"api/v1/contacts/132", UriKind.Relative);
             var response = Client.GetAsync(uri);
             var statusCode = response.Result.StatusCode;
             statusCode.Should().Be(404);

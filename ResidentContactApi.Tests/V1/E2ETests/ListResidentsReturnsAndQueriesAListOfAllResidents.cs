@@ -27,7 +27,7 @@ namespace ResidentContactApi.Tests.V1.E2ETests
             var expectedResidentResponseTwo = E2ETestsHelper.AddPersonWithRelatedEntitiestoDb(ResidentContactContext);
             var expectedResidentResponseThree = E2ETestsHelper.AddPersonWithRelatedEntitiestoDb(ResidentContactContext);
 
-            var uri = new Uri("api/v1/residents", UriKind.Relative);
+            var uri = new Uri("api/v1/contacts", UriKind.Relative);
             var response = Client.GetAsync(uri);
 
             var statusCode = response.Result.StatusCode;
@@ -49,7 +49,7 @@ namespace ResidentContactApi.Tests.V1.E2ETests
             var expectedResidentResponseTwo = E2ETestsHelper.AddPersonWithRelatedEntitiestoDb(ResidentContactContext, firstname: "ciasom", lastname: "shape");
             var expectedResidentResponseThree = E2ETestsHelper.AddPersonWithRelatedEntitiestoDb(ResidentContactContext);
 
-            var uri = new Uri("api/v1/residents?firstName=ciasom&lastName=tessellate", UriKind.Relative);
+            var uri = new Uri("api/v1/contacts?firstName=ciasom&lastName=tessellate", UriKind.Relative);
             var response = Client.GetAsync(uri);
 
             var statusCode = response.Result.StatusCode;
@@ -69,7 +69,7 @@ namespace ResidentContactApi.Tests.V1.E2ETests
             var expectedResidentResponseTwo = E2ETestsHelper.AddPersonWithRelatedEntitiestoDb(ResidentContactContext, firstname: "ciasom", lastname: "shape");
             var expectedResidentResponseThree = E2ETestsHelper.AddPersonWithRelatedEntitiestoDb(ResidentContactContext);
 
-            var uri = new Uri("api/v1/residents?firstName=ciaso&lastName=sell", UriKind.Relative);
+            var uri = new Uri("api/v1/contacts?firstName=ciaso&lastName=sell", UriKind.Relative);
             var response = Client.GetAsync(uri);
 
             var statusCode = response.Result.StatusCode;

@@ -10,7 +10,7 @@ using ResidentContactApi.V1.Boundary.Response.Residents;
 namespace ResidentContactApi.V1.Controllers
 {
     [ApiController]
-    [Route("api/v1/residents")]
+    [Route("api/v1/contacts")]
     [Produces("application/json")]
     [ApiVersion("1.0")]
     public class ResidentContactApiController : BaseController
