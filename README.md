@@ -1,15 +1,11 @@
-# LBH Base API
+# Resident Contact API
 
-Base API is a boilerplate code for being reused for new APIs for LBH
+Resident Contact API will return a list of contact details (inc. mobile, uprn, email) for residents that we have stored.
 
 ## Stack
 
 - .NET Core as a web framework.
 - nUnit as a test framework.
-
-## Dependencies
-
-- Universal Housing Simulator
 
 ## Contributing
 
@@ -18,29 +14,6 @@ Base API is a boilerplate code for being reused for new APIs for LBH
 1. Install [Docker][docker-download].
 2. Install [AWS CLI][AWS-CLI].
 3. Clone this repository.
-4. Rename the initial template.
-5. Open it in your IDE.
-
-### Renaming
-
-The renaming of `base-api` into `SomethingElseApi` can be done by running a Renamer powershell script. To do so:
-1. Open the powershell and navigate to this directory's root.
-2. Run the script using the following command:
-```
-.\Renamer.ps1 -apiName My_Api
-```
-
-If your ***script execution policy*** prevents you from running the script, you can temporarily ***bypass*** that with:
-```
-powershell -noprofile -ExecutionPolicy Bypass -file .\Renamer.ps1 -apiName My_Api
-```
-
-Or you can change your execution policy, prior to running the script, permanently with _(this disables security so, be cautious)_:
-```
-Set-ExecutionPolicy Unrestricted
-```
-
-After the renaming is done, the ***script will ask you if you want to delete it as well***, as it's useless now - It's your choice.
 
 ### Development
 
@@ -87,6 +60,17 @@ Both the API and Test projects have been set up to **treat all warnings from the
 
 However, we can select which errors to suppress by setting the severity of the responsible rule to none, e.g `dotnet_analyzer_diagnostic.<Category-or-RuleId>.severity = none`, within the `.editorconfig` file.
 Documentation on how to do this can be found [here](https://docs.microsoft.com/en-us/visualstudio/code-quality/use-roslyn-analyzers?view=vs-2019).
+
+## Adding a migration
+
+For this API we have a database in RDS, we are using EF Core Code first migrations to manage the schema for this database.
+To make changes to the database structure follow these steps.
+
+1, If you haven't done so previously, you need to install the [dotnet ef cli tool](https://docs.microsoft.com/en-us/ef/core/miscellaneous/cli/dotnet) by running `dotnet tool install --global dotnet-ef`.
+2, Make the necessary changes to the `ResidentContactContext` or any of the DbSet's listed in the file. Any DbSet that is listed in `ResidentContactContext` can't be changed without creating a migration for the change.
+3, In your terminal navigate to the project root folder and run `dotnet ef migrations add -o ./V1/Infrastructure/Migrations -p ResidentContactApi NameOfThisMigration` to create the migration files. NameOfThisMigration should be replaced with your migration name e.g. AddColumnNameToPeopleTable.
+4, Go to the folder /ResidentContactApi/V1/Infrastructure/Migrations and you should see two new files for the migration. In the one which doesn't end in `.Designer` you can check through the migration script to make sure everything is being created as you expect.
+5, If the migration file looks wrong or you have missed something, you can either run `CONNECTION_STRING="Host=127.0.0.1;Database=testdb;Username=postgres;Password=mypassword;" dotnet ef migrations remove -p ResidentContactApi` with the database in the connection string running or just delete the migration files and revert the changes to `ResidentContactContextModelSnapshot.cs`. Make the necessary changes to the context, then create the migration files again.
 
 ## Testing
 
