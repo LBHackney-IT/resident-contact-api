@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ResidentContactApi.V1.Infrastructure;
@@ -9,9 +10,10 @@ using ResidentContactApi.V1.Infrastructure;
 namespace ResidentContactApi.V1.Infrastructure.Migrations
 {
     [DbContext(typeof(ResidentContactContext))]
-    partial class ResidentContactContextModelSnapshot : ModelSnapshot
+    [Migration("20200804112334_AddExternalSystemLookupTable")]
+    partial class AddExternalSystemLookupTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
