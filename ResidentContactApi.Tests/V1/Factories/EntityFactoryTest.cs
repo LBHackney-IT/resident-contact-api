@@ -27,9 +27,10 @@ namespace ResidentContactApi.Tests.V1.Factories
             var domain = personRecord.ToDomain();
             domain.Should().BeEquivalentTo(new ResidentDomain
             {
+                Id = personRecord.Id,
                 FirstName = personRecord.FirstName,
                 LastName = personRecord.LastName,
-                DateOfBirth = new DateTime(),
+                DateOfBirth = personRecord.DateOfBirth,
                 Gender = personRecord.Gender
             });
         }
