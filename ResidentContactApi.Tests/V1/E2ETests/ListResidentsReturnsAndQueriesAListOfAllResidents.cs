@@ -63,7 +63,7 @@ namespace ResidentContactApi.Tests.V1.E2ETests
             convertedResponse.Residents.Should().ContainEquivalentOf(expectedResidentResponseOne);
         }
         [Test]
-        public async Task FirstNameLastNameQueryParametersWildcardSearchReturnsMatchingResidentRecordsFromMosaic()
+        public async Task FirstNameLastNameQueryParametersWildcardSearchReturnsMatchingResidentRecords()
         {
             var expectedResidentResponseOne = E2ETestsHelper.AddPersonWithRelatedEntitiestoDb(ResidentContactContext, firstname: "ciasom", lastname: "tessellate");
             var expectedResidentResponseTwo = E2ETestsHelper.AddPersonWithRelatedEntitiestoDb(ResidentContactContext, firstname: "ciasom", lastname: "shape");
