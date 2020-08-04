@@ -8,8 +8,8 @@ CREATE TABLE residents (
 
 CREATE TABLE contact_details (
   id                        integer PRIMARY KEY,
-  type_lookup_id            integer NOT NULL,
-  subtype_lookup_id         integer NOT NULL,
+  type_lookup_id            varchar(255) NOT NULL,
+  subtype_lookup_id         varchar(255) NOT NULL,
   contact_details_value     varchar(255) NOT NULL,
   is_default                boolean NOT NULL,
   is_active                 boolean NOT NULL,
