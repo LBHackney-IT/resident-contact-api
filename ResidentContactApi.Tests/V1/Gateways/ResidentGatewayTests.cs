@@ -5,6 +5,8 @@ using FluentAssertions;
 using NUnit.Framework;
 using ResidentContactApi.V1.Infrastructure;
 using System.Collections.Generic;
+using System.Linq;
+using AutoFixture;
 using ResidentContactApi.V1.Enums;
 using ResidentContactApi.V1.Factories;
 
@@ -14,6 +16,7 @@ namespace ResidentContactApi.Tests.V1.Gateways
     public class ResidentGatewayTests : DatabaseTests
     {
         private ResidentGateway _classUnderTest;
+        private Fixture _fixture = new Fixture();
 
         [SetUp]
         public void Setup()
@@ -33,116 +36,67 @@ namespace ResidentContactApi.Tests.V1.Gateways
             _classUnderTest.GetResidents("bob", "brown").Should().BeEmpty();
         }
 
+
         [Test]
         public void GetAllResidentsWithFirstNameParametersMatchingResidents()
         {
-            var databaseEntity = TestHelper.CreateDatabasePersonEntity(firstname: "ciasom");
-            var databaseEntity1 = TestHelper.CreateDatabasePersonEntity(firstname: "shape");
-            var databaseEntity2 = TestHelper.CreateDatabasePersonEntity(firstname: "Ciasom");
+            var databaseEntity = AddPersonRecordToDatabase(firstname: "ciasom");
+            var databaseEntity1 = AddPersonRecordToDatabase(firstname: "shape");
+            var databaseEntity2 = AddPersonRecordToDatabase(firstname: "Ciasom");
 
-            var personslist = new List<Resident>
-            {
-                databaseEntity,
-                databaseEntity1,
-                databaseEntity2
-            };
+            var contactType = AddContactTypeToDatabase();
 
-            ResidentContactContext.Residents.AddRange(personslist);
-            ResidentContactContext.SaveChanges();
-
-            var contact = TestHelper.CreateDatabaseContactEntity(databaseEntity.Id);
-            var contact1 = TestHelper.CreateDatabaseContactEntity(databaseEntity1.Id);
-            var contact2 = TestHelper.CreateDatabaseContactEntity(databaseEntity2.Id);
-
-            var contactLists = new List<Contact>
-            {
-                contact,
-                contact1,
-                contact2
-            };
-
-            ResidentContactContext.ContactDetails.AddRange(contactLists);
-            ResidentContactContext.SaveChanges();
+            var contact = AddContactRecordToDatabase(databaseEntity.Id, contactType.Id);
+            var contact1 = AddContactRecordToDatabase(databaseEntity1.Id, contactType.Id);
+            var contact2 = AddContactRecordToDatabase(databaseEntity2.Id, contactType.Id);
 
             var domainEntity = databaseEntity.ToDomain();
             domainEntity.Contacts = new List<ContactDetailsDomain> { contact.ToDomain() };
-
+            domainEntity.Contacts.First().Type = contactType.Name;
 
             var domainEntity2 = databaseEntity2.ToDomain();
             domainEntity2.Contacts = new List<ContactDetailsDomain> { contact2.ToDomain() };
-
+            domainEntity2.Contacts.First().Type = contactType.Name;
 
             var listOfPersons = _classUnderTest.GetResidents(firstName: "ciasom");
             listOfPersons.Count.Should().Be(2);
             listOfPersons.Should().ContainEquivalentOf(domainEntity);
             listOfPersons.Should().ContainEquivalentOf(domainEntity2);
-
-
         }
 
         [Test]
         public void GetAllResidentsWithLastNameParametersMatchingResidents()
         {
-            var entity = TestHelper.CreateDatabasePersonEntity(lastname: "brown");
-            var entity1 = TestHelper.CreateDatabasePersonEntity(lastname: "tessalate");
-            var entity2 = TestHelper.CreateDatabasePersonEntity(lastname: "Brown");
+            var entity = AddPersonRecordToDatabase(lastname: "brown");
+            var entity1 = AddPersonRecordToDatabase(lastname: "tessalate");
+            var entity2 = AddPersonRecordToDatabase(lastname: "Brown");
 
-            var personslist = new List<Resident>
-            {
-                entity,
-                entity1,
-                entity2
-            };
+            var contactType = AddContactTypeToDatabase();
 
-            ResidentContactContext.Residents.AddRange(personslist);
-            ResidentContactContext.SaveChanges();
-
-            var contactEntity = TestHelper.CreateDatabaseContactEntity(entity.Id);
-            var contactEntity1 = TestHelper.CreateDatabaseContactEntity(entity1.Id);
-            var contactEntity2 = TestHelper.CreateDatabaseContactEntity(entity2.Id);
-
-            var contactList = new List<Contact>
-            {
-                contactEntity,
-                contactEntity1,
-                contactEntity2
-            };
-
-            ResidentContactContext.ContactDetails.AddRange(contactList);
-            ResidentContactContext.SaveChanges();
+            var contactEntity = AddContactRecordToDatabase(entity.Id, contactType.Id);
+            var contactEntity1 = AddContactRecordToDatabase(entity1.Id, contactType.Id);
+            var contactEntity2 = AddContactRecordToDatabase(entity2.Id, contactType.Id);
 
             var domain = entity.ToDomain();
             domain.Contacts = new List<ContactDetailsDomain> { contactEntity.ToDomain() };
-
+            domain.Contacts.First().Type = contactType.Name;
 
             var domain2 = entity2.ToDomain();
             domain2.Contacts = new List<ContactDetailsDomain> { contactEntity2.ToDomain() };
-
-
+            domain2.Contacts.First().Type = contactType.Name;
 
             var listOfPersons = _classUnderTest.GetResidents(lastName: "brown");
             listOfPersons.Count.Should().Be(2);
             listOfPersons.Should().ContainEquivalentOf(domain);
             listOfPersons.Should().ContainEquivalentOf(domain2);
-
         }
 
         [Test]
         public void GetAllResidentWithNoContactWithFirstnameAndLastnameMatchingParameters()
         {
-            var databaseEntity = TestHelper.CreateDatabasePersonEntity(firstname: "ciasom", lastname: "brown");
-            var databaseEntity1 = TestHelper.CreateDatabasePersonEntity(firstname: "shape", lastname: "tessalate");
-            var databaseEntity2 = TestHelper.CreateDatabasePersonEntity(firstname: "Ciasom", lastname: "Brown");
-
-            var personslist = new List<Resident>
-            {
-                databaseEntity,
-                databaseEntity1,
-                databaseEntity2
-            };
-
-            ResidentContactContext.Residents.AddRange(personslist);
-            ResidentContactContext.SaveChanges();
+            var databaseEntity = AddPersonRecordToDatabase(firstname: "ciasom", lastname: "brown");
+            var databaseEntity1 = AddPersonRecordToDatabase(firstname: "shape", lastname: "tessalate");
+            var databaseEntity2 = AddPersonRecordToDatabase(firstname: "Ciasom", lastname: "Brown");
 
             var domain = databaseEntity.ToDomain();
             domain.Contacts = new List<ContactDetailsDomain>();
@@ -174,23 +128,21 @@ namespace ResidentContactApi.Tests.V1.Gateways
             response.LastName.Should().Be(databaseEntity.LastName);
             response.Gender.Should().Be(GenderTypeEnum.F);
             response.Should().NotBe(null);
-
         }
 
         [Test]
-        public void GetResidentByIdReturnsContactDetail()
+        public void GetResidentByIdReturnsContactDetailsWithTypeAndSubtypeName()
         {
             var databaseEntity = AddPersonRecordToDatabase();
-            var contact = TestHelper.CreateDatabaseContactEntity(databaseEntity.Id);
-            ResidentContactContext.Add(contact);
-            ResidentContactContext.SaveChanges();
+            var contactType = AddContactTypeToDatabase();
+            var contact = AddContactRecordToDatabase(databaseEntity.Id, contactType.Id);
 
             var response = _classUnderTest.GetResidentById(databaseEntity.Id);
 
             var expectedDomainResponse = contact.ToDomain();
+            expectedDomainResponse.Type = contactType.Name;
 
             response.Contacts.Should().BeEquivalentTo(new List<ContactDetailsDomain> { expectedDomainResponse });
-
         }
 
         private Resident AddPersonRecordToDatabase(string lastname = null, string firstname = null)
@@ -199,7 +151,22 @@ namespace ResidentContactApi.Tests.V1.Gateways
             ResidentContactContext.Residents.Add(databaseEntity);
             ResidentContactContext.SaveChanges();
             return databaseEntity;
+        }
 
+        private Contact AddContactRecordToDatabase(int residentId, int contactTypeId)
+        {
+            var contact = TestHelper.CreateDatabaseContactEntity(residentId, contactTypeId);
+            ResidentContactContext.ContactDetails.Add(contact);
+            ResidentContactContext.SaveChanges();
+            return contact;
+        }
+
+        private ContactTypeLookup AddContactTypeToDatabase()
+        {
+            var contactType = new ContactTypeLookup {Name = _fixture.Create<string>()};
+            ResidentContactContext.ContactTypeLookups.Add(contactType);
+            ResidentContactContext.SaveChanges();
+            return contactType;
         }
     }
 }

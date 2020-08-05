@@ -1,13 +1,8 @@
 using ResidentContactApi.Tests.V1.Helper;
 using ResidentContactApi.V1.Boundary.Response;
-using ResidentContactApi.V1.Boundary.Response.Residents;
-using ResidentContactApi.V1.Enums;
 using ResidentContactApi.V1.Infrastructure;
-using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoFixture;
 
 namespace ResidentContactApi.Tests
 {
@@ -15,13 +10,18 @@ namespace ResidentContactApi.Tests
     {
         public static ResidentResponse AddPersonWithRelatedEntitiestoDb(ResidentContactContext context, int? id = null, string firstname = null, string lastname = null)
         {
+            var fixture = new Fixture();
             var resident = TestHelper.CreateDatabasePersonEntity(firstname, lastname, id);
             var addedPerson = context.Residents.Add(resident);
             context.SaveChanges();
 
-            var contact = TestHelper.CreateDatabaseContactEntity(addedPerson.Entity.Id);
-            contact.ContactType = "Address";
-            contact.SubContactType = "Mobile";
+            var contactType = new ContactTypeLookup {Name = fixture.Create<string>()};
+            var subContactType = new ContactSubTypeLookup {Name = fixture.Create<string>()};
+            context.ContactTypeLookups.Add(contactType);
+            context.ContactSubTypeLookups.Add(subContactType);
+            context.SaveChanges();
+
+            var contact = TestHelper.CreateDatabaseContactEntity(addedPerson.Entity.Id, contactType.Id, subContactType.Id);
             context.ContactDetails.Add(contact);
             context.SaveChanges();
 
@@ -30,7 +30,7 @@ namespace ResidentContactApi.Tests
                 Id = resident.Id,
                 FirstName = resident.FirstName,
                 LastName = resident.LastName,
-                Gender = resident.Gender,
+                Gender = "F",
                 DateOfBirth = resident.DateOfBirth,
                 Contacts =
                     new List<ContactDetailsResponse>
@@ -47,8 +47,8 @@ namespace ResidentContactApi.Tests
                             ModifiedBy = contact.ModifiedBy,
                             DateAdded = contact.DateAdded,
                             ResidentId = contact.ResidentId,
-                            Type = ContactTypeEnum.Address,
-                            SubType = ContactSubTypeEnum.Mobile
+                            Type = contactType.Name,
+                            SubType = subContactType.Name
 
                         }
                     }

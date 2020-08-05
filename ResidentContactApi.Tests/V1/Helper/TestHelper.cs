@@ -1,9 +1,6 @@
 using AutoFixture;
-using Bogus.DataSets;
-using ResidentContactApi.V1.Domain;
 using ResidentContactApi.V1.Infrastructure;
 using System;
-using System.Net.NetworkInformation;
 
 namespace ResidentContactApi.Tests.V1.Helper
 {
@@ -24,17 +21,21 @@ namespace ResidentContactApi.Tests.V1.Helper
             return fp;
         }
 
-        public static Contact CreateDatabaseContactEntity(int residentId)
+        public static Contact CreateDatabaseContactEntity(int residentId, int? contactTypeId = null, int? contactSubtypeId = null)
         {
             var faker = new Fixture();
             var fp = faker.Build<Contact>()
-                .Without(resident => resident.Resident)
+                .Without(contact => contact.Resident)
+                .Without(contact => contact.ContactSubTypeLookup)
+                .Without(contact => contact.ContactTypeLookup)
                 .Create();
             fp.DateAdded = new DateTime
                 (fp.DateAdded.Year, fp.DateAdded.Month, fp.DateAdded.Day);
             fp.DateLastModified = new DateTime
                 (fp.DateLastModified.Year, fp.DateLastModified.Month, fp.DateLastModified.Day);
             fp.ResidentId = residentId;
+            fp.ContactTypeLookupId = contactTypeId ?? 0;
+            fp.ContactSubTypeLookupId = contactSubtypeId;
             return fp;
         }
     }

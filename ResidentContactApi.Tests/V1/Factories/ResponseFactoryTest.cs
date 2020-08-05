@@ -84,14 +84,14 @@ namespace ResidentContactApi.Tests.V1.Factories
             var domain = new ContactDetailsDomain
             {
                 Id = 1234,
-                Type = ContactTypeEnum.Address,
+                Type = "Address",
                 ContactValue = "123456",
                 AddedBy = "test",
                 IsActive = false,
                 IsDefault = false,
                 DateLastModified = new DateTime(2020, 04, 23),
                 ModifiedBy = "Tester",
-                SubType = ContactSubTypeEnum.Home,
+                SubType = "Home",
                 DateAdded = new DateTime(2021, 05, 21),
                 ResidentId = 12345
 
@@ -99,14 +99,14 @@ namespace ResidentContactApi.Tests.V1.Factories
             var expectedResponse = new ContactDetailsResponse
             {
                 Id = 1234,
-                Type = ContactTypeEnum.Address,
+                Type = "Address",
                 ContactValue = "123456",
                 AddedBy = "test",
                 IsActive = false,
                 IsDefault = false,
                 DateLastModified = new DateTime(2020, 04, 23),
                 ModifiedBy = "Tester",
-                SubType = ContactSubTypeEnum.Home,
+                SubType = "Home",
                 DateAdded = new DateTime(2021, 05, 21),
                 ResidentId = 12345
 

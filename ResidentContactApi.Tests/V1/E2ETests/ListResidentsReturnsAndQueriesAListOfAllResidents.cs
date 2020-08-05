@@ -2,11 +2,9 @@ using AutoFixture;
 using FluentAssertions;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using ResidentContactApi.V1.Boundary.Response.Residents;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using ResidentContactApi.V1.Boundary.Response;
 
 namespace ResidentContactApi.Tests.V1.E2ETests
 {

@@ -10,8 +10,8 @@ namespace ResidentContactApi.V1.Domain
     {
         public int Id { get; set; }
         public string ContactValue { get; set; }
-        public ContactTypeEnum Type { get; set; }
-        public ContactSubTypeEnum SubType { get; set; }
+        public string Type { get; set; }
+        public string SubType { get; set; }
         public bool IsDefault { get; set; }
         public bool IsActive { get; set; }
         public string AddedBy { get; set; }
