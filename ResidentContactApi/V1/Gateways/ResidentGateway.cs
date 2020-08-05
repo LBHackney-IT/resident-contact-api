@@ -27,6 +27,8 @@ namespace ResidentContactApi.V1.Gateways
                 .Where(a => string.IsNullOrEmpty(firstName) || a.FirstName.Trim().ToLower().Contains(firstName.ToLower()))
                 .Where(a => string.IsNullOrEmpty(lastName) || a.LastName.Trim().ToLower().Contains(lastName.ToLower()))
                 .Include(a => a.Contacts)
+                .Include("Contacts.ContactTypeLookup")
+                .Include("Contacts.ContactSubTypeLookup")
                 .ToDomain();
 
             return residents;
@@ -38,10 +40,11 @@ namespace ResidentContactApi.V1.Gateways
             if (databaseRecord == null) return null;
 
             var contactForResident = _residentContactContext.ContactDetails
-                                    .Where(c => c.ResidentId == databaseRecord.Id);
-            var person = MapPersonAndContactToResident(databaseRecord, contactForResident);
+                .Include(c => c.ContactTypeLookup)
+                .Include(c => c.ContactSubTypeLookup)
+                .Where(c => c.ResidentId == databaseRecord.Id);
 
-            return person;
+            return MapPersonAndContactToResident(databaseRecord, contactForResident);
 
         }
 

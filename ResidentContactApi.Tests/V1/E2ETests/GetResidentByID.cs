@@ -1,17 +1,15 @@
 using AutoFixture;
 using FluentAssertions;
-using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using ResidentContactApi.V1.Boundary.Response.Residents;
-using ResidentContactApi.V1.Infrastructure;
 using System;
 using System.Threading.Tasks;
+using ResidentContactApi.V1.Boundary.Response;
 
 namespace ResidentContactApi.Tests.V1.E2ETests
 {
     [TestFixture]
-    public class GetResidentByID : IntegrationTests<Startup>
+    public class GetResidentById : IntegrationTests<Startup>
     {
         private IFixture _fixture;
 

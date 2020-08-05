@@ -33,12 +33,10 @@ namespace ResidentContactApi.V1.Factories
 
         public static ContactDetailsDomain ToDomain(this Contact contactDetails)
         {
-            var canParseType = Enum.TryParse<ContactTypeEnum>(contactDetails.ContactType, out var type);
-            var canParseSubType = Enum.TryParse<ContactSubTypeEnum>(contactDetails.SubContactType, out var subtype);
             return new ContactDetailsDomain
             {
-                Type = canParseType ? type : ContactTypeEnum.NotApplicable,
-                SubType = canParseSubType ? subtype : ContactSubTypeEnum.NotApplicable,
+                Type = contactDetails.ContactTypeLookup?.Name,
+                SubType = contactDetails.ContactSubTypeLookup?.Name,
                 Id = contactDetails.Id,
                 ContactValue = contactDetails.ContactValue,
                 AddedBy = contactDetails.AddedBy,
