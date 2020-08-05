@@ -4,7 +4,6 @@ using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
 using Moq;
 using NUnit.Framework;
 using ResidentContactApi.V1.Boundary.Requests;
-using ResidentContactApi.V1.Boundary.Response.Residents;
 using ResidentContactApi.V1.Controllers;
 using ResidentContactApi.V1.Domain;
 using ResidentContactApi.V1.UseCase.Interfaces;
@@ -12,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ResidentContactApi.V1.Boundary.Response;
 
 namespace ResidentContactApi.Tests.V1.Controllers
 {

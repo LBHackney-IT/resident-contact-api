@@ -3,12 +3,9 @@ using ResidentContactApi.V1.Factories;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using ResidentContactApi.V1.Boundary.Response.Residents;
 using ResidentContactApi.V1.Boundary.Response;
 using FluentAssertions;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Query.ExpressionTranslators.Internal;
 using ResidentContactApi.V1.Enums;
-using Bogus.DataSets;
 
 namespace ResidentContactApi.Tests.V1.Factories
 {
@@ -24,7 +21,7 @@ namespace ResidentContactApi.Tests.V1.Factories
                 FirstName = "Name",
                 LastName = "Last",
                 DateOfBirth = new DateTime(),
-                Gender = "Female",
+                Gender = GenderTypeEnum.F,
                 Contacts = null
 
             };
@@ -35,7 +32,7 @@ namespace ResidentContactApi.Tests.V1.Factories
                 FirstName = "Name",
                 LastName = "Last",
                 DateOfBirth = new DateTime(),
-                Gender = "Female",
+                Gender = "F",
                 Contacts = null
             };
             domain.ToResponse().Should().BeEquivalentTo(expectedResponse);
@@ -50,7 +47,7 @@ namespace ResidentContactApi.Tests.V1.Factories
                 FirstName = "Name",
                 LastName = "Last",
                 DateOfBirth = new DateTime(),
-                Gender = "Female",
+                Gender = GenderTypeEnum.F,
                 Contacts = new List<ContactDetailsDomain>
                 {
                    new ContactDetailsDomain
@@ -58,10 +55,7 @@ namespace ResidentContactApi.Tests.V1.Factories
                        Id = 1234,
                        AddedBy = "Test"
                    }
-
                 }
-
-
             };
 
             var expectedResponse = new ResidentResponse
@@ -70,7 +64,7 @@ namespace ResidentContactApi.Tests.V1.Factories
                 FirstName = "Name",
                 LastName = "Last",
                 DateOfBirth = new DateTime(),
-                Gender = "Female",
+                Gender = "F",
                 Contacts = new List<ContactDetailsResponse>
                 {
                     new ContactDetailsResponse
@@ -82,24 +76,22 @@ namespace ResidentContactApi.Tests.V1.Factories
             };
 
             domain.ToResponse().Should().BeEquivalentTo(expectedResponse);
-
-
-
         }
+
         [Test]
-        public void ReturnContactDetialsResponse()
+        public void ReturnContactDetailsResponse()
         {
             var domain = new ContactDetailsDomain
             {
                 Id = 1234,
-                Type = ContactTypeEnum.Address,
+                Type = "Address",
                 ContactValue = "123456",
                 AddedBy = "test",
                 IsActive = false,
                 IsDefault = false,
                 DateLastModified = new DateTime(2020, 04, 23),
                 ModifiedBy = "Tester",
-                SubType = ContactSubTypeEnum.Home,
+                SubType = "Home",
                 DateAdded = new DateTime(2021, 05, 21),
                 ResidentId = 12345
 
@@ -107,14 +99,14 @@ namespace ResidentContactApi.Tests.V1.Factories
             var expectedResponse = new ContactDetailsResponse
             {
                 Id = 1234,
-                Type = ContactTypeEnum.Address,
+                Type = "Address",
                 ContactValue = "123456",
                 AddedBy = "test",
                 IsActive = false,
                 IsDefault = false,
                 DateLastModified = new DateTime(2020, 04, 23),
                 ModifiedBy = "Tester",
-                SubType = ContactSubTypeEnum.Home,
+                SubType = "Home",
                 DateAdded = new DateTime(2021, 05, 21),
                 ResidentId = 12345
 

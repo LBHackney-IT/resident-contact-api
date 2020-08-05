@@ -11,8 +11,9 @@ namespace ResidentContactApi.V1.Infrastructure
 
         public DbSet<Resident> Residents { get; set; }
         public DbSet<Contact> ContactDetails { get; set; }
-
-
-
+        public DbSet<ExternalSystemId> ExternalSystemIds { get; set; }
+        public DbSet<ExternalSystemLookup> ExternalSystemLookups { get; set; }
+        public DbSet<ContactTypeLookup> ContactTypeLookups { get; set; }
+        public DbSet<ContactSubTypeLookup> ContactSubTypeLookups { get; set; }
     }
 }

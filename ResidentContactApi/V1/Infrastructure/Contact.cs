@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ResidentContactApi.V1.Infrastructure
 {
@@ -30,8 +27,10 @@ namespace ResidentContactApi.V1.Infrastructure
         [Column("modified_by")]
         public string ModifiedBy { get; set; }
 
-        [Column("type_lookup_id")]
-        public string ContactType { get; set; }
+        [Column("contact_type_lookup_id")]
+        public int ContactTypeLookupId { get; set; }
+        [ForeignKey("ContactTypeLookupId")]
+        public ContactTypeLookup ContactTypeLookup { get; set; }
 
         [Column("contact_details_value")]
         public string ContactValue { get; set; }
@@ -39,8 +38,10 @@ namespace ResidentContactApi.V1.Infrastructure
         [Column("date_modified")]
         public DateTime DateLastModified { get; set; }
 
-        [Column("subtype_lookup_id")]
-        public string SubContactType { get; set; }
+        [Column("contact_subtype_lookup_id")]
+        public int? ContactSubTypeLookupId { get; set; }
+        [ForeignKey("ContactSubTypeLookupId")]
+        public ContactSubTypeLookup ContactSubTypeLookup { get; set; }
 
         [Column("resident_id")]
         public int ResidentId { get; set; }

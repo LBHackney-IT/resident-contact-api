@@ -1,9 +1,6 @@
 using AutoFixture;
-using Bogus.DataSets;
-using ResidentContactApi.V1.Domain;
 using ResidentContactApi.V1.Infrastructure;
 using System;
-using System.Net.NetworkInformation;
 
 namespace ResidentContactApi.Tests.V1.Helper
 {
@@ -14,26 +11,31 @@ namespace ResidentContactApi.Tests.V1.Helper
             var faker = new Fixture();
             var fp = faker.Build<Resident>()
                 .Without(contact => contact.Contacts)
+                .With(contact => contact.Gender, 'F')
                 .Create();
             fp.DateOfBirth = new DateTime
-                (fp.DateOfBirth.Year, fp.DateOfBirth.Month, fp.DateOfBirth.Day);
+                (fp.DateOfBirth.Value.Year, fp.DateOfBirth.Value.Month, fp.DateOfBirth.Value.Day);
             fp.FirstName = firstname ?? fp.FirstName;
             fp.LastName = lastname ?? fp.LastName;
             if (id != null) fp.Id = (int) id;
             return fp;
         }
 
-        public static Contact CreateDatabaseContactEntity(int residentId)
+        public static Contact CreateDatabaseContactEntity(int residentId, int? contactTypeId = null, int? contactSubtypeId = null)
         {
             var faker = new Fixture();
             var fp = faker.Build<Contact>()
-                .Without(resident => resident.Resident)
+                .Without(contact => contact.Resident)
+                .Without(contact => contact.ContactSubTypeLookup)
+                .Without(contact => contact.ContactTypeLookup)
                 .Create();
             fp.DateAdded = new DateTime
                 (fp.DateAdded.Year, fp.DateAdded.Month, fp.DateAdded.Day);
             fp.DateLastModified = new DateTime
                 (fp.DateLastModified.Year, fp.DateLastModified.Month, fp.DateLastModified.Day);
             fp.ResidentId = residentId;
+            fp.ContactTypeLookupId = contactTypeId ?? 0;
+            fp.ContactSubTypeLookupId = contactSubtypeId;
             return fp;
         }
     }

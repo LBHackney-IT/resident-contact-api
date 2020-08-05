@@ -111,7 +111,7 @@ namespace ResidentContactApi
 
         private static void ConfigureDbContext(IServiceCollection services)
         {
-            var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
+            var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING") ?? "Host=;Database=;";
 
             services.AddDbContext<ResidentContactContext>(
                 opt => opt.UseNpgsql(connectionString));

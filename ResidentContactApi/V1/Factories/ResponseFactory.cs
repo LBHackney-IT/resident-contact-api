@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.AspNetCore.Server.Kestrel.Core.Features;
 using ResidentContactApi.V1.Boundary.Response;
-using ResidentContactApi.V1.Boundary.Response.Residents;
 using ResidentContactApi.V1.Domain;
 using ContactDetailsDomain = ResidentContactApi.V1.Domain.ContactDetailsDomain;
 
@@ -19,9 +17,8 @@ namespace ResidentContactApi.V1.Factories
                 FirstName = domain.FirstName,
                 LastName = domain.LastName,
                 DateOfBirth = domain.DateOfBirth,
-                Gender = domain.Gender,
-                Contacts = domain.Contacts?.Select(x => x.ToResponse()).ToList()
-
+                Contacts = domain.Contacts?.Select(x => x.ToResponse()).ToList(),
+                Gender = domain.Gender.ToString(),
             };
         }
         public static List<ResidentResponse> ToResponse(this IEnumerable<ResidentDomain> people)

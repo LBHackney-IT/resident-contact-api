@@ -7,9 +7,8 @@ using FluentAssertions;
 using AutoFixture;
 using ResidentContactApi.V1.Factories;
 using System;
-using ResidentContactApi.V1.Boundary.Response.Residents;
 using System.Linq;
-using System.Collections.Generic;
+using ResidentContactApi.V1.Boundary.Response;
 
 namespace ResidentContactApi.Tests.V1.UseCase
 {

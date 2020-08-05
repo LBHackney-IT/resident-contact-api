@@ -1,10 +1,8 @@
 using ResidentContactApi.V1.Boundary.Response;
-using ResidentContactApi.V1.Boundary.Response.Residents;
 using ResidentContactApi.V1.Domain;
 using ResidentContactApi.V1.Factories;
 using ResidentContactApi.V1.Gateways;
 using ResidentContactApi.V1.UseCase.Interfaces;
-using System.Linq;
 
 namespace ResidentContactApi.V1.UseCase
 {
