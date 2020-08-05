@@ -67,10 +67,12 @@ For this API we have a database in RDS, we are using EF Core Code first migratio
 To make changes to the database structure follow these steps.
 
 1, If you haven't done so previously, you need to install the [dotnet ef cli tool](https://docs.microsoft.com/en-us/ef/core/miscellaneous/cli/dotnet) by running `dotnet tool install --global dotnet-ef`.
-2, Make the necessary changes to the `ResidentContactContext` or any of the DbSet's listed in the file. Any DbSet that is listed in `ResidentContactContext` can't be changed without creating a migration for the change.
+2, Make the necessary changes to the database model in the code, namely in `ResidentContactContext` or any of the DbSet's listed in the file.
 3, In your terminal navigate to the project root folder and run `dotnet ef migrations add -o ./V1/Infrastructure/Migrations -p ResidentContactApi NameOfThisMigration` to create the migration files. NameOfThisMigration should be replaced with your migration name e.g. AddColumnNameToPeopleTable.
 4, Go to the folder /ResidentContactApi/V1/Infrastructure/Migrations and you should see two new files for the migration. In the one which doesn't end in `.Designer` you can check through the migration script to make sure everything is being created as you expect.
 5, If the migration file looks wrong or you have missed something, you can either run `CONNECTION_STRING="Host=127.0.0.1;Database=testdb;Username=postgres;Password=mypassword;" dotnet ef migrations remove -p ResidentContactApi` with the database in the connection string running or just delete the migration files and revert the changes to `ResidentContactContextModelSnapshot.cs`. Make the necessary changes to the context, then create the migration files again.
+
+Note: You must not change any DbSet that is listed in `ResidentContactContext` without creating a migration as the change then won't be reflected in the database and will cause errors.
 
 ## Testing
 
