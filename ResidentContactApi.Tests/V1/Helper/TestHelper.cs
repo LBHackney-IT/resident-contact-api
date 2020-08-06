@@ -10,7 +10,8 @@ namespace ResidentContactApi.Tests.V1.Helper
         {
             var faker = new Fixture();
             var fp = faker.Build<Resident>()
-                .Without(contact => contact.Contacts)
+                .Without(resident => resident.Contacts)
+                .Without(resident => resident.Id)
                 .With(contact => contact.Gender, 'F')
                 .Create();
             fp.DateOfBirth = new DateTime
@@ -28,6 +29,7 @@ namespace ResidentContactApi.Tests.V1.Helper
                 .Without(contact => contact.Resident)
                 .Without(contact => contact.ContactSubTypeLookup)
                 .Without(contact => contact.ContactTypeLookup)
+                .Without(contact => contact.Id)
                 .Create();
             fp.DateAdded = new DateTime
                 (fp.DateAdded.Year, fp.DateAdded.Month, fp.DateAdded.Day);
