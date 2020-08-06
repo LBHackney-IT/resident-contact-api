@@ -44,8 +44,8 @@ module "postgres_db_staging" {
   source = "github.com/LBHackney-IT/aws-hackney-common-terraform.git//modules/database/postgres"
   environment_name = "staging"
   vpc_id = data.aws_vpc.staging_vpc.id
-  db_identifier = "resident_contact-db"
-  db_name = "resident-contact_db"
+  db_identifier = "resident-contact-db"
+  db_name = "resident_contact_db"
   db_port  = 5302
   subnet_ids = data.aws_subnet_ids.staging.ids
   db_engine = "postgres"
