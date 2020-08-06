@@ -288,7 +288,7 @@ workflows:
          filters:
            branches:
              only: master
-     - migrate-database-staging:
+     - migrate-database-production:
          requires:
            - terraform-init-and-apply-to-production
            - assume-role-production
