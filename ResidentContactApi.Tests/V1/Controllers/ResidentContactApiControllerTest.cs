@@ -24,13 +24,19 @@ namespace ResidentContactApi.Tests.V1.Controllers
 
         private Mock<IGetByIdUseCase> _mockGetByIdUseCase;
 
+        private Mock<ICreateContactDetailsUseCase> _mockCreateContactDetails;
+
 
         [SetUp]
         public void SetUp()
         {
             _mockGetAllUseCase = new Mock<IGetAllUseCase>();
             _mockGetByIdUseCase = new Mock<IGetByIdUseCase>();
-            _classUnderTest = new ResidentContactApiController(_mockGetAllUseCase.Object, _mockGetByIdUseCase.Object);
+
+            _mockCreateContactDetails = new Mock<ICreateContactDetailsUseCase>();
+
+            _classUnderTest = new ResidentContactApiController(_mockGetAllUseCase.Object, _mockGetByIdUseCase.Object,
+                _mockCreateContactDetails.Object);
         }
 
         [Test]
@@ -95,6 +101,13 @@ namespace ResidentContactApi.Tests.V1.Controllers
 
             response.Should().NotBeNull();
             response.StatusCode.Should().Be(404);
+
+        }
+
+        [Test]
+        [Ignore("")]
+        public void CreateRecordTest()
+        {
 
         }
     }
