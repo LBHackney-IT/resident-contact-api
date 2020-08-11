@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ResidentContactApi.V1.Boundary.Requests;
 using ResidentContactApi.V1.Domain;
+using System.Net.Mail;
+using System;
 
 namespace ResidentContactApi.V1.Controllers
 {
@@ -15,10 +17,15 @@ namespace ResidentContactApi.V1.Controllers
     {
         private IGetAllUseCase _getAllUseCase;
         private IGetByIdUseCase _getByIdUseCase;
-        public ResidentContactApiController(IGetAllUseCase getAllUseCase, IGetByIdUseCase getByIdUseCase)
+        private ICreateContactDetailsUseCase _createContactDetails;
+        private IUpdateContactDetailsUseCase _updateContactDetails;
+        public ResidentContactApiController(IGetAllUseCase getAllUseCase, IGetByIdUseCase getByIdUseCase,
+            ICreateContactDetailsUseCase createContactDetails, IUpdateContactDetailsUseCase updateContactDetails)
         {
             _getAllUseCase = getAllUseCase;
             _getByIdUseCase = getByIdUseCase;
+            _createContactDetails = createContactDetails;
+            _updateContactDetails = updateContactDetails;
         }
         /// <summary>
         /// ...
@@ -53,6 +60,33 @@ namespace ResidentContactApi.V1.Controllers
             {
                 return NotFound(e.Message);
             }
+        }
+
+
+        /// <summary>
+        /// Create a new contact record for a resident
+        /// </summary>
+        /// <response code="201">Successful operation</response>
+        /// <response code="400">Contact not found for specified ID</response>
+        /// <response code = "500">Please enter a valide request.</response>
+        [ProducesResponseType(typeof(ResidentResponse), StatusCodes.Status201Created)]
+        [HttpPost]
+        public IActionResult CreateContactRecord([FromBody] ResidentContactParam rcp)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Update a contact record for a resident
+        /// </summary>
+        /// <response code="204">Successful operation</response>
+        /// <response code="400">Contact not found for specified ID</response>
+        /// <response code = "500">Please enter a valide request.</response>
+        [ProducesResponseType(204)]
+        [HttpPut]
+        public IActionResult UpdateContactRecord([FromBody] ResidentContactParam rcp)
+        {
+            throw new NotImplementedException();
         }
     }
 }

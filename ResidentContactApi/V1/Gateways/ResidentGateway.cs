@@ -48,6 +48,16 @@ namespace ResidentContactApi.V1.Gateways
 
         }
 
+        public ResidentDomain InsertResidentContactDetails()
+        {
+            throw new NotImplementedException();
+        }
+
+        public ResidentDomain UpdateResidentContactDetails()
+        {
+            throw new NotImplementedException();
+        }
+
         private static ResidentDomain MapPersonAndContactToResident(Resident resident, IEnumerable<Contact> contacts)
         {
             var person = resident.ToDomain();

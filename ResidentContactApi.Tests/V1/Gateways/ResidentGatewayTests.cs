@@ -145,6 +145,52 @@ namespace ResidentContactApi.Tests.V1.Gateways
             response.Contacts.Should().BeEquivalentTo(new List<ContactDetailsDomain> { expectedDomainResponse });
         }
 
+        [Test]
+        [Ignore("")]
+        public void InsertingATokenRecordShouldReturnAnId()
+        {
+            //var tokenRequest = _fixture.Build<TokenRequestObject>().Create();
+
+            //var response = _classUnderTest.GenerateToken(tokenRequest);
+
+            //response.Should().NotBe(0);
+        }
+        [Test]
+        [Ignore("")]
+        public void InsertedRecordShouldBeInsertedOnceInTheDatabase()
+        {
+            //var tokenRequest = _fixture.Build<TokenRequestObject>().Create();
+
+            //var response = _classUnderTest.GenerateToken(tokenRequest);
+
+            //var databaseRecord = DatabaseContext.Tokens.Where(x => x.Id == response);
+            //var defaultRecordRetrieved = databaseRecord.FirstOrDefault();
+
+            //databaseRecord.Count().Should().Be(1);
+        }
+        [Test]
+        [Ignore("")]
+        public void InsertedRecordShouldBeInTheDatabase()
+        {
+            //var tokenRequest = _fixture.Build<TokenRequestObject>().Create();
+
+            //var response = _classUnderTest.GenerateToken(tokenRequest);
+
+            //var databaseRecord = DatabaseContext.Tokens.Where(x => x.Id == response);
+            //var defaultRecordRetrieved = databaseRecord.FirstOrDefault();
+
+            //defaultRecordRetrieved.RequestedBy.Should().Be(tokenRequest.RequestedBy);
+            //defaultRecordRetrieved.Valid.Should().BeTrue();
+            //defaultRecordRetrieved.ExpirationDate.Should().Be(tokenRequest.ExpiresAt);
+            //defaultRecordRetrieved.DateCreated.Date.Should().Be(DateTime.Now.Date);
+            //defaultRecordRetrieved.Environment.Should().Be(tokenRequest.Environment);
+            //defaultRecordRetrieved.ConsumerTypeLookupId.Should().Be(tokenRequest.ConsumerType);
+            //defaultRecordRetrieved.ConsumerName.Should().Be(tokenRequest.Consumer);
+            //defaultRecordRetrieved.AuthorizedBy.Should().Be(tokenRequest.AuthorizedBy);
+            //defaultRecordRetrieved.ApiEndpointNameLookupId.Should().Be(tokenRequest.ApiEndpoint);
+            //defaultRecordRetrieved.ApiLookupId.Should().Be(tokenRequest.ApiName);
+        }
+
         private Resident AddPersonRecordToDatabase(string lastname = null, string firstname = null)
         {
             var databaseEntity = TestHelper.CreateDatabasePersonEntity(firstname, lastname);
@@ -169,4 +215,5 @@ namespace ResidentContactApi.Tests.V1.Gateways
             return contactType;
         }
     }
+
 }

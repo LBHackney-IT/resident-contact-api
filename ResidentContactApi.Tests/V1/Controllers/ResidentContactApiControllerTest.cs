@@ -24,13 +24,21 @@ namespace ResidentContactApi.Tests.V1.Controllers
 
         private Mock<IGetByIdUseCase> _mockGetByIdUseCase;
 
+        private Mock<ICreateContactDetailsUseCase> _mockCreateContactDetails;
+        private Mock<IUpdateContactDetailsUseCase> _mockUpdateContactDetails;
+
 
         [SetUp]
         public void SetUp()
         {
             _mockGetAllUseCase = new Mock<IGetAllUseCase>();
             _mockGetByIdUseCase = new Mock<IGetByIdUseCase>();
-            _classUnderTest = new ResidentContactApiController(_mockGetAllUseCase.Object, _mockGetByIdUseCase.Object);
+
+            _mockCreateContactDetails = new Mock<ICreateContactDetailsUseCase>();
+            _mockUpdateContactDetails = new Mock<IUpdateContactDetailsUseCase>();
+
+            _classUnderTest = new ResidentContactApiController(_mockGetAllUseCase.Object, _mockGetByIdUseCase.Object,
+                _mockCreateContactDetails.Object, _mockUpdateContactDetails.Object);
         }
 
         [Test]

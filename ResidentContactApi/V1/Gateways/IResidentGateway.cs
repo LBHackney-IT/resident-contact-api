@@ -11,5 +11,9 @@ namespace ResidentContactApi.V1.Gateways
     {
         List<ResidentDomain> GetResidents(string firstName, string lastName);
         ResidentDomain GetResidentById(int id);
+
+        ResidentDomain InsertResidentContactDetails();
+
+        ResidentDomain UpdateResidentContactDetails();
     }
 }
