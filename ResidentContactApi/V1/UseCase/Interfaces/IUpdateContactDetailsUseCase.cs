@@ -6,6 +6,6 @@ namespace ResidentContactApi.V1.UseCase.Interfaces
 {
     public interface IUpdateContactDetailsUseCase
     {
-        ResidentResponse Execute(ResidentContactParam rcp);
+        void Execute(ResidentContactParam rcp);
     }
 }

@@ -13,9 +13,9 @@ namespace ResidentContactApi.V1.UseCase
         {
             _residentGateway = residentGateway;
         }
-        public ResidentResponse Execute(ResidentContactParam rcp)
+        public void Execute(ResidentContactParam rcp)
         {
-            throw new NotImplementedException();
+
         }
     }
 }

@@ -86,7 +86,8 @@ namespace ResidentContactApi.V1.Controllers
         [HttpPut]
         public IActionResult UpdateContactRecord([FromBody] ResidentContactParam rcp)
         {
-            throw new NotImplementedException();
+            _updateContactDetails.Execute(rcp);
+            return NoContent();
         }
     }
 }

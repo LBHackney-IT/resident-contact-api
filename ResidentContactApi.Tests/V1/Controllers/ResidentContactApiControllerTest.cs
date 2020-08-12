@@ -105,6 +105,22 @@ namespace ResidentContactApi.Tests.V1.Controllers
             response.StatusCode.Should().Be(404);
 
         }
+
+        [Test]
+        [Ignore("")]
+        public void CreateRecordTest()
+        {
+
+        }
+
+        [Test]
+        public void UpdateRecordTest()
+        {
+            _mockUpdateContactDetails.Setup(x => x.Execute(It.IsAny<ResidentContactParam>()));
+            var result = _classUnderTest.UpdateContactRecord(It.IsAny<ResidentContactParam>()) as NoContentResult;
+
+            result.StatusCode.Should().Be(204);
+        }
     }
 
 }
