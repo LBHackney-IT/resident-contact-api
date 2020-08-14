@@ -25,7 +25,6 @@ namespace ResidentContactApi.Tests.V1.Controllers
         private Mock<IGetByIdUseCase> _mockGetByIdUseCase;
 
         private Mock<ICreateContactDetailsUseCase> _mockCreateContactDetails;
-        private Mock<IUpdateContactDetailsUseCase> _mockUpdateContactDetails;
 
 
         [SetUp]
@@ -35,10 +34,9 @@ namespace ResidentContactApi.Tests.V1.Controllers
             _mockGetByIdUseCase = new Mock<IGetByIdUseCase>();
 
             _mockCreateContactDetails = new Mock<ICreateContactDetailsUseCase>();
-            _mockUpdateContactDetails = new Mock<IUpdateContactDetailsUseCase>();
 
             _classUnderTest = new ResidentContactApiController(_mockGetAllUseCase.Object, _mockGetByIdUseCase.Object,
-                _mockCreateContactDetails.Object, _mockUpdateContactDetails.Object);
+                _mockCreateContactDetails.Object);
         }
 
         [Test]
@@ -111,15 +109,6 @@ namespace ResidentContactApi.Tests.V1.Controllers
         public void CreateRecordTest()
         {
 
-        }
-
-        [Test]
-        public void UpdateRecordTest()
-        {
-            _mockUpdateContactDetails.Setup(x => x.Execute(It.IsAny<ResidentContactParam>()));
-            var result = _classUnderTest.UpdateContactRecord(It.IsAny<ResidentContactParam>()) as NoContentResult;
-
-            result.StatusCode.Should().Be(204);
         }
     }
 
