@@ -11,6 +11,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ResidentContactApi.V1.Boundary.Requests;
+using AutoFixture;
+using ResidentContactApi.V1.Factories;
 
 namespace ResidentContactApi.Tests.V1.UseCase
 {
@@ -18,27 +21,50 @@ namespace ResidentContactApi.Tests.V1.UseCase
     {
         private CreateContactDetailsUseCase _classUnderTest;
         private Mock<IResidentGateway> _mockGateway;
-        private Faker _faker;
+        private static Faker _faker = new Faker();
+        private static Fixture _fixture = new Fixture();
+
         [SetUp]
         public void Setup()
         {
             _mockGateway = new Mock<IResidentGateway>();
             _classUnderTest = new CreateContactDetailsUseCase(_mockGateway.Object);
-            _faker = new Faker();
         }
 
         [Test]
-        [Ignore("")]
         public void UseCaseShouldCallGatewayToInsertContactData()
         {
+            var request = GetResidentContactParameter();
 
+            var stubbedContactInfo = _fixture
+               .Build<ResidentDomain>()
+               .Without(contact => contact.Contacts)
+               .Create();
+            stubbedContactInfo.Contacts = _fixture
+                .Build<ContactDetailsDomain>()
+                .Without(resident => resident.Resident)
+                .CreateMany().ToList();
+
+            _mockGateway.Setup(x => x.InsertResidentContactDetails(request)).Returns(stubbedContactInfo);
+
+            var response = _classUnderTest.Execute(request);
+            var expectedContact = stubbedContactInfo.ToResponse();
+
+            response.Should().NotBeNull();
+            response.Should().BeOfType<ResidentResponse>();
         }
 
-        [Test]
-        [Ignore("")]
-        public void UseCaseShouldCallGatewayToUpdateContactData()
+        private static ResidentContactParam GetResidentContactParameter()
         {
-
+            return new ResidentContactParam
+            {
+                ContactSubTypeLookupId = _faker.Random.Int(1, 5),
+                ContactTypeLookupId = _faker.Random.Int(1, 5),
+                ContactValue = _faker.Random.String(11, 100),
+                IsActive = _faker.Random.Bool(),
+                IsDefault = _faker.Random.Bool(),
+                ResidentId = _faker.Random.Int(1)
+            };
         }
     }
 }

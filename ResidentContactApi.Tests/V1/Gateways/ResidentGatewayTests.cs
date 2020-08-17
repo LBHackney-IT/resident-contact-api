@@ -9,6 +9,7 @@ using System.Linq;
 using AutoFixture;
 using ResidentContactApi.V1.Enums;
 using ResidentContactApi.V1.Factories;
+using ResidentContactApi.V1.Boundary.Requests;
 
 namespace ResidentContactApi.Tests.V1.Gateways
 {
@@ -146,49 +147,26 @@ namespace ResidentContactApi.Tests.V1.Gateways
         }
 
         [Test]
-        [Ignore("")]
-        public void InsertingATokenRecordShouldReturnAnId()
-        {
-            //var tokenRequest = _fixture.Build<TokenRequestObject>().Create();
-
-            //var response = _classUnderTest.GenerateToken(tokenRequest);
-
-            //response.Should().NotBe(0);
-        }
-        [Test]
-        [Ignore("")]
         public void InsertedRecordShouldBeInsertedOnceInTheDatabase()
         {
-            //var tokenRequest = _fixture.Build<TokenRequestObject>().Create();
+            var databaseEntity = AddPersonRecordToDatabase();
+            var contactType = AddContactTypeToDatabase();
+            var contact = AddContactRecordToDatabase(databaseEntity.Id, contactType.Id);
 
-            //var response = _classUnderTest.GenerateToken(tokenRequest);
+            var request = _fixture.Build<ResidentContactParam>()
+                .With(x => x.ResidentId, databaseEntity.Id)
+                .With(x => x.ContactTypeLookupId, contactType.Id)
+                .Without(x => x.ContactSubTypeLookupId)
+                .Create();
 
-            //var databaseRecord = DatabaseContext.Tokens.Where(x => x.Id == response);
-            //var defaultRecordRetrieved = databaseRecord.FirstOrDefault();
+            var response = _classUnderTest.InsertResidentContactDetails(request);
+            var databaseRecord = ResidentContactContext.Residents.Where(res => res.Id == response.Id);
 
-            //databaseRecord.Count().Should().Be(1);
-        }
-        [Test]
-        [Ignore("")]
-        public void InsertedRecordShouldBeInTheDatabase()
-        {
-            //var tokenRequest = _fixture.Build<TokenRequestObject>().Create();
+            var record = databaseRecord.First();
 
-            //var response = _classUnderTest.GenerateToken(tokenRequest);
-
-            //var databaseRecord = DatabaseContext.Tokens.Where(x => x.Id == response);
-            //var defaultRecordRetrieved = databaseRecord.FirstOrDefault();
-
-            //defaultRecordRetrieved.RequestedBy.Should().Be(tokenRequest.RequestedBy);
-            //defaultRecordRetrieved.Valid.Should().BeTrue();
-            //defaultRecordRetrieved.ExpirationDate.Should().Be(tokenRequest.ExpiresAt);
-            //defaultRecordRetrieved.DateCreated.Date.Should().Be(DateTime.Now.Date);
-            //defaultRecordRetrieved.Environment.Should().Be(tokenRequest.Environment);
-            //defaultRecordRetrieved.ConsumerTypeLookupId.Should().Be(tokenRequest.ConsumerType);
-            //defaultRecordRetrieved.ConsumerName.Should().Be(tokenRequest.Consumer);
-            //defaultRecordRetrieved.AuthorizedBy.Should().Be(tokenRequest.AuthorizedBy);
-            //defaultRecordRetrieved.ApiEndpointNameLookupId.Should().Be(tokenRequest.ApiEndpoint);
-            //defaultRecordRetrieved.ApiLookupId.Should().Be(tokenRequest.ApiName);
+            databaseRecord.Count().Should().Be(1);
+            record.Id.Should().Be(request.ResidentId);
+            record.Contacts.Count.Should().Be(2);
         }
 
         private Resident AddPersonRecordToDatabase(string lastname = null, string firstname = null)
