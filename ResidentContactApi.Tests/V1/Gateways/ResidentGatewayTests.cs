@@ -147,7 +147,7 @@ namespace ResidentContactApi.Tests.V1.Gateways
         }
 
         [Test]
-        public void InsertedRecordShouldBeInsertedOnceInTheDatabase()
+        public void InsertedContactRecordShouldBeInsertedOnceInTheDatabase()
         {
             var databaseEntity = AddPersonRecordToDatabase();
             var contactType = AddContactTypeToDatabase();
