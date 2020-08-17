@@ -105,10 +105,15 @@ namespace ResidentContactApi.Tests.V1.Controllers
         }
 
         [Test]
-        [Ignore("")]
         public void CreateRecordTest()
         {
+            var response = new ResidentResponse();
+            _mockCreateContactDetails.Setup(x => x.Execute(It.IsAny<ResidentContactParam>())).Returns(response);
+            var result = _classUnderTest.CreateContactRecord(It.IsAny<ResidentContactParam>()) as CreatedAtActionResult;
 
+            response.Should().NotBeNull();
+            result.Value.Should().BeOfType<ResidentResponse>();
+            result.StatusCode.Should().Be(201);
         }
     }
 
