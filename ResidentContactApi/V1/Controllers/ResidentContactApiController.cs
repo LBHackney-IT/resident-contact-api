@@ -73,8 +73,16 @@ namespace ResidentContactApi.V1.Controllers
         //[ValidateModel] //Make sure rcp object is valid
         public IActionResult CreateContactRecord([FromBody] ResidentContactParam rcp)
         {
-            var resident = _createContactDetails.Execute(rcp);
-            return CreatedAtAction("ViewRecord", new { id = resident.Id }, resident);
+            try
+            {
+                var resident = _createContactDetails.Execute(rcp);
+                return CreatedAtAction("ViewRecord", new { id = resident.Id }, resident);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
         }
     }
 }

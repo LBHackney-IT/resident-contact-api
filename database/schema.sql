@@ -7,17 +7,17 @@ CREATE TABLE residents (
 );
 
 CREATE TABLE contact_details (
-  id                        integer PRIMARY KEY,
-  type_lookup_id            varchar(255) NOT NULL,
-  subtype_lookup_id         varchar(255) NOT NULL,
-  contact_details_value     varchar(255) NOT NULL,
-  is_default                boolean NOT NULL,
-  is_active                 boolean NOT NULL,
-  added_by                  varchar(255),
-  date_added                timestamp NOT NULL,
-  date_modified             timestamp,
-  modified_by               varchar(255),
-  resident_id               integer REFERENCES residents(id)
+  id                            integer PRIMARY KEY,
+  contact_type_lookup_id        integer NOT NULL,
+  contact_subtype_lookup_id     integer,
+  contact_details_value         varchar(255) NOT NULL,
+  is_default                    boolean NOT NULL,
+  is_active                     boolean NOT NULL,
+  added_by                      varchar(255),
+  date_added                    timestamp NOT NULL,
+  date_modified                 timestamp,
+  modified_by                   varchar(255),
+  resident_id                   integer REFERENCES residents(id)
 );
 
 CREATE TABLE external_system_records(
