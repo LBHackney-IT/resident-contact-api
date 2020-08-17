@@ -70,6 +70,7 @@ namespace ResidentContactApi.V1.Controllers
         [ProducesResponseType(typeof(ResidentResponse), StatusCodes.Status201Created)]
         [HttpPost]
         [Route("contact-details")]
+        [ValidateModel] //Make sure rcp object is valid
         public IActionResult CreateContactRecord([FromBody] ResidentContactParam rcp)
         {
             _createContactDetails.Execute(rcp);

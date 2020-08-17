@@ -1,26 +1,27 @@
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace ResidentContactApi.V1.Boundary.Requests
 {
     public class ResidentContactParam
     {
+        [Required]
         public int ResidentId { get; set; }
 
         //Value eg. a phone/mobile number, e-mail etc.
-        public string Value { get; set; }
+        [Required]
+        public string ContactValue { get; set; }
 
-        public bool Active { get; set; }
+        [Required]
+        public bool IsActive { get; set; }
 
-        public bool Default { get; set; }
+        [Required]
+        public bool IsDefault { get; set; }
 
         //Integer values used to map to stored lookup values/enums
-        public int Type { get; set; }
+        [Required]
+        public int ContactTypeLookupId { get; set; }
 
-        //Integer values used to map to stored lookup values/enums
-        public int SubType { get; set; }
+        //Nullable or Integer values used to map to stored lookup values/enums
+        public int? ContactSubTypeLookupId { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 using ResidentContactApi.V1.Boundary.Requests;
 using ResidentContactApi.V1.Boundary.Response;
+using ResidentContactApi.V1.Factories;
 using ResidentContactApi.V1.Gateways;
 using ResidentContactApi.V1.UseCase.Interfaces;
 using System;
@@ -15,7 +16,7 @@ namespace ResidentContactApi.V1.UseCase
         }
         public ResidentResponse Execute(ResidentContactParam rcp)
         {
-            throw new NotImplementedException();
+            return _residentGateway.InsertResidentContactDetails(rcp).ToResponse();
         }
     }
 }
