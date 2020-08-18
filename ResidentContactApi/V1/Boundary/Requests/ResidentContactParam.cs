@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ResidentContactApi.V1.Boundary.Requests
 {
-    public class ResidentContactParam
+    public class ResidentContact
     {
         [Required]
         public int ResidentId { get; set; }

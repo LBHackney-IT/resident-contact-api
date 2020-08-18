@@ -14,7 +14,7 @@ namespace ResidentContactApi.V1.UseCase
         {
             _residentGateway = residentGateway;
         }
-        public ResidentResponse Execute(ResidentContactParam rcp)
+        public ResidentResponse Execute(ResidentContact rcp)
         {
             return _residentGateway.InsertResidentContactDetails(rcp).ToResponse();
         }

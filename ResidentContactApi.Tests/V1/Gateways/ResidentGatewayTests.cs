@@ -153,7 +153,7 @@ namespace ResidentContactApi.Tests.V1.Gateways
             var contactType = AddContactTypeToDatabase();
             var contact = AddContactRecordToDatabase(databaseEntity.Id, contactType.Id);
 
-            var request = _fixture.Build<ResidentContactParam>()
+            var request = _fixture.Build<ResidentContact>()
                 .With(x => x.ResidentId, databaseEntity.Id)
                 .With(x => x.ContactTypeLookupId, contactType.Id)
                 .Without(x => x.ContactSubTypeLookupId)

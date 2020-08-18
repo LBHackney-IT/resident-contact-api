@@ -108,8 +108,8 @@ namespace ResidentContactApi.Tests.V1.Controllers
         public void CreateRecordTest()
         {
             var response = new ResidentResponse();
-            _mockCreateContactDetails.Setup(x => x.Execute(It.IsAny<ResidentContactParam>())).Returns(response);
-            var result = _classUnderTest.CreateContactRecord(It.IsAny<ResidentContactParam>()) as CreatedAtActionResult;
+            _mockCreateContactDetails.Setup(x => x.Execute(It.IsAny<ResidentContact>())).Returns(response);
+            var result = _classUnderTest.CreateContactRecord(It.IsAny<ResidentContact>()) as CreatedAtActionResult;
 
             response.Should().NotBeNull();
             result.Value.Should().BeOfType<ResidentResponse>();

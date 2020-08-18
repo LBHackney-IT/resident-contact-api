@@ -11,7 +11,7 @@ namespace ResidentContactApi.V1.Gateways
     {
         List<ResidentDomain> GetResidents(string firstName, string lastName);
         ResidentDomain GetResidentById(int id);
-        ResidentDomain InsertResidentContactDetails(ResidentContactParam rcp);
+        ResidentDomain InsertResidentContactDetails(ResidentContact rcp);
 
     }
 }

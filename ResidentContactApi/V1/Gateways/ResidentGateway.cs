@@ -48,7 +48,7 @@ namespace ResidentContactApi.V1.Gateways
 
         }
 
-        public ResidentDomain InsertResidentContactDetails(ResidentContactParam rcp)
+        public ResidentDomain InsertResidentContactDetails(ResidentContact rcp)
         {
             var contact = new Contact
             {

@@ -19,10 +19,10 @@ namespace ResidentContactApi.V1.Infrastructure.Migrations
                     added_by = table.Column<string>(nullable: true),
                     date_added = table.Column<DateTime>(nullable: false),
                     modified_by = table.Column<string>(nullable: true),
-                    contact_type_lookup_id = table.Column<int>(nullable: false),
+                    type = table.Column<string>(nullable: true),
                     contact_details_value = table.Column<string>(nullable: true),
                     date_modified = table.Column<DateTime>(nullable: false),
-                    contact_subtype_lookup_id = table.Column<int>(nullable: true),
+                    subtype = table.Column<string>(nullable: true),
                     resident_id = table.Column<int>(nullable: false)
                 },
                 constraints: table =>

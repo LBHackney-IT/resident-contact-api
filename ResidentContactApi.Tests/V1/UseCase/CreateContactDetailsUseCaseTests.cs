@@ -54,9 +54,9 @@ namespace ResidentContactApi.Tests.V1.UseCase
             response.Should().BeOfType<ResidentResponse>();
         }
 
-        private static ResidentContactParam GetResidentContactParameter()
+        private static ResidentContact GetResidentContactParameter()
         {
-            return new ResidentContactParam
+            return new ResidentContact
             {
                 ContactSubTypeLookupId = _faker.Random.Int(1, 5),
                 ContactTypeLookupId = _faker.Random.Int(1, 5),

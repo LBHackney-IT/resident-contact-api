@@ -20,7 +20,7 @@ namespace ResidentContactApi.Tests.V1.E2ETests
         [Test]
         public async Task Returns201IfNewContactRecordIsCreatedForResident()
         {
-            var contactRequest = new ResidentContactParam
+            var contactRequest = new ResidentContact
             {
                 ContactSubTypeLookupId = _faker.Random.Int(1, 50),
                 ContactTypeLookupId = _faker.Random.Int(1, 50),
@@ -46,7 +46,7 @@ namespace ResidentContactApi.Tests.V1.E2ETests
         [Test]
         public async Task Returns400IfResidentContactParamModelStateIsInvalid()
         {
-            var contactRequest = new ResidentContactParam
+            var contactRequest = new ResidentContact
             {
                 ContactValue = null
             };

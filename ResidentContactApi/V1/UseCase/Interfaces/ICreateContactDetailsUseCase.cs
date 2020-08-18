@@ -5,7 +5,7 @@ namespace ResidentContactApi.V1.UseCase.Interfaces
 {
     public interface ICreateContactDetailsUseCase
     {
-        ResidentResponse Execute(ResidentContactParam rcp);
+        ResidentResponse Execute(ResidentContact rcp);
     }
 }
 
