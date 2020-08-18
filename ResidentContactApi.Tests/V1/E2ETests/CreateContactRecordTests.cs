@@ -26,14 +26,12 @@ namespace ResidentContactApi.Tests.V1.E2ETests
                 ContactTypeLookupId = _faker.Random.Int(1, 50),
                 ContactValue = _faker.Random.String(11, 100),
                 IsActive = _faker.Random.Bool(),
-                IsDefault = _faker.Random.Bool()
+                IsDefault = _faker.Random.Bool(),
             };
 
             var resident = E2ETestsHelper.AddPersonWithRelatedEntitiestoDb(ResidentContactContext,
                 contactTypeLookupId: contactRequest.ContactTypeLookupId,
                 contactSubTypeLookupId: contactRequest.ContactSubTypeLookupId);
-
-            ResidentContactContext.Database.BeginTransaction();
 
             contactRequest.ResidentId = resident.Id;
 

@@ -1,7 +1,8 @@
+using System.Data;
 using System.Net.Http;
 using ResidentContactApi.V1.Infrastructure;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
 using NUnit.Framework;
 
@@ -14,7 +15,7 @@ namespace ResidentContactApi.Tests
 
         private MockWebApplicationFactory<TStartup> _factory;
         private NpgsqlConnection _connection;
-        private IDbContextTransaction _transaction;
+        private NpgsqlTransaction _transaction;
         private DbContextOptionsBuilder _builder;
 
         [OneTimeSetUp]
@@ -28,7 +29,6 @@ namespace ResidentContactApi.Tests
 
             _builder = new DbContextOptionsBuilder();
             _builder.UseNpgsql(_connection);
-
         }
 
         [SetUp]
@@ -36,9 +36,10 @@ namespace ResidentContactApi.Tests
         {
             _factory = new MockWebApplicationFactory<TStartup>(_connection);
             Client = _factory.CreateClient();
-            ResidentContactContext = new ResidentContactContext(_builder.Options);
-            ResidentContactContext.Database.EnsureCreated();
-            _transaction = ResidentContactContext.Database.BeginTransaction();
+            ResidentContactContext = _factory.Server.Host.Services.GetRequiredService<ResidentContactContext>();
+
+            _transaction = _connection.BeginTransaction(IsolationLevel.RepeatableRead);
+            ResidentContactContext.Database.UseTransaction(_transaction);
         }
 
         [TearDown]
@@ -48,6 +49,12 @@ namespace ResidentContactApi.Tests
             _factory.Dispose();
             _transaction.Rollback();
             _transaction.Dispose();
+        }
+
+        [OneTimeTearDown]
+        public void AfterAllTests()
+        {
+            _connection.Dispose();
         }
     }
 }
