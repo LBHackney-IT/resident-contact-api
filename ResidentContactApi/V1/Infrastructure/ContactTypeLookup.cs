@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ResidentContactApi.V1.Infrastructure
 {
-    [Table("contact-type-lookup")]
+    [Table("contact_type_lookup")]
     public class ContactTypeLookup
     {
         [Column("id")]

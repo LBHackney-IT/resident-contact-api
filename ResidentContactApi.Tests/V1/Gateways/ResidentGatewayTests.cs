@@ -9,6 +9,7 @@ using System.Linq;
 using AutoFixture;
 using ResidentContactApi.V1.Enums;
 using ResidentContactApi.V1.Factories;
+using ResidentContactApi.V1.Boundary.Requests;
 
 namespace ResidentContactApi.Tests.V1.Gateways
 {
@@ -145,6 +146,29 @@ namespace ResidentContactApi.Tests.V1.Gateways
             response.Contacts.Should().BeEquivalentTo(new List<ContactDetailsDomain> { expectedDomainResponse });
         }
 
+        [Test]
+        public void InsertedContactRecordShouldBeInsertedOnceInTheDatabase()
+        {
+            var databaseEntity = AddPersonRecordToDatabase();
+            var contactType = AddContactTypeToDatabase();
+            var contact = AddContactRecordToDatabase(databaseEntity.Id, contactType.Id);
+
+            var request = _fixture.Build<ResidentContact>()
+                .With(x => x.ResidentId, databaseEntity.Id)
+                .With(x => x.ContactTypeLookupId, contactType.Id)
+                .Without(x => x.ContactSubTypeLookupId)
+                .Create();
+
+            var response = _classUnderTest.InsertResidentContactDetails(request);
+            var databaseRecord = ResidentContactContext.Residents.Where(res => res.Id == response.Id);
+
+            var record = databaseRecord.First();
+
+            databaseRecord.Count().Should().Be(1);
+            record.Id.Should().Be(request.ResidentId);
+            record.Contacts.Count.Should().Be(2);
+        }
+
         private Resident AddPersonRecordToDatabase(string lastname = null, string firstname = null)
         {
             var databaseEntity = TestHelper.CreateDatabasePersonEntity(firstname, lastname);
@@ -169,4 +193,5 @@ namespace ResidentContactApi.Tests.V1.Gateways
             return contactType;
         }
     }
+
 }

@@ -126,6 +126,8 @@ namespace ResidentContactApi
         {
             services.AddScoped<IGetAllUseCase, GetAllUseCase>();
             services.AddScoped<IGetByIdUseCase, GetByIdUseCase>();
+
+            services.AddScoped<ICreateContactDetailsUseCase, CreateContactDetailsUseCase>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

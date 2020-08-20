@@ -48,6 +48,25 @@ namespace ResidentContactApi.V1.Gateways
 
         }
 
+        public ResidentDomain InsertResidentContactDetails(ResidentContact rcp)
+        {
+            var contact = new Contact
+            {
+                ResidentId = rcp.ResidentId,
+                ContactValue = rcp.ContactValue,
+                IsActive = rcp.IsActive,
+                IsDefault = rcp.IsDefault,
+                ContactTypeLookupId = rcp.ContactTypeLookupId,
+                ContactSubTypeLookupId = rcp.ContactSubTypeLookupId
+            };
+
+            _residentContactContext.ContactDetails.Add(contact);
+            _residentContactContext.SaveChanges();
+
+            //Return resident
+            return GetResidentById(contact.ResidentId);
+        }
+
         private static ResidentDomain MapPersonAndContactToResident(Resident resident, IEnumerable<Contact> contacts)
         {
             var person = resident.ToDomain();
