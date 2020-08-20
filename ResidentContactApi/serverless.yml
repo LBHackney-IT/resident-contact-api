@@ -23,7 +23,7 @@ functions:
     handler: ResidentContactApi::ResidentContactApi.LambdaEntryPoint::FunctionHandlerAsync
     role: lambdaExecutionRole
     environment:
-      CONNECTION_STRING: Host=${ssm:/resident-contact-api/${self:provider.stage}/postgres-hostname};Port=${ssm:/resident-contact-api/${self:provider.stage}/postgres-port};Database=resident_contact_db;Username=${ssm:/resident-contact-api/${self:provider.stage}/postgres-username};Password=${ssm:/resident-contact-api/${self:provider.stage}/postgres-password}
+      CONNECTION_STRING: Host=${ssm:/resident-contact-api/${self:provider.stage}/postgres-hostname};Port=${ssm:/resident-contact-api/${self:provider.stage}/postgres-port};Database=${ssm:/resident-contact-api/${self:provider.stage}/postgres-database};Username=${ssm:/resident-contact-api/${self:provider.stage}/postgres-username};Password=${ssm:/resident-contact-api/${self:provider.stage}/postgres-password}
     events:
       - http:
           path: /{proxy+}
