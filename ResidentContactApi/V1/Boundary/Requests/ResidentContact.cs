@@ -23,11 +23,11 @@ namespace ResidentContactApi.V1.Boundary.Requests
 
         //Integer values used to map to stored lookup values/enums
         [Required]
-        [BindProperty(Name = "type")]
+        [BindProperty(Name = "typeId")]
         public int ContactTypeLookupId { get; set; }
 
         //Nullable or Integer values used to map to stored lookup values/enums
-        [BindProperty(Name = "subType")]
+        [BindProperty(Name = "subTypeId")]
         public int? ContactSubTypeLookupId { get; set; }
     }
 }
