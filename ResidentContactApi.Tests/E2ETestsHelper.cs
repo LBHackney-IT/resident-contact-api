@@ -8,8 +8,8 @@ namespace ResidentContactApi.Tests
 {
     public static class E2ETestsHelper
     {
-        public static ResidentResponse AddPersonWithRelatedEntitiestoDb(ResidentContactContext context, int? id = null, string firstname = null, string lastname = null,
-            int? contactTypeLookupId = null, int? contactSubTypeLookupId = null)
+        public static ResidentResponse AddPersonWithRelatedEntitiesToDb(ResidentContactContext context, int? id = null,
+            string firstname = null, string lastname = null, int? contactTypeLookupId = null, int? contactSubTypeLookupId = null)
         {
             var fixture = new Fixture();
             var resident = TestHelper.CreateDatabasePersonEntity(firstname, lastname, id);
