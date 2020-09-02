@@ -37,7 +37,7 @@ namespace ResidentContactApi.Tests.V1.E2ETests
             var expectedResidentResponseTwo = E2ETestsHelper.AddPersonWithRelatedEntitiesToDb(ResidentContactContext, firstname: "ciasom", lastname: "shape");
             var expectedResidentResponseThree = E2ETestsHelper.AddPersonWithRelatedEntitiesToDb(ResidentContactContext);
 
-            var response = CallEndpointWithQueryString("?firstName=ciasom&lastName=tessellate");
+            var response = CallEndpointWithQueryString("?first_name=ciasom&last_name=tessellate");
 
             var statusCode = response.Result.StatusCode;
             statusCode.Should().Be(200);
@@ -56,7 +56,7 @@ namespace ResidentContactApi.Tests.V1.E2ETests
             var expectedResidentResponseTwo = E2ETestsHelper.AddPersonWithRelatedEntitiesToDb(ResidentContactContext, firstname: "ciasom", lastname: "shape");
             var expectedResidentResponseThree = E2ETestsHelper.AddPersonWithRelatedEntitiesToDb(ResidentContactContext);
 
-            var response = CallEndpointWithQueryString("?firstName=ciaso&lastName=sell");
+            var response = CallEndpointWithQueryString("?first_name=ciaso&last_name=sell");
             var statusCode = response.Result.StatusCode;
             statusCode.Should().Be(200);
 

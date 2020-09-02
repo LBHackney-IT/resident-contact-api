@@ -4,10 +4,10 @@ namespace ResidentContactApi.V1.Boundary.Requests
 {
     public class ResidentQueryParam
     {
-        [FromQuery(Name = "firstName")]
+        [FromQuery(Name = "first_name")]
         public string FirstName { get; set; }
 
-        [FromQuery(Name = "lastName")]
+        [FromQuery(Name = "last_name")]
         public string LastName { get; set; }
 
         public int Limit { get; set; } = 20;

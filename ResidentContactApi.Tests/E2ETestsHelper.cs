@@ -51,7 +51,6 @@ namespace ResidentContactApi.Tests
                             DateLastModified = contact.DateLastModified,
                             ModifiedBy = contact.ModifiedBy,
                             DateAdded = contact.DateAdded,
-                            ResidentId = contact.ResidentId,
                             Type = contactType.Name,
                             SubType = subContactType.Name
 
