@@ -30,14 +30,13 @@ namespace ResidentContactApi.Tests.V1.E2ETests
             };
 
 
-            var resident = E2ETestsHelper.AddPersonWithRelatedEntitiestoDb(ResidentContactContext,
+            var resident = E2ETestsHelper.AddPersonWithRelatedEntitiesToDb(ResidentContactContext,
                 contactTypeLookupId: contactRequest.TypeId,
                 contactSubTypeLookupId: contactRequest.SubtypeId);
 
             contactRequest.ResidentId = resident.Id;
-            string json = JsonConvert.SerializeObject(contactRequest);
             var url = new Uri($"/api/v1/contact-details/", UriKind.Relative);
-            using var content = new StringContent(json, Encoding.UTF8, "application/json");
+            using var content = new StringContent(JsonConvert.SerializeObject(contactRequest), Encoding.UTF8, "application/json");
             using var response = await Client.PostAsync(url, content).ConfigureAwait(true);
 
             response.StatusCode.Should().Be(201);
