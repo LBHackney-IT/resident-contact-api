@@ -22,20 +22,20 @@ namespace ResidentContactApi.Tests.V1.E2ETests
         {
             var contactRequest = new ResidentContact
             {
-                ContactSubTypeLookupId = _faker.Random.Int(1, 50),
-                ContactTypeLookupId = _faker.Random.Int(1, 50),
-                ContactValue = _faker.Random.String(11, 100),
-                IsActive = _faker.Random.Bool(),
-                IsDefault = _faker.Random.Bool()
+                SubtypeId = _faker.Random.Int(1, 50),
+                TypeId = _faker.Random.Int(1, 50),
+                Value = "test@test",
+                Active = _faker.Random.Bool(),
+                Default = _faker.Random.Bool()
             };
 
+
             var resident = E2ETestsHelper.AddPersonWithRelatedEntitiesToDb(ResidentContactContext,
-                contactTypeLookupId: contactRequest.ContactTypeLookupId,
-                contactSubTypeLookupId: contactRequest.ContactSubTypeLookupId);
+                contactTypeLookupId: contactRequest.TypeId,
+                contactSubTypeLookupId: contactRequest.SubtypeId);
 
             contactRequest.ResidentId = resident.Id;
-
-            var url = new Uri($"/api/v1/contact-details", UriKind.Relative);
+            var url = new Uri($"/api/v1/contact-details/", UriKind.Relative);
             using var content = new StringContent(JsonConvert.SerializeObject(contactRequest), Encoding.UTF8, "application/json");
             using var response = await Client.PostAsync(url, content).ConfigureAwait(true);
 
@@ -48,7 +48,7 @@ namespace ResidentContactApi.Tests.V1.E2ETests
         {
             var contactRequest = new ResidentContact
             {
-                ContactValue = null
+                Value = null
             };
 
             var url = new Uri($"/api/v1/contact-details", UriKind.Relative);

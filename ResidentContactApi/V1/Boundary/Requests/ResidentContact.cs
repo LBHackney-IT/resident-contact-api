@@ -1,5 +1,5 @@
-using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
 
 namespace ResidentContactApi.V1.Boundary.Requests
 {
@@ -8,26 +8,21 @@ namespace ResidentContactApi.V1.Boundary.Requests
         [Required]
         public int ResidentId { get; set; }
 
-        //Value eg. a phone/mobile number, e-mail etc.
+        //Value eg. a phone or mobile number, e-mail address etc.
         [Required]
-        [BindProperty(Name = "value")]
-        public string ContactValue { get; set; }
+        public string Value { get; set; }
 
         [Required]
-        [BindProperty(Name = "active")]
-        public bool IsActive { get; set; }
+        public bool Active { get; set; }
 
         [Required]
-        [BindProperty(Name = "default")]
-        public bool IsDefault { get; set; }
+        public bool Default { get; set; }
 
         //Integer values used to map to stored lookup values/enums
         [Required]
-        [BindProperty(Name = "typeId")]
-        public int ContactTypeLookupId { get; set; }
+        public int TypeId { get; set; }
 
         //Nullable or Integer values used to map to stored lookup values/enums
-        [BindProperty(Name = "subTypeId")]
-        public int? ContactSubTypeLookupId { get; set; }
+        public int? SubtypeId { get; set; }
     }
 }

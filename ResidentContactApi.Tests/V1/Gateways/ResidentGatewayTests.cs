@@ -167,8 +167,8 @@ namespace ResidentContactApi.Tests.V1.Gateways
 
             var request = _fixture.Build<ResidentContact>()
                 .With(x => x.ResidentId, databaseEntity.Id)
-                .With(x => x.ContactTypeLookupId, contactType.Id)
-                .Without(x => x.ContactSubTypeLookupId)
+                .With(x => x.TypeId, contactType.Id)
+                .Without(x => x.SubtypeId)
                 .Create();
 
             var response = _classUnderTest.InsertResidentContactDetails(request);
