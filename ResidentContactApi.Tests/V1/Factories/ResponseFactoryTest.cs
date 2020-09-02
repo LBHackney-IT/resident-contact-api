@@ -33,7 +33,7 @@ namespace ResidentContactApi.Tests.V1.Factories
                 LastName = "Last",
                 DateOfBirth = new DateTime(),
                 Gender = "F",
-                Contacts = null
+                ContactInformation = null
             };
             domain.ToResponse().Should().BeEquivalentTo(expectedResponse);
         }
@@ -65,7 +65,7 @@ namespace ResidentContactApi.Tests.V1.Factories
                 LastName = "Last",
                 DateOfBirth = new DateTime(),
                 Gender = "F",
-                Contacts = new List<ContactDetailsResponse>
+                ContactInformation = new List<ContactDetailsResponse>
                 {
                     new ContactDetailsResponse
                     {
@@ -100,10 +100,10 @@ namespace ResidentContactApi.Tests.V1.Factories
             {
                 Id = 1234,
                 Type = "Address",
-                ContactValue = "123456",
+                Value = "123456",
                 AddedBy = "test",
-                IsActive = false,
-                IsDefault = false,
+                Active = false,
+                Default = false,
                 DateLastModified = new DateTime(2020, 04, 23),
                 ModifiedBy = "Tester",
                 SubType = "Home",
