@@ -58,11 +58,11 @@ namespace ResidentContactApi.Tests.V1.UseCase
         {
             return new ResidentContact
             {
-                ContactSubTypeLookupId = _faker.Random.Int(1, 5),
-                ContactTypeLookupId = _faker.Random.Int(1, 5),
-                ContactValue = _faker.Random.String(11, 100),
-                IsActive = _faker.Random.Bool(),
-                IsDefault = _faker.Random.Bool(),
+                SubtypeId = _faker.Random.Int(1, 5),
+                TypeId = _faker.Random.Int(1, 5),
+                Value = _faker.Random.String(11, 100),
+                Active = _faker.Random.Bool(),
+                Default = _faker.Random.Bool(),
                 ResidentId = _faker.Random.Int(1)
             };
         }

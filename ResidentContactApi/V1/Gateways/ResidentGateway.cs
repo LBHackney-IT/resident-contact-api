@@ -53,11 +53,11 @@ namespace ResidentContactApi.V1.Gateways
             var contact = new Contact
             {
                 ResidentId = rcp.ResidentId,
-                ContactValue = rcp.ContactValue,
-                IsActive = rcp.IsActive,
-                IsDefault = rcp.IsDefault,
-                ContactTypeLookupId = rcp.ContactTypeLookupId,
-                ContactSubTypeLookupId = rcp.ContactSubTypeLookupId
+                ContactValue = rcp.Value,
+                IsActive = rcp.Active,
+                IsDefault = rcp.Default,
+                ContactTypeLookupId = rcp.TypeId,
+                ContactSubTypeLookupId = rcp.SubtypeId
             };
 
             _residentContactContext.ContactDetails.Add(contact);
