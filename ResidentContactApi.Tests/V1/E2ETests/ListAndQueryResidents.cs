@@ -81,7 +81,7 @@ namespace ResidentContactApi.Tests.V1.E2ETests
             var returnedResidents = await DeserializeResponse(response).ConfigureAwait(true);
             returnedResidents.Residents.Should().BeEquivalentTo(allSavedResidents.Take(20));
 
-            returnedResidents.NextCursor.Should().Be("19");
+            returnedResidents.NextCursor.Should().Be("20");
         }
 
         [Test]
@@ -93,7 +93,7 @@ namespace ResidentContactApi.Tests.V1.E2ETests
                         .AddPersonWithRelatedEntitiesToDb(ResidentContactContext, r + 1))
                 .ToList();
 
-            var response = await CallEndpointWithQueryString("?limit=12&cursor=2").ConfigureAwait(true);
+            var response = await CallEndpointWithQueryString("?limit=12&cursor=3").ConfigureAwait(true);
             response.StatusCode.Should().Be(200);
 
             var returnedTenancies = await DeserializeResponse(response).ConfigureAwait(true);

@@ -10,5 +10,7 @@ namespace ResidentContactApi.V1.Boundary.Requests
         [FromQuery(Name = "lastName")]
         public string LastName { get; set; }
 
+        public int Limit { get; set; } = 20;
+        public int Cursor { get; set; } = 0;
     }
 }

@@ -9,7 +9,7 @@ namespace ResidentContactApi.V1.Gateways
 {
     public interface IResidentGateway
     {
-        List<ResidentDomain> GetResidents(string firstName, string lastName);
+        List<ResidentDomain> GetResidents(int limit, int cursor, string firstName, string lastName);
         ResidentDomain GetResidentById(int id);
         ResidentDomain InsertResidentContactDetails(ResidentContact rcp);
 
