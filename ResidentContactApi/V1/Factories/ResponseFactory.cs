@@ -40,8 +40,6 @@ namespace ResidentContactApi.V1.Factories
                 ModifiedBy = contactDetails.ModifiedBy,
                 SubType = contactDetails.SubType,
                 DateAdded = contactDetails.DateAdded,
-                ResidentId = contactDetails.ResidentId
-
             };
         }
 

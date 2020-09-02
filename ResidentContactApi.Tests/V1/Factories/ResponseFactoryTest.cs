@@ -94,7 +94,6 @@ namespace ResidentContactApi.Tests.V1.Factories
                 SubType = "Home",
                 DateAdded = new DateTime(2021, 05, 21),
                 ResidentId = 12345
-
             };
             var expectedResponse = new ContactDetailsResponse
             {
@@ -108,8 +107,6 @@ namespace ResidentContactApi.Tests.V1.Factories
                 ModifiedBy = "Tester",
                 SubType = "Home",
                 DateAdded = new DateTime(2021, 05, 21),
-                ResidentId = 12345
-
             };
             domain.ToResponse().Should().BeEquivalentTo(expectedResponse);
         }

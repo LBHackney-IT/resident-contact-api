@@ -1,9 +1,4 @@
-using ResidentContactApi.V1.Enums;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ResidentResponse = ResidentContactApi.V1.Boundary.Response.ResidentResponse;
 
 namespace ResidentContactApi.V1.Boundary.Response
 {
@@ -19,6 +14,5 @@ namespace ResidentContactApi.V1.Boundary.Response
         public DateTime DateAdded { get; set; }
         public string ModifiedBy { get; set; }
         public DateTime DateLastModified { get; set; }
-        public int ResidentId { get; set; }
     }
 }
