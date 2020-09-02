@@ -17,7 +17,7 @@ namespace ResidentContactApi.V1.Factories
                 FirstName = domain.FirstName,
                 LastName = domain.LastName,
                 DateOfBirth = domain.DateOfBirth,
-                Contacts = domain.Contacts?.Select(x => x.ToResponse()).ToList(),
+                ContactInformation = domain.Contacts?.Select(x => x.ToResponse()).ToList(),
                 Gender = domain.Gender.ToString(),
             };
         }
@@ -32,10 +32,10 @@ namespace ResidentContactApi.V1.Factories
             {
                 Id = contactDetails.Id,
                 Type = contactDetails.Type,
-                ContactValue = contactDetails.ContactValue,
+                Value = contactDetails.ContactValue,
                 AddedBy = contactDetails.AddedBy,
-                IsActive = contactDetails.IsActive,
-                IsDefault = contactDetails.IsDefault,
+                Active = contactDetails.IsActive,
+                Default = contactDetails.IsDefault,
                 DateLastModified = contactDetails.DateLastModified,
                 ModifiedBy = contactDetails.ModifiedBy,
                 SubType = contactDetails.SubType,

@@ -8,8 +8,8 @@ namespace ResidentContactApi.Tests
 {
     public static class E2ETestsHelper
     {
-        public static ResidentResponse AddPersonWithRelatedEntitiestoDb(ResidentContactContext context, int? id = null, string firstname = null, string lastname = null,
-            int? contactTypeLookupId = null, int? contactSubTypeLookupId = null)
+        public static ResidentResponse AddPersonWithRelatedEntitiesToDb(ResidentContactContext context, int? id = null,
+            string firstname = null, string lastname = null, int? contactTypeLookupId = null, int? contactSubTypeLookupId = null)
         {
             var fixture = new Fixture();
             var resident = TestHelper.CreateDatabasePersonEntity(firstname, lastname, id);
@@ -37,17 +37,17 @@ namespace ResidentContactApi.Tests
                 LastName = resident.LastName,
                 Gender = "F",
                 DateOfBirth = resident.DateOfBirth,
-                Contacts =
+                ContactInformation =
                     new List<ContactDetailsResponse>
                     {
                         new ContactDetailsResponse
                         {
 
                             Id = contact.Id,
-                            ContactValue = contact.ContactValue,
+                            Value = contact.ContactValue,
                             AddedBy = contact.AddedBy,
-                            IsActive = contact.IsActive,
-                            IsDefault = contact.IsDefault,
+                            Active = contact.IsActive,
+                            Default = contact.IsDefault,
                             DateLastModified = contact.DateLastModified,
                             ModifiedBy = contact.ModifiedBy,
                             DateAdded = contact.DateAdded,
