@@ -46,7 +46,7 @@ namespace ResidentContactApi.Tests.V1.UseCase
             var expectedResponse = stubbedResidentInfo.ToResponse();
             var expectedContactResponse = stubbedResidentInfo.Contacts.ToResponse();
 
-            response.Contacts.Should().BeEquivalentTo(expectedContactResponse);
+            response.ContactInformation.Should().BeEquivalentTo(expectedContactResponse);
             response.Should().NotBeNull();
             response.Should().BeEquivalentTo(expectedResponse);
 

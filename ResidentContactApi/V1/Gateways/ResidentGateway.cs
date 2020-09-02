@@ -1,15 +1,10 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 using ResidentContactApi.V1.Boundary.Requests;
 using ResidentContactApi.V1.Domain;
 using ResidentContactApi.V1.Factories;
 using ResidentContactApi.V1.Infrastructure;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Net.NetworkInformation;
-using System.Threading.Tasks;
 
 namespace ResidentContactApi.V1.Gateways
 {

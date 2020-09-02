@@ -37,17 +37,17 @@ namespace ResidentContactApi.Tests
                 LastName = resident.LastName,
                 Gender = "F",
                 DateOfBirth = resident.DateOfBirth,
-                Contacts =
+                ContactInformation =
                     new List<ContactDetailsResponse>
                     {
                         new ContactDetailsResponse
                         {
 
                             Id = contact.Id,
-                            ContactValue = contact.ContactValue,
+                            Value = contact.ContactValue,
                             AddedBy = contact.AddedBy,
-                            IsActive = contact.IsActive,
-                            IsDefault = contact.IsDefault,
+                            Active = contact.IsActive,
+                            Default = contact.IsDefault,
                             DateLastModified = contact.DateLastModified,
                             ModifiedBy = contact.ModifiedBy,
                             DateAdded = contact.DateAdded,
