@@ -29,7 +29,7 @@ namespace ResidentContactApi.Tests.V1.E2ETests
                 IsDefault = _faker.Random.Bool()
             };
 
-            var resident = E2ETestsHelper.AddPersonWithRelatedEntitiestoDb(ResidentContactContext,
+            var resident = E2ETestsHelper.AddPersonWithRelatedEntitiesToDb(ResidentContactContext,
                 contactTypeLookupId: contactRequest.ContactTypeLookupId,
                 contactSubTypeLookupId: contactRequest.ContactSubTypeLookupId);
 

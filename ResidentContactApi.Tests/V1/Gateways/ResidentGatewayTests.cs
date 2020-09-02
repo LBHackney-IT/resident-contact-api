@@ -34,82 +34,94 @@ namespace ResidentContactApi.Tests.V1.Gateways
         [Test]
         public void GetAllResidentsIfThereAreNoResidentsReturnsAnEmptyList()
         {
-            _classUnderTest.GetResidents("bob", "brown").Should().BeEmpty();
+            _classUnderTest.GetResidents(20, 0, "bob", "brown").Should().BeEmpty();
         }
-
 
         [Test]
         public void GetAllResidentsWithFirstNameParametersMatchingResidents()
         {
-            var databaseEntity = AddPersonRecordToDatabase(firstname: "ciasom");
-            var databaseEntity1 = AddPersonRecordToDatabase(firstname: "shape");
-            var databaseEntity2 = AddPersonRecordToDatabase(firstname: "Ciasom");
+            var domainEntity1 = AddResidentAndContactDetailsToDatabase("ciasom");
+            var domainEntity2 = AddResidentAndContactDetailsToDatabase("shape");
+            var domainEntity3 = AddResidentAndContactDetailsToDatabase("Ciasom");
 
-            var contactType = AddContactTypeToDatabase();
-
-            var contact = AddContactRecordToDatabase(databaseEntity.Id, contactType.Id);
-            var contact1 = AddContactRecordToDatabase(databaseEntity1.Id, contactType.Id);
-            var contact2 = AddContactRecordToDatabase(databaseEntity2.Id, contactType.Id);
-
-            var domainEntity = databaseEntity.ToDomain();
-            domainEntity.Contacts = new List<ContactDetailsDomain> { contact.ToDomain() };
-            domainEntity.Contacts.First().Type = contactType.Name;
-
-            var domainEntity2 = databaseEntity2.ToDomain();
-            domainEntity2.Contacts = new List<ContactDetailsDomain> { contact2.ToDomain() };
-            domainEntity2.Contacts.First().Type = contactType.Name;
-
-            var listOfPersons = _classUnderTest.GetResidents(firstName: "ciasom");
+            var listOfPersons = _classUnderTest.GetResidents(20, 0, firstName: "ciasom");
             listOfPersons.Count.Should().Be(2);
-            listOfPersons.Should().ContainEquivalentOf(domainEntity);
-            listOfPersons.Should().ContainEquivalentOf(domainEntity2);
+            listOfPersons.Should().ContainEquivalentOf(domainEntity1);
+            listOfPersons.Should().ContainEquivalentOf(domainEntity3);
         }
 
         [Test]
         public void GetAllResidentsWithLastNameParametersMatchingResidents()
         {
-            var entity = AddPersonRecordToDatabase(lastname: "brown");
-            var entity1 = AddPersonRecordToDatabase(lastname: "tessalate");
-            var entity2 = AddPersonRecordToDatabase(lastname: "Brown");
+            var domain1 = AddResidentAndContactDetailsToDatabase(lastName: "brown");
+            var domain2 = AddResidentAndContactDetailsToDatabase(lastName: "tessalate");
+            var domain3 = AddResidentAndContactDetailsToDatabase(lastName: "Brown");
 
-            var contactType = AddContactTypeToDatabase();
+            var listOfPersons = _classUnderTest.GetResidents(20, 0, lastName: "brown");
+            listOfPersons.Count.Should().Be(2);
+            listOfPersons.Should().ContainEquivalentOf(domain1);
+            listOfPersons.Should().ContainEquivalentOf(domain3);
+        }
 
-            var contactEntity = AddContactRecordToDatabase(entity.Id, contactType.Id);
-            var contactEntity1 = AddContactRecordToDatabase(entity1.Id, contactType.Id);
-            var contactEntity2 = AddContactRecordToDatabase(entity2.Id, contactType.Id);
+        [Test]
+        public void GetAllResidentWithNoContactWithFirstnameAndLastnameMatchingParameters()
+        {
+            var databaseEntity = AddPersonRecordToDatabase(firstName: "ciasom", lastName: "brown");
+            var domain = databaseEntity.ToDomain();
+            domain.Contacts = new List<ContactDetailsDomain>();
 
-            var domain = entity.ToDomain();
-            domain.Contacts = new List<ContactDetailsDomain> { contactEntity.ToDomain() };
-            domain.Contacts.First().Type = contactType.Name;
+            var databaseEntity1 = AddPersonRecordToDatabase(firstName: "shape", lastName: "tessalate");
 
-            var domain2 = entity2.ToDomain();
-            domain2.Contacts = new List<ContactDetailsDomain> { contactEntity2.ToDomain() };
-            domain2.Contacts.First().Type = contactType.Name;
+            var databaseEntity2 = AddPersonRecordToDatabase(firstName: "Ciasom", lastName: "Brown");
+            var domain2 = databaseEntity2.ToDomain();
+            domain2.Contacts = new List<ContactDetailsDomain>();
 
-            var listOfPersons = _classUnderTest.GetResidents(lastName: "brown");
+            var listOfPersons = _classUnderTest.GetResidents(limit: 20, cursor: 0, lastName: "brown");
             listOfPersons.Count.Should().Be(2);
             listOfPersons.Should().ContainEquivalentOf(domain);
             listOfPersons.Should().ContainEquivalentOf(domain2);
         }
 
         [Test]
-        public void GetAllResidentWithNoContactWithFirstnameAndLastnameMatchingParameters()
+        public void GetAllResidentsWillReturnLimitNumberOfRecordsReturned()
         {
-            var databaseEntity = AddPersonRecordToDatabase(firstname: "ciasom", lastname: "brown");
-            var databaseEntity1 = AddPersonRecordToDatabase(firstname: "shape", lastname: "tessalate");
-            var databaseEntity2 = AddPersonRecordToDatabase(firstname: "Ciasom", lastname: "Brown");
+            AddResidentAndContactDetailsToDatabase();
+            AddResidentAndContactDetailsToDatabase();
+            AddResidentAndContactDetailsToDatabase();
 
-            var domain = databaseEntity.ToDomain();
-            domain.Contacts = new List<ContactDetailsDomain>();
-
-            var domain2 = databaseEntity2.ToDomain();
-            domain2.Contacts = new List<ContactDetailsDomain>();
-
-            var listOfPersons = _classUnderTest.GetResidents(lastName: "brown");
-            listOfPersons.Count.Should().Be(2);
-            listOfPersons.Should().ContainEquivalentOf(domain);
-            listOfPersons.Should().ContainEquivalentOf(domain2);
+            var response = _classUnderTest.GetResidents(limit: 2, 0);
+            response.Count.Should().Be(2);
         }
+
+        [Test]
+        public void GetAllResidentsWillReturnRecordsOrderedByResidentId()
+        {
+            var resident2 = AddResidentAndContactDetailsToDatabase(id: 45);
+            var resident3 = AddResidentAndContactDetailsToDatabase(id: 87);
+            var resident1 = AddResidentAndContactDetailsToDatabase(id: 2);
+
+            var response = _classUnderTest.GetResidents(limit: 2, 0);
+            response.Count.Should().Be(2);
+            response.First()
+                .Should().BeEquivalentTo(resident1);
+            response.Last()
+                .Should().BeEquivalentTo(resident2);
+        }
+
+        [Test]
+        public void GetAllResidentsWillOffsetByGivenCursor()
+        {
+            var resident2 = AddResidentAndContactDetailsToDatabase(id: 45);
+            var resident3 = AddResidentAndContactDetailsToDatabase(id: 87);
+            var resident1 = AddResidentAndContactDetailsToDatabase(id: 2);
+            var resident4 = AddResidentAndContactDetailsToDatabase(id: 762554);
+
+            var response = _classUnderTest.GetResidents(limit: 2, cursor: 45);
+            response.Count.Should().Be(2);
+            response.First().Should().BeEquivalentTo(resident3);
+            response.Last().Should().BeEquivalentTo(resident4);
+        }
+
 
         [Test]
         public void GetResidentByIdWhenNoMatchingRecordReturnNull()
@@ -169,9 +181,9 @@ namespace ResidentContactApi.Tests.V1.Gateways
             record.Contacts.Count.Should().Be(2);
         }
 
-        private Resident AddPersonRecordToDatabase(string lastname = null, string firstname = null)
+        private Resident AddPersonRecordToDatabase(string lastName = null, string firstName = null, int? id = null)
         {
-            var databaseEntity = TestHelper.CreateDatabasePersonEntity(firstname, lastname);
+            var databaseEntity = TestHelper.CreateDatabasePersonEntity(firstName, lastName, id);
             ResidentContactContext.Residents.Add(databaseEntity);
             ResidentContactContext.SaveChanges();
             return databaseEntity;
@@ -191,6 +203,17 @@ namespace ResidentContactApi.Tests.V1.Gateways
             ResidentContactContext.ContactTypeLookups.Add(contactType);
             ResidentContactContext.SaveChanges();
             return contactType;
+        }
+
+        private ResidentDomain AddResidentAndContactDetailsToDatabase(string firstName = null, string lastName = null, int? id = null)
+        {
+            var databaseEntity = AddPersonRecordToDatabase(firstName: firstName, id: id, lastName: lastName);
+            var domainEntity = databaseEntity.ToDomain();
+            var contactType = AddContactTypeToDatabase();
+            var contact = AddContactRecordToDatabase(databaseEntity.Id, contactType.Id);
+            domainEntity.Contacts = new List<ContactDetailsDomain> { contact.ToDomain() };
+            domainEntity.Contacts.First().Type = contactType.Name;
+            return domainEntity;
         }
     }
 

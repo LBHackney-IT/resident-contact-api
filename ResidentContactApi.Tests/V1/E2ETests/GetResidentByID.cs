@@ -23,7 +23,7 @@ namespace ResidentContactApi.Tests.V1.E2ETests
         public async Task GetResidentInformationByIdReturn200()
         {
             var residentId = _fixture.Create<int>();
-            var expectedResponse = E2ETestsHelper.AddPersonWithRelatedEntitiestoDb(ResidentContactContext, residentId);
+            var expectedResponse = E2ETestsHelper.AddPersonWithRelatedEntitiesToDb(ResidentContactContext, residentId);
             var uri = new Uri($"api/v1/contacts/{residentId}", UriKind.Relative);
             var response = Client.GetAsync(uri);
             var statuscode = response.Result.StatusCode;
