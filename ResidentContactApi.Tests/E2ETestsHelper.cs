@@ -53,13 +53,30 @@ namespace ResidentContactApi.Tests
                             DateAdded = contact.DateAdded,
                             Type = contactType.Name,
                             SubType = subContactType.Name
-
                         }
                     }
-
-
             };
+        }
 
+        public static string AddCrmContactIdForResidentId(ResidentContactContext context, int residentId)
+        {
+            var fixture = new Fixture();
+            var externalSystemLookup = new ExternalSystemLookup
+            {
+                Name = "CRM"
+            };
+            context.ExternalSystemLookups.Add(externalSystemLookup);
+            context.SaveChanges();
+            var externalLink = new ExternalSystemId
+            {
+                ResidentId = residentId,
+                ExternalIdName = "ContactId",
+                ExternalSystemLookupId = externalSystemLookup.Id,
+                ExternalIdValue = fixture.Create<string>()
+            };
+            context.ExternalSystemIds.Add(externalLink);
+            context.SaveChanges();
+            return externalLink.ExternalIdValue;
         }
     }
 }

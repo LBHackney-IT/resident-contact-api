@@ -47,23 +47,44 @@ namespace ResidentContactApi.V1.Gateways
 
         }
 
-        public ResidentDomain InsertResidentContactDetails(ResidentContact rcp)
+        public int? InsertResidentContactDetails(int? residentId, string nccContactId, ContactDetailsDomain contactDetails)
         {
+            if (ResidentNotFoundForId(residentId)) residentId = null;
+
+            residentId = residentId ?? FindResidentIdByContactId(nccContactId);
+
+            if (residentId == null) return null;
+
             var contact = new Contact
             {
-                ResidentId = rcp.ResidentId,
-                ContactValue = rcp.Value,
-                IsActive = rcp.Active,
-                IsDefault = rcp.Default,
-                ContactTypeLookupId = rcp.TypeId,
-                ContactSubTypeLookupId = rcp.SubtypeId
+                ResidentId = residentId.Value,
+                ContactValue = contactDetails.ContactValue,
+                IsActive = contactDetails.IsActive,
+                IsDefault = contactDetails.IsDefault,
+                ContactTypeLookupId = contactDetails.TypeId,
+                ContactSubTypeLookupId = contactDetails.SubtypeId
             };
 
             _residentContactContext.ContactDetails.Add(contact);
             _residentContactContext.SaveChanges();
 
-            //Return resident
-            return GetResidentById(contact.ResidentId);
+            return contact.Id;
+        }
+
+        private int? FindResidentIdByContactId(string nccContactId)
+        {
+            var residentIdByContactId = _residentContactContext.ExternalSystemIds
+                .Include(e => e.ExternalSystem)
+                .Where(e => e.ExternalSystem.Name == "CRM")
+                .Where(e => e.ExternalIdName == "ContactId")
+                .FirstOrDefault(e => e.ExternalIdValue == nccContactId)?
+                .ResidentId;
+            return residentIdByContactId;
+        }
+
+        private bool ResidentNotFoundForId(int? residentId)
+        {
+            return _residentContactContext.Residents.Find(residentId) == null;
         }
 
         private static ResidentDomain MapPersonAndContactToResident(Resident resident, IEnumerable<Contact> contacts)

@@ -1,19 +1,15 @@
-using ResidentContactApi.V1.Boundary;
+using System;
 using ResidentContactApi.V1.Boundary.Response;
 using ResidentContactApi.V1.Domain;
 using ResidentContactApi.V1.Gateways;
 using ResidentContactApi.V1.UseCase;
-using Bogus;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using ResidentContactApi.V1.Boundary.Requests;
 using AutoFixture;
-using ResidentContactApi.V1.Factories;
+using ResidentContactApi.V1.Boundary;
 
 namespace ResidentContactApi.Tests.V1.UseCase
 {
@@ -21,50 +17,81 @@ namespace ResidentContactApi.Tests.V1.UseCase
     {
         private CreateContactDetailsUseCase _classUnderTest;
         private Mock<IResidentGateway> _mockGateway;
-        private static Faker _faker = new Faker();
-        private static Fixture _fixture = new Fixture();
+        private readonly Fixture _fixture = new Fixture();
 
         [SetUp]
         public void Setup()
         {
+            _fixture.Behaviors.OfType<ThrowingRecursionBehavior>().ToList()
+                .ForEach(b => _fixture.Behaviors.Remove(b));
+            _fixture.Behaviors.Add(new OmitOnRecursionBehavior(2));
             _mockGateway = new Mock<IResidentGateway>();
             _classUnderTest = new CreateContactDetailsUseCase(_mockGateway.Object);
         }
 
         [Test]
-        public void UseCaseShouldCallGatewayToInsertContactData()
+        public void UseCaseShouldCallGatewayWithADomainObjectToInsertContactData()
         {
-            var request = GetResidentContactParameter();
+            var request = _fixture.Create<ResidentContact>();
 
-            var stubbedContactInfo = _fixture
-               .Build<ResidentDomain>()
-               .Without(contact => contact.Contacts)
-               .Create();
-            stubbedContactInfo.Contacts = _fixture
-                .Build<ContactDetailsDomain>()
-                .Without(resident => resident.Resident)
-                .CreateMany().ToList();
+            var expectedDomain = new ContactDetailsDomain
+            {
+                ContactValue = request.Value,
+                IsActive = request.Active,
+                IsDefault = request.Default,
+                SubtypeId = request.SubtypeId,
+                TypeId = request.TypeId,
+            };
+            _mockGateway.Setup(
+                x => x.InsertResidentContactDetails(request.ResidentId.Value, request.NccContactId,
+                    It.Is<ContactDetailsDomain>(x => CheckContactDetails(x, expectedDomain)))).Returns(1);
+            _classUnderTest.Execute(request);
+            _mockGateway.Verify();
 
-            _mockGateway.Setup(x => x.InsertResidentContactDetails(request)).Returns(stubbedContactInfo);
-
-            var response = _classUnderTest.Execute(request);
-            var expectedContact = stubbedContactInfo.ToResponse();
-
-            response.Should().NotBeNull();
-            response.Should().BeOfType<ResidentResponse>();
         }
 
-        private static ResidentContact GetResidentContactParameter()
+        [Test]
+        public void UseCaseShouldReturnTheIdOfTheResource()
         {
-            return new ResidentContact
+            var stubbedId = _fixture.Create<int>();
+
+            _mockGateway.Setup(x => x.InsertResidentContactDetails(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<ContactDetailsDomain>()))
+                .Returns(stubbedId);
+
+            var response = _classUnderTest.Execute(_fixture.Create<ResidentContact>());
+
+            response.Should().BeEquivalentTo(new ContactDetailsResponse
             {
-                SubtypeId = _faker.Random.Int(1, 5),
-                TypeId = _faker.Random.Int(1, 5),
-                Value = _faker.Random.String(11, 100),
-                Active = _faker.Random.Bool(),
-                Default = _faker.Random.Bool(),
-                ResidentId = _faker.Random.Int(1)
-            };
+                Id = stubbedId
+            });
+        }
+
+        [Test]
+        public void IfNoIdIsPresentExecuteShouldThrowNoIdException()
+        {
+            var request = _fixture.Build<ResidentContact>()
+                .Without(c => c.ResidentId).Without(c => c.NccContactId).Create();
+            Func<ContactDetailsResponse> testDelegate = () => _classUnderTest.Execute(request);
+            testDelegate.Should().Throw<NoIdentifierException>();
+        }
+
+        [Test]
+        public void IfGatewayReturnsNullExecuteShouldThrowResidentNotFound()
+        {
+            var request = _fixture.Create<ResidentContact>();
+            _mockGateway.Setup(x => x.InsertResidentContactDetails(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<ContactDetailsDomain>()))
+                .Returns((int?) null);
+            Func<ContactDetailsResponse> testDelegate = () => _classUnderTest.Execute(request);
+            testDelegate.Should().Throw<ResidentNotFoundException>();
+        }
+
+        private static bool CheckContactDetails(ContactDetailsDomain x, ContactDetailsDomain expectedDomain)
+        {
+            return x.ContactValue == expectedDomain.ContactValue
+                   && x.IsActive == expectedDomain.IsActive
+                   && x.IsDefault == expectedDomain.IsDefault
+                   && x.SubtypeId == expectedDomain.SubtypeId
+                   && x.TypeId == expectedDomain.TypeId;
         }
     }
 }

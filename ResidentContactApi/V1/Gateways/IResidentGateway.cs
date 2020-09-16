@@ -1,9 +1,6 @@
-using ResidentContactApi.V1.Boundary.Requests;
 using ResidentDomain = ResidentContactApi.V1.Domain.ResidentDomain;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using ResidentContactApi.V1.Domain;
 
 namespace ResidentContactApi.V1.Gateways
 {
@@ -11,7 +8,6 @@ namespace ResidentContactApi.V1.Gateways
     {
         List<ResidentDomain> GetResidents(int limit, int cursor, string firstName, string lastName);
         ResidentDomain GetResidentById(int id);
-        ResidentDomain InsertResidentContactDetails(ResidentContact rcp);
-
+        int? InsertResidentContactDetails(int? residentId, string nccContactId, ContactDetailsDomain contactDetails);
     }
 }

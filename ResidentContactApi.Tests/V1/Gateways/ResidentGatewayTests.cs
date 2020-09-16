@@ -1,3 +1,4 @@
+using System;
 using ResidentContactApi.Tests.V1.Helper;
 using ResidentContactApi.V1.Domain;
 using ResidentContactApi.V1.Gateways;
@@ -7,9 +8,9 @@ using ResidentContactApi.V1.Infrastructure;
 using System.Collections.Generic;
 using System.Linq;
 using AutoFixture;
+using FluentAssertions.Equivalency;
 using ResidentContactApi.V1.Enums;
 using ResidentContactApi.V1.Factories;
-using ResidentContactApi.V1.Boundary.Requests;
 
 namespace ResidentContactApi.Tests.V1.Gateways
 {
@@ -22,6 +23,9 @@ namespace ResidentContactApi.Tests.V1.Gateways
         [SetUp]
         public void Setup()
         {
+            _fixture.Behaviors.OfType<ThrowingRecursionBehavior>().ToList()
+                .ForEach(b => _fixture.Behaviors.Remove(b));
+            _fixture.Behaviors.Add(new OmitOnRecursionBehavior(2));
             _classUnderTest = new ResidentGateway(ResidentContactContext);
         }
 
@@ -159,26 +163,112 @@ namespace ResidentContactApi.Tests.V1.Gateways
         }
 
         [Test]
-        public void InsertedContactRecordShouldBeInsertedOnceInTheDatabase()
+        public void WhenGivenResidentIdInsertedContactRecordShouldBeInsertedOnceInTheDatabase()
         {
             var databaseEntity = AddPersonRecordToDatabase();
             var contactType = AddContactTypeToDatabase();
-            var contact = AddContactRecordToDatabase(databaseEntity.Id, contactType.Id);
 
-            var request = _fixture.Build<ResidentContact>()
+            var request = _fixture.Build<ContactDetailsDomain>()
                 .With(x => x.ResidentId, databaseEntity.Id)
                 .With(x => x.TypeId, contactType.Id)
                 .Without(x => x.SubtypeId)
                 .Create();
 
-            var response = _classUnderTest.InsertResidentContactDetails(request);
-            var databaseRecord = ResidentContactContext.Residents.Where(res => res.Id == response.Id);
+            var responseId = _classUnderTest.InsertResidentContactDetails(request.ResidentId, null, request);
 
-            var record = databaseRecord.First();
+            var databaseRecords = ResidentContactContext.ContactDetails.Where(res => res.Id == responseId);
+            databaseRecords.Count().Should().Be(1);
+            var record = databaseRecords.First();
 
-            databaseRecord.Count().Should().Be(1);
-            record.Id.Should().Be(request.ResidentId);
-            record.Contacts.Count.Should().Be(2);
+            var expectedDatabaseRecord = new Contact
+            {
+                Id = responseId.Value,
+                ContactValue = request.ContactValue,
+                IsActive = request.IsActive,
+                IsDefault = request.IsDefault,
+                ContactTypeLookupId = contactType.Id,
+                ResidentId = databaseEntity.Id
+            };
+            record.Should().BeEquivalentTo(expectedDatabaseRecord, IgnoreForeignDatabaseObjects());
+        }
+
+        [Test]
+        public void WhenGivenAContactIdInsertContactDetailsShouldLinkToTheCorrectResident()
+        {
+            var person = AddPersonRecordToDatabase();
+            var contactId = AddCrmContactIdForResident(person);
+            var contactType = AddContactTypeToDatabase();
+
+            var request = _fixture.Build<ContactDetailsDomain>()
+                .With(x => x.ResidentId, person.Id)
+                .With(x => x.TypeId, contactType.Id)
+                .Without(x => x.SubtypeId)
+                .Create();
+
+            var responseId = _classUnderTest.InsertResidentContactDetails(null, contactId, request);
+
+            var savedContact = ResidentContactContext.ContactDetails.FirstOrDefault(res => res.Id == responseId);
+            savedContact.Should().NotBeNull();
+            savedContact.ResidentId.Should().Be(person.Id);
+        }
+
+        [Test]
+        public void WhenGivenResidentIdIfResidentCanNotBeFoundWillReturnNullAndAddNothingToTheDatabase()
+        {
+            var contactType = AddContactTypeToDatabase();
+
+            var request = _fixture.Build<ContactDetailsDomain>()
+                .Without(x => x.ResidentId)
+                .With(x => x.TypeId, contactType.Id)
+                .Without(x => x.SubtypeId)
+                .Create();
+
+            var responseId = _classUnderTest.InsertResidentContactDetails(1, null, request);
+            responseId.Should().BeNull();
+            var savedContact = ResidentContactContext.ContactDetails.Count().Should().Be(0);
+            savedContact.Should().NotBeNull();
+        }
+
+        [Test]
+        public void WhenGivenContactIdIfResidentCanNotBeFoundWillReturnNullAndAddNothingToTheDatabase()
+        {
+            var contactType = AddContactTypeToDatabase();
+
+            var request = _fixture.Build<ContactDetailsDomain>()
+                .Without(x => x.ResidentId)
+                .With(x => x.TypeId, contactType.Id)
+                .Without(x => x.SubtypeId)
+                .Create();
+
+            var responseId = _classUnderTest.InsertResidentContactDetails(null, "NOTAREALCONTACTID", request);
+            responseId.Should().BeNull();
+            var savedContact = ResidentContactContext.ContactDetails.Count().Should().Be(0);
+            savedContact.Should().NotBeNull();
+        }
+
+        [Test]
+        public void WhenGivenBothIdsIfResidentCanNotBeFoundWillLinkUsingContactId()
+        {
+            var person = AddPersonRecordToDatabase();
+            var contactId = AddCrmContactIdForResident(person);
+            var contactType = AddContactTypeToDatabase();
+
+            var request = _fixture.Build<ContactDetailsDomain>()
+                .With(x => x.ResidentId, person.Id)
+                .With(x => x.TypeId, contactType.Id)
+                .Without(x => x.SubtypeId)
+                .Create();
+
+            var responseId = _classUnderTest.InsertResidentContactDetails(person.Id + 3, contactId, request);
+
+            var savedContact = ResidentContactContext.ContactDetails.FirstOrDefault(res => res.Id == responseId);
+            savedContact.Should().NotBeNull();
+            savedContact.ResidentId.Should().Be(person.Id);
+        }
+
+        private static Func<EquivalencyAssertionOptions<Contact>, EquivalencyAssertionOptions<Contact>> IgnoreForeignDatabaseObjects()
+        {
+            return options => options.Excluding(x => x.Resident).Excluding(x => x.ContactSubTypeLookup).Excluding(x => x.ContactTypeLookup);
         }
 
         private Resident AddPersonRecordToDatabase(string lastName = null, string firstName = null, int? id = null)
@@ -215,6 +305,25 @@ namespace ResidentContactApi.Tests.V1.Gateways
             domainEntity.Contacts.First().Type = contactType.Name;
             return domainEntity;
         }
-    }
 
+        private string AddCrmContactIdForResident(Resident person)
+        {
+            var externalSystemLookup = new ExternalSystemLookup
+            {
+                Name = "CRM"
+            };
+            ResidentContactContext.ExternalSystemLookups.Add(externalSystemLookup);
+            ResidentContactContext.SaveChanges();
+            var externalLink = new ExternalSystemId
+            {
+                ResidentId = person.Id,
+                ExternalIdName = "ContactId",
+                ExternalSystemLookupId = externalSystemLookup.Id,
+                ExternalIdValue = _fixture.Create<string>()
+            };
+            ResidentContactContext.ExternalSystemIds.Add(externalLink);
+            ResidentContactContext.SaveChanges();
+            return externalLink.ExternalIdValue;
+        }
+    }
 }

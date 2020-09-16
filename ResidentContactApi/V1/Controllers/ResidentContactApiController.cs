@@ -6,6 +6,7 @@ using ResidentContactApi.V1.Boundary.Requests;
 using ResidentContactApi.V1.Domain;
 using System.Net.Mail;
 using System;
+using ResidentContactApi.V1.Boundary;
 
 namespace ResidentContactApi.V1.Controllers
 {
@@ -75,13 +76,17 @@ namespace ResidentContactApi.V1.Controllers
             try
             {
                 var resident = _createContactDetails.Execute(rcp);
-                return CreatedAtAction("ViewRecord", new { id = resident.Id }, resident);
+                return CreatedAtAction("ViewRecord", resident);
             }
-            catch (Exception e)
+            catch (NoIdentifierException)
             {
-                return BadRequest(e.Message);
+                return BadRequest(
+                    "Request must include either the residents ID or the contact ID for the resident from NCC");
             }
-
+            catch (ResidentNotFoundException)
+            {
+                return BadRequest("Resident ID and/or NCC Contact ID do not link to a resident record");
+            }
         }
     }
 }
