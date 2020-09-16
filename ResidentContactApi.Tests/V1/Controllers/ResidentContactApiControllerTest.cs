@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ResidentContactApi.V1.Boundary;
 using ResidentContactApi.V1.Boundary.Response;
 
 namespace ResidentContactApi.Tests.V1.Controllers
@@ -105,16 +106,35 @@ namespace ResidentContactApi.Tests.V1.Controllers
         }
 
         [Test]
-        public void CreateRecordTest()
+        public void CreateRecordReturns201IfSuccessful()
         {
-            var response = new ResidentResponse();
-            _mockCreateContactDetails.Setup(x => x.Execute(It.IsAny<ResidentContact>())).Returns(response);
+            var useCaseResponse = new ContactDetailsResponse();
+            _mockCreateContactDetails.Setup(x => x.Execute(It.IsAny<ResidentContact>())).Returns(useCaseResponse);
             var result = _classUnderTest.CreateContactRecord(It.IsAny<ResidentContact>()) as CreatedAtActionResult;
 
-            response.Should().NotBeNull();
-            result.Value.Should().BeOfType<ResidentResponse>();
+            result.Should().NotBeNull();
+            result.Value.Should().BeEquivalentTo(useCaseResponse);
             result.StatusCode.Should().Be(201);
         }
-    }
 
+        [Test]
+        public void CreateRecordReturns400IfNoIdExceptionThrown()
+        {
+            _mockCreateContactDetails.Setup(x => x.Execute(It.IsAny<ResidentContact>())).Throws<NoIdentifierException>();
+            var result = _classUnderTest.CreateContactRecord(It.IsAny<ResidentContact>()) as BadRequestObjectResult;
+
+            result.Should().NotBeNull();
+            result.StatusCode.Should().Be(400);
+        }
+
+        [Test]
+        public void CreateRecordReturns400IfResidentNotFoundExceptionThrown()
+        {
+            _mockCreateContactDetails.Setup(x => x.Execute(It.IsAny<ResidentContact>())).Throws<ResidentNotFoundException>();
+            var result = _classUnderTest.CreateContactRecord(It.IsAny<ResidentContact>()) as BadRequestObjectResult;
+
+            result.Should().NotBeNull();
+            result.StatusCode.Should().Be(400);
+        }
+    }
 }
