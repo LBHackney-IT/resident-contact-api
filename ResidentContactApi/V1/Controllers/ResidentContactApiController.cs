@@ -46,7 +46,7 @@ namespace ResidentContactApi.V1.Controllers
         /// </summary>
         /// <response code="200">Successful operation</response>
         /// <response code="404">Contact not found for specified ID</response>
-        /// <response code = "400">Please enter a valide request.</response>
+        /// <response code = "400">Please enter a valid request.</response>
         [ProducesResponseType(typeof(ResidentResponse), StatusCodes.Status200OK)]
         [HttpGet]
         [Route("contacts/{id}")]
