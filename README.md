@@ -1,6 +1,6 @@
 # Resident Contact API
 
-Resident Contact API will return a list of contact details (inc. mobile, uprn, email) for residents that we have stored.
+Resident Contact API allows access to saved contact details (inc. mobile, uprn, email) for residents that we have stored.
 
 The contact details can be retrieved through the use of a GET Endpoint which will return all the data or a specific Id too.
 
