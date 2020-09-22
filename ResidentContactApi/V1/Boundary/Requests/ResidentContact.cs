@@ -7,6 +7,7 @@ namespace ResidentContactApi.V1.Boundary.Requests
     {
         public int? ResidentId { get; set; }
 
+        public int Id { get; set; }
         public string NccContactId { get; set; }
 
         //Value eg. a phone or mobile number, e-mail address etc.

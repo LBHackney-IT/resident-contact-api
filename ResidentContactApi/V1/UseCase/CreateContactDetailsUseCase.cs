@@ -29,7 +29,9 @@ namespace ResidentContactApi.V1.UseCase
                 IsActive = contactRequest.Active,
                 IsDefault = contactRequest.Default,
                 TypeId = contactRequest.TypeId,
-                SubtypeId = contactRequest.SubtypeId
+                SubtypeId = contactRequest.SubtypeId,
+                Id = contactRequest.Id
+
             };
             var response = _residentGateway.InsertResidentContactDetails(contactRequest.ResidentId,
                 contactRequest.NccContactId, contactDomain);
