@@ -13,27 +13,44 @@ The contact details can be retrieved through the use of two GET Endpoints. One w
 
 ### Setup
 
-1. Install [Docker][docker-download].
-2. Install [AWS CLI][AWS-CLI].
-3. Clone this repository.
+1. Install [Docker][docker-download] and [docker-compose]
+2. Clone this repository.
 
 ### Development
 
-To serve the application, run it using your IDE of choice, we use Visual Studio CE and JetBrains Rider on Mac.
+To serve the application, run it using your IDE of choice; we use Visual Studio CE and JetBrains Rider on Mac.
 
-The application can also be served locally using docker:
-1.  Add you security credentials to AWS CLI.
-```sh
-$ aws configure
-```
-2. Log into AWS ECR.
-```sh
-$ aws ecr get-login --no-include-email
-```
-3. Build and serve the application. It will be available in the port 3000.
+The application can also be served locally using Docker. It will be available on port 3000.
+
 ```sh
 $ make build && make serve
 ```
+
+### Running the tests
+
+You can run the tests in a container:
+
+```sh
+$ make test
+```
+
+Or locally if you prefer: 
+
+```sh
+$ dotnet test
+```
+
+In order to configure the local test database you should first run: 
+
+```sh
+$ make migrate-local-test-database
+```
+
+To run database tests locally (e.g. via Visual Studio) the `CONNECTION_STRING` environment variable will need to be populated with:
+
+`Host=localhost;Database=entitycore;Username=postgres;Password=mypassword"`
+
+Note: The Host name needs to be the name of the stub database docker-compose service, in order to run tests via Docker.
 
 ### Release process
 
@@ -76,21 +93,7 @@ To make changes to the database structure follow these steps.
 
 Note: You must not change any DbSet that is listed in `ResidentContactContext` without creating a migration as the change then won't be reflected in the database and will cause errors.
 
-## Testing
-
-### Run the tests
-
-```sh
-$ make test
-```
-
-To run database tests locally (e.g. via Visual Studio) the `CONNECTION_STRING` environment variable will need to be populated with:
-
-`Host=localhost;Database=entitycore;Username=postgres;Password=mypassword"`
-
-Note: The Host name needs to be the name of the stub database docker-compose service, in order to run tests via Docker.
-
-### Agreed Testing Approach
+## Agreed Testing Approach
 - Use nUnit, FluentAssertions and Moq
 - Always follow a TDD approach
 - Tests should be independent of each other
@@ -124,6 +127,7 @@ Note: The Host name needs to be the name of the stub database docker-compose ser
 - **Rashmi Shetty**, Product Owner at London Borough of Hackney (rashmi.shetty@hackney.gov.uk)
 
 [docker-download]: https://www.docker.com/products/docker-desktop
+[docker-compose]: https://docs.docker.com/compose/install/
 [universal-housing-simulator]: https://github.com/LBHackney-IT/lbh-universal-housing-simulator
 [made-tech]: https://madetech.com/
 [AWS-CLI]: https://aws.amazon.com/cli/
