@@ -269,15 +269,13 @@ namespace ResidentContactApi.Tests.V1.Gateways
         [Test]
         public void WhenGivenIdIsActiveShouldBeFalse()
         {
-            var id = _fixture.Create<int?>();
+            var databaseEntity = AddPersonRecordToDatabase();
+            var contactType = AddContactTypeToDatabase();
+            var contact = AddContactRecordToDatabase(databaseEntity.Id, contactType.Id);
 
-            var update = _fixture.Build<ContactDetailsDomain>()
-                                 .With(x => x.Id, id)
-                                 .Create();
+            _classUnderTest.InvalidateContactDetailsRecord(contact.Id);
 
-            _classUnderTest.InvalidateContactDetailsRecord(id);
-
-            var saveContact = ResidentContactContext.ContactDetails.FirstOrDefault(con => con.Id == id);
+            var saveContact = ResidentContactContext.ContactDetails.FirstOrDefault(con => con.Id == contact.Id);
             saveContact.Should().NotBeNull();
             saveContact.IsActive.Should().Be(false);
         }
