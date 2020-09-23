@@ -42,6 +42,14 @@ namespace ResidentContactApi.Tests.V1.Gateways
         }
 
         [Test]
+        public void GetContactByIdReturnsNullWithInvalidId()
+        {
+            var domainEntity1 = AddResidentAndContactDetailsToDatabase("firstname");
+
+            Assert.Null(_classUnderTest.getContactById(domainEntity1.Contacts.FirstOrDefault().Id + 1));
+        }
+
+        [Test]
         public void GetContactByIdReturnsCorrectRecord()
         {
             var domainEntity1 = AddResidentAndContactDetailsToDatabase("firstname");
