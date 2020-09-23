@@ -108,11 +108,11 @@ namespace ResidentContactApi.V1.Controllers
 
                 return CreatedAtAction("ViewResidentRecord", resident);
             }
-            catch (ResidentNotInsertedException ex)//TODO create exception
+            catch (ResidentNotInsertedException ex)
             {
                 return StatusCode(500, $"Resident could not be inserted - {ex.Message}");
             }
-            catch (ExternalReferenceNotInsertedException ex)//TODO create exception
+            catch (ExternalReferenceNotInsertedException ex)
             {
                 return StatusCode(500, $"External reference could not be inserted - {ex.Message}");
             }
