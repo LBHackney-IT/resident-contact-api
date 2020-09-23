@@ -30,12 +30,16 @@ namespace ResidentContactApi.V1.UseCase
                 IsDefault = contactRequest.Default,
                 TypeId = contactRequest.TypeId,
                 SubtypeId = contactRequest.SubtypeId,
-                Id = contactRequest.Id
+                Id = contactRequest?.Id
 
             };
             var response = _residentGateway.InsertResidentContactDetails(contactRequest.ResidentId,
                 contactRequest.NccContactId, contactDomain);
             if (response == null) throw new ResidentNotFoundException();
+            if (contactRequest.Id != null)
+            {
+                _residentGateway.InvalidateContactDetailsRecord(contactRequest.Id);
+            }
             return new ContactDetailsResponse { Id = response.Value };
         }
     }

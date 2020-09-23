@@ -266,6 +266,22 @@ namespace ResidentContactApi.Tests.V1.Gateways
             savedContact.ResidentId.Should().Be(person.Id);
         }
 
+        [Test]
+        public void WhenGivenIdIsActiveShouldBeFalse()
+        {
+            var id = _fixture.Create<int?>();
+
+            var update = _fixture.Build<ContactDetailsDomain>()
+                                 .With(x => x.Id, id)
+                                 .Create();
+
+            _classUnderTest.InvalidateContactDetailsRecord(id);
+
+            var saveContact = ResidentContactContext.ContactDetails.FirstOrDefault(con => con.Id == id);
+            saveContact.Should().NotBeNull();
+            saveContact.IsActive.Should().Be(false);
+        }
+
         private static Func<EquivalencyAssertionOptions<Contact>, EquivalencyAssertionOptions<Contact>> IgnoreForeignDatabaseObjects()
         {
             return options => options.Excluding(x => x.Resident).Excluding(x => x.ContactSubTypeLookup).Excluding(x => x.ContactTypeLookup);
@@ -325,5 +341,7 @@ namespace ResidentContactApi.Tests.V1.Gateways
             ResidentContactContext.SaveChanges();
             return externalLink.ExternalIdValue;
         }
+
+
     }
 }

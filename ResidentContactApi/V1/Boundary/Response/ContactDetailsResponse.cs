@@ -4,7 +4,7 @@ namespace ResidentContactApi.V1.Boundary.Response
 {
     public class ContactDetailsResponse
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public string Value { get; set; }
         public string Type { get; set; }
         public string SubType { get; set; }

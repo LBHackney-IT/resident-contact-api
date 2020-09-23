@@ -1,10 +1,13 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ResidentContactApi.V1.Boundary.Requests;
 using ResidentContactApi.V1.Domain;
 using ResidentContactApi.V1.Factories;
 using ResidentContactApi.V1.Infrastructure;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 
 namespace ResidentContactApi.V1.Gateways
 {
@@ -96,6 +99,23 @@ namespace ResidentContactApi.V1.Gateways
                 ? contactDomain
                 : null;
             return person;
+        }
+
+        public void InvalidateContactDetailsRecord(int? id)
+        {
+            try
+            {
+                var updateRecord = _residentContactContext.ContactDetails
+                                    .Where(x => x.Id == id)
+                                    .FirstOrDefault();
+                updateRecord.IsActive = false;
+                _residentContactContext.SaveChanges();
+
+            }
+            catch (DbUpdateException)
+            {
+                throw new ResidentContactDetailsRecordToInvalidateNotFoundException();
+            }
         }
 
     }

@@ -4,7 +4,7 @@ namespace ResidentContactApi.V1.Domain
 {
     public class ContactDetailsDomain
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public string ContactValue { get; set; }
         public string Type { get; set; }
         public int TypeId { get; set; }
