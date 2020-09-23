@@ -1,8 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using ResidentContactApi.V1.Boundary.Requests;
+using ResidentContactApi.V1.Boundary.Response;
 using ResidentContactApi.V1.Domain;
 using ResidentContactApi.V1.Factories;
 using ResidentContactApi.V1.Infrastructure;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -33,6 +35,7 @@ namespace ResidentContactApi.V1.Gateways
             return residents;
 
         }
+
         public ResidentDomain GetResidentById(int id)
         {
             var databaseRecord = _residentContactContext.Residents.Find(id);
@@ -98,5 +101,69 @@ namespace ResidentContactApi.V1.Gateways
             return person;
         }
 
+        public InsertResidentResponse InsertNewResident(InsertResidentRequest request)
+        {
+            try
+            {
+                //find CRM system lookup id to compare against request
+                var crmLookupId = _residentContactContext.ExternalSystemLookups.Where(x => x.Name == "CRM").FirstOrDefault();
+                var crmId = request.ExternalReferences.Find(x => x.ExternalReferenceName == "ContactId" && x.ExternalSystemId == crmLookupId.Id);
+                if (crmId != null)
+                {   //check if resident exists
+                    var residentExists = FindResidentIdByContactId(crmId.ExternalReferenceValue);
+                    //if resident already present, return id
+                    if (residentExists != null) return new InsertResidentResponse { ResidentId = (int) residentExists, ResidentRecordAlreadyPresent = true };
+                }
+
+                var newResident = new Resident
+                {
+                    FirstName = request.FirstName,
+                    LastName = request.LastName,
+                    DateOfBirth = request.DateOfBirth,
+                    Gender = request.Gender
+                };
+
+                _residentContactContext.Residents.Add(newResident);
+                _residentContactContext.SaveChanges();
+
+                return new InsertResidentResponse { ResidentId = newResident.Id, ResidentRecordAlreadyPresent = false };
+            }
+            catch (DbUpdateException ex)
+            {
+                throw new ResidentNotInsertedException(ex.InnerException.Message);
+            }
+        }
+
+        public void InsertExternalReferences(InsertResidentRequest request, int residentId)
+        {
+            try
+            {
+                foreach (var externalReference in request.ExternalReferences)
+                {
+                    //check if external reference already exists for resident
+                    var externalRefExists = _residentContactContext.ExternalSystemIds.Any(x => x.ExternalSystemLookupId == externalReference.ExternalSystemId
+                        && x.ExternalIdName == externalReference.ExternalReferenceName && x.ExternalIdValue == externalReference.ExternalReferenceValue
+                        && x.ResidentId == residentId);
+
+                    if (!externalRefExists)
+                    {
+                        var newExternalReference = new ExternalSystemId()
+                        {
+                            ExternalIdName = externalReference.ExternalReferenceName,
+                            ExternalIdValue = externalReference.ExternalReferenceValue,
+                            ExternalSystemLookupId = externalReference.ExternalSystemId,
+                            ResidentId = residentId
+                        };
+                        _residentContactContext.ExternalSystemIds.Add(newExternalReference);
+                    }
+                }
+
+                _residentContactContext.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+                throw new ExternalReferenceNotInsertedException(ex.InnerException.Message);
+            }
+        }
     }
 }
