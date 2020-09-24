@@ -100,7 +100,7 @@ namespace ResidentContactApi.Tests.V1.E2ETests
                 DateOfBirth = _faker.Date.Past(),
                 ExternalReferences = new List<InsertExternalReferenceRequest> {
                     new InsertExternalReferenceRequest {
-                        ExternalReferenceValue =crmReference.ExternalIdValue,
+                        ExternalReferenceValue = crmReference.ExternalIdValue,
                         ExternalReferenceName = "ContactId",
                         ExternalSystemId = crmReference.ExternalSystemLookupId
                     }
