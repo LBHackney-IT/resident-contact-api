@@ -128,7 +128,7 @@ namespace ResidentContactApi.V1.Controllers
         [ProducesResponseType(typeof(ResidentResponse), StatusCodes.Status201Created)]
         [HttpPost]
         [Route("/residents/{residentId}/externalReferences")]
-        public IActionResult InsertExternalResident([FromBody] InsertResidentRequest request)
+        public IActionResult InsertExternalReference([FromBody] InsertResidentRequest request)
         {
             try
             {

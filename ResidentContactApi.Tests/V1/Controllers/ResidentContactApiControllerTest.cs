@@ -191,7 +191,7 @@ namespace ResidentContactApi.Tests.V1.Controllers
             var response = new InsertResidentResponse { ResidentRecordAlreadyPresent = true };
             _mockInsertExternalReferenceRecordUseCase.Setup(x => x.Execute(It.IsAny<InsertResidentRequest>())).Returns(response);
 
-            var result = _classUnderTest.InsertExternalResident(It.IsAny<InsertResidentRequest>()) as OkObjectResult;
+            var result = _classUnderTest.InsertExternalReference(It.IsAny<InsertResidentRequest>()) as OkObjectResult;
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(200);
             result.Value.Should().BeEquivalentTo(response);
@@ -203,7 +203,7 @@ namespace ResidentContactApi.Tests.V1.Controllers
             var response = new InsertResidentResponse { ResidentId = 2, ResidentRecordAlreadyPresent = false };
             _mockInsertExternalReferenceRecordUseCase.Setup(x => x.Execute(It.IsAny<InsertResidentRequest>())).Returns(response);
 
-            var result = _classUnderTest.InsertExternalResident(It.IsAny<InsertResidentRequest>()) as CreatedAtActionResult;
+            var result = _classUnderTest.InsertExternalReference(It.IsAny<InsertResidentRequest>()) as CreatedAtActionResult;
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(201);
             result.Value.Should().BeEquivalentTo(response);
@@ -212,7 +212,7 @@ namespace ResidentContactApi.Tests.V1.Controllers
         public void InsertExternalReferenceReturns500StatusCodeIfResidentNotInsertExceptionIsRaised()
         {
             _mockInsertExternalReferenceRecordUseCase.Setup(x => x.Execute(It.IsAny<InsertResidentRequest>())).Throws(new ResidentNotInsertedException("error message"));
-            var result = _classUnderTest.InsertExternalResident(It.IsAny<InsertResidentRequest>()) as ObjectResult;
+            var result = _classUnderTest.InsertExternalReference(It.IsAny<InsertResidentRequest>()) as ObjectResult;
 
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(500);
@@ -222,7 +222,7 @@ namespace ResidentContactApi.Tests.V1.Controllers
         public void InsertExternalReferenceReturns500StatusCodeIfExternalReferenceNotInsertExceptionIsRaised()
         {
             _mockInsertExternalReferenceRecordUseCase.Setup(x => x.Execute(It.IsAny<InsertResidentRequest>())).Throws(new ExternalReferenceNotInsertedException("error message"));
-            var result = _classUnderTest.InsertExternalResident(It.IsAny<InsertResidentRequest>()) as ObjectResult;
+            var result = _classUnderTest.InsertExternalReference(It.IsAny<InsertResidentRequest>()) as ObjectResult;
 
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(500);
