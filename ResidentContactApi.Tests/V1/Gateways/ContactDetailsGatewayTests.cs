@@ -38,7 +38,7 @@ namespace ResidentContactApi.Tests.V1.Gateways
         [Test]
         public void GetContactByIdReturnsNullWithNoRecords()
         {
-            Assert.Null(_classUnderTest.getContactById(123));
+            Assert.Null(_classUnderTest.GetContactById(123));
         }
 
         [Test]
@@ -46,7 +46,7 @@ namespace ResidentContactApi.Tests.V1.Gateways
         {
             var domainEntity1 = AddResidentAndContactDetailsToDatabase("firstname");
 
-            Assert.Null(_classUnderTest.getContactById(domainEntity1.Contacts.FirstOrDefault().Id + 1));
+            Assert.Null(_classUnderTest.GetContactById(domainEntity1.Contacts.FirstOrDefault().Id + 1));
         }
 
         [Test]
@@ -54,7 +54,7 @@ namespace ResidentContactApi.Tests.V1.Gateways
         {
             var domainEntity1 = AddResidentAndContactDetailsToDatabase("firstname");
 
-            Assert.AreEqual(domainEntity1.Contacts.FirstOrDefault().Id, _classUnderTest.getContactById(domainEntity1.Contacts.FirstOrDefault().Id).Id);
+            Assert.AreEqual(domainEntity1.Contacts.FirstOrDefault().Id, _classUnderTest.GetContactById(domainEntity1.Contacts.FirstOrDefault().Id).Id);
         }
 
         [Test]
@@ -63,8 +63,8 @@ namespace ResidentContactApi.Tests.V1.Gateways
             var domainEntity1 = AddResidentAndContactDetailsToDatabase("firstname");
             var domainEntity2 = AddResidentAndContactDetailsToDatabase("firstname");
 
-            Assert.AreEqual(domainEntity1.Contacts.FirstOrDefault().Id, _classUnderTest.getContactById(domainEntity1.Contacts.FirstOrDefault().Id).Id);
-            Assert.AreEqual(domainEntity2.Contacts.FirstOrDefault().Id, _classUnderTest.getContactById(domainEntity2.Contacts.FirstOrDefault().Id).Id);
+            Assert.AreEqual(domainEntity1.Contacts.FirstOrDefault().Id, _classUnderTest.GetContactById(domainEntity1.Contacts.FirstOrDefault().Id).Id);
+            Assert.AreEqual(domainEntity2.Contacts.FirstOrDefault().Id, _classUnderTest.GetContactById(domainEntity2.Contacts.FirstOrDefault().Id).Id);
         }
         
         [Test]
@@ -74,8 +74,25 @@ namespace ResidentContactApi.Tests.V1.Gateways
             var contactType = AddContactTypeToDatabase();
             var contact = AddContactRecordToDatabase(domainEntity1.Id, contactType.Id);
 
-            Assert.AreEqual(domainEntity1.Contacts.FirstOrDefault().Id, _classUnderTest.getContactById(domainEntity1.Contacts.FirstOrDefault().Id).Id);
-            Assert.AreEqual(contact.Id, _classUnderTest.getContactById(contact.Id).Id);
+            Assert.AreEqual(domainEntity1.Contacts.FirstOrDefault().Id, _classUnderTest.GetContactById(domainEntity1.Contacts.FirstOrDefault().Id).Id);
+            Assert.AreEqual(contact.Id, _classUnderTest.GetContactById(contact.Id).Id);
+        }
+
+        [Test]
+        public void UpdateContactByIDToBeDefaultInverse()
+        {
+          var domainEntity1 = AddResidentAndContactDetailsToDatabase("firstname");
+          var contactId = domainEntity1.Contacts.FirstOrDefault().Id;
+          var testBool = !_classUnderTest.GetContactById(contactId).IsDefault;
+
+          Assert.IsTrue(_classUnderTest.UpdateContactIsDefault(contactId, testBool));
+          Assert.AreEqual(testBool, _classUnderTest.GetContactById(contactId).IsDefault);
+        }
+
+        [Test]
+        public void UpdateContactByIDFalseOnInvalidID()
+        {
+          Assert.IsFalse(_classUnderTest.UpdateContactIsDefault(123, true));
         }
 
         //NB. these come from ResidentGatewayTests and should be abstracted properly

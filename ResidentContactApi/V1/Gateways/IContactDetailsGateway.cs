@@ -8,6 +8,6 @@ namespace ResidentContactApi.V1.Gateways
     {
       bool UpdateContactIsDefault(int contactId, bool value);
 
-      ContactDetailsDomain getContactById(int contactId);
+      ContactDetailsDomain GetContactById(int contactId);
     }
 }
