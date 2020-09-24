@@ -41,6 +41,7 @@ namespace ResidentContactApi.Tests.V1.UseCase
                 IsDefault = request.Default,
                 SubtypeId = request.SubtypeId,
                 TypeId = request.TypeId,
+                Id = request.Id
             };
             _mockGateway.Setup(
                 x => x.InsertResidentContactDetails(request.ResidentId.Value, request.NccContactId,
@@ -91,7 +92,8 @@ namespace ResidentContactApi.Tests.V1.UseCase
                    && x.IsActive == expectedDomain.IsActive
                    && x.IsDefault == expectedDomain.IsDefault
                    && x.SubtypeId == expectedDomain.SubtypeId
-                   && x.TypeId == expectedDomain.TypeId;
+                   && x.TypeId == expectedDomain.TypeId
+                   && x.Id == expectedDomain.Id;
         }
     }
 }

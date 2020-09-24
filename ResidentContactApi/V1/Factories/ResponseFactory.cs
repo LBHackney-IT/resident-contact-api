@@ -30,7 +30,7 @@ namespace ResidentContactApi.V1.Factories
         {
             return new ContactDetailsResponse
             {
-                Id = contactDetails.Id,
+                Id = contactDetails?.Id,
                 Type = contactDetails.Type,
                 Value = contactDetails.ContactValue,
                 AddedBy = contactDetails.AddedBy,

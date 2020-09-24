@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ResidentContactApi.V1.Boundary.Requests;
 using ResidentContactApi.V1.Boundary.Response;
@@ -7,6 +8,7 @@ using ResidentContactApi.V1.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 
 namespace ResidentContactApi.V1.Gateways
 {
@@ -35,7 +37,6 @@ namespace ResidentContactApi.V1.Gateways
             return residents;
 
         }
-
         public ResidentDomain GetResidentById(int id)
         {
             var databaseRecord = _residentContactContext.Residents.Find(id);
@@ -165,5 +166,23 @@ namespace ResidentContactApi.V1.Gateways
                 throw new ExternalReferenceNotInsertedException(ex.InnerException.Message);
             }
         }
+
+        public void InvalidateContactDetailsRecord(int? id)
+        {
+            try
+            {
+                var updateRecord = _residentContactContext.ContactDetails
+                                    .Where(x => x.Id == id)
+                                    .FirstOrDefault();
+                updateRecord.IsActive = false;
+                _residentContactContext.SaveChanges();
+
+            }
+            catch (DbUpdateException)
+            {
+                throw new ContactRecordToInvalidateNotFoundException();
+            }
+        }
+
     }
 }

@@ -11,7 +11,6 @@ using AutoFixture;
 using FluentAssertions.Equivalency;
 using ResidentContactApi.V1.Enums;
 using ResidentContactApi.V1.Factories;
-using ResidentContactApi.V1.Boundary.Requests;
 
 namespace ResidentContactApi.Tests.V1.Gateways
 {
@@ -197,7 +196,7 @@ namespace ResidentContactApi.Tests.V1.Gateways
         public void WhenGivenAContactIdInsertContactDetailsShouldLinkToTheCorrectResident()
         {
             var person = AddPersonRecordToDatabase();
-            var contactId = AddExternalReferencesForAResident(person.Id, "CRM", "ContactId");
+            var contactId = AddCrmContactIdForResident(person);
             var contactType = AddContactTypeToDatabase();
 
             var request = _fixture.Build<ContactDetailsDomain>()
@@ -206,7 +205,7 @@ namespace ResidentContactApi.Tests.V1.Gateways
                 .Without(x => x.SubtypeId)
                 .Create();
 
-            var responseId = _classUnderTest.InsertResidentContactDetails(null, contactId.ExternalIdValue, request);
+            var responseId = _classUnderTest.InsertResidentContactDetails(null, contactId, request);
 
             var savedContact = ResidentContactContext.ContactDetails.FirstOrDefault(res => res.Id == responseId);
             savedContact.Should().NotBeNull();
@@ -251,7 +250,7 @@ namespace ResidentContactApi.Tests.V1.Gateways
         public void WhenGivenBothIdsIfResidentCanNotBeFoundWillLinkUsingContactId()
         {
             var person = AddPersonRecordToDatabase();
-            var contactId = AddExternalReferencesForAResident(person.Id, "CRM", "ContactId");
+            var contactId = AddCrmContactIdForResident(person);
             var contactType = AddContactTypeToDatabase();
 
             var request = _fixture.Build<ContactDetailsDomain>()
@@ -260,7 +259,7 @@ namespace ResidentContactApi.Tests.V1.Gateways
                 .Without(x => x.SubtypeId)
                 .Create();
 
-            var responseId = _classUnderTest.InsertResidentContactDetails(person.Id + 3, contactId.ExternalIdValue, request);
+            var responseId = _classUnderTest.InsertResidentContactDetails(person.Id + 3, contactId, request);
 
             var savedContact = ResidentContactContext.ContactDetails.FirstOrDefault(res => res.Id == responseId);
             savedContact.Should().NotBeNull();
@@ -268,198 +267,17 @@ namespace ResidentContactApi.Tests.V1.Gateways
         }
 
         [Test]
-        public void IfResidentAlreadyExistsTheCorrectIdShouldBeReturned()
+        public void WhenGivenIdIsActiveShouldBeFalse()
         {
-            var resident = AddPersonRecordToDatabase();
-            var crmExternalReference = AddExternalReferencesForAResident(resident.Id, "CRM", "ContactId");
+            var databaseEntity = AddPersonRecordToDatabase();
+            var contactType = AddContactTypeToDatabase();
+            var contact = AddContactRecordToDatabase(databaseEntity.Id, contactType.Id);
 
-            var request = new InsertResidentRequest
-            {
-                ExternalReferences = new List<InsertExternalReferenceRequest> {
-                    new InsertExternalReferenceRequest {
-                        ExternalReferenceValue = crmExternalReference.ExternalIdValue,
-                        ExternalReferenceName = "ContactId",
-                        ExternalSystemId = crmExternalReference.ExternalSystemLookupId
-                    }}
-            };
+            _classUnderTest.InvalidateContactDetailsRecord(contact.Id);
 
-            var response = _classUnderTest.InsertNewResident(request);
-
-            response.Should().NotBeNull();
-            response.ResidentId.Should().Be(resident.Id);
-            response.ResidentRecordAlreadyPresent.Should().BeTrue();
-        }
-
-        [Test]
-        public void IfResidentAlreadyExistOnlyExternalReferencesNotPresentShouldBeInserted()
-        {
-            var resident = AddPersonRecordToDatabase();
-            var crmExternalReference = AddExternalReferencesForAResident(resident.Id, "CRM", "ContactId");
-            var uhExternalReferenceHouseRef = AddExternalReferencesForAResident(resident.Id, "UH", "house_ref");
-            //create a request with three references, two of which exist already
-            var request = new InsertResidentRequest
-            {
-                ExternalReferences = new List<InsertExternalReferenceRequest> {
-                    new InsertExternalReferenceRequest {
-                        ExternalReferenceValue = crmExternalReference.ExternalIdValue,
-                        ExternalReferenceName = "ContactId",
-                        ExternalSystemId = crmExternalReference.ExternalSystemLookupId
-                    },
-                    new InsertExternalReferenceRequest {
-                        ExternalReferenceValue = uhExternalReferenceHouseRef.ExternalIdValue,
-                        ExternalReferenceName = uhExternalReferenceHouseRef.ExternalIdName,
-                        ExternalSystemId = uhExternalReferenceHouseRef.ExternalSystemLookupId
-                    },
-                    new InsertExternalReferenceRequest {
-                        ExternalReferenceName = "person_no",
-                        ExternalReferenceValue = "1",
-                        ExternalSystemId = uhExternalReferenceHouseRef.ExternalSystemLookupId
-                    }
-            }
-            };
-
-            _classUnderTest.InsertExternalReferences(request, resident.Id);
-
-            var result = ResidentContactContext.ExternalSystemIds.ToList();
-            resident.Should().NotBeNull();
-            result.Should().NotBeEmpty();
-            result.Count.Should().Be(3);
-        }
-
-        [Test]
-        public void IfResidentAlreadyExistAndxternalReferencesAreAllPresentNoneShouldBeInserted()
-        {
-            var resident = AddPersonRecordToDatabase();
-            var crmExternalReference = AddExternalReferencesForAResident(resident.Id, "CRM", "ContactId");
-            var uhExternalReferenceHouseRef = AddExternalReferencesForAResident(resident.Id, "UH", "house_ref");
-            //create a request with three references, two of which exist already
-            var request = new InsertResidentRequest
-            {
-                ExternalReferences = new List<InsertExternalReferenceRequest> {
-                    new InsertExternalReferenceRequest {
-                        ExternalReferenceValue = crmExternalReference.ExternalIdValue,
-                        ExternalReferenceName = "ContactId",
-                        ExternalSystemId = crmExternalReference.ExternalSystemLookupId
-                    },
-                    new InsertExternalReferenceRequest {
-                        ExternalReferenceValue = uhExternalReferenceHouseRef.ExternalIdValue,
-                        ExternalReferenceName = uhExternalReferenceHouseRef.ExternalIdName,
-                        ExternalSystemId = uhExternalReferenceHouseRef.ExternalSystemLookupId
-                    }
-                  }
-            };
-            _classUnderTest.InsertNewResident(request);
-            _classUnderTest.InsertExternalReferences(request, resident.Id);
-
-            var residentsInDatabase = ResidentContactContext.Residents.ToList();
-            residentsInDatabase.Should().NotBeNull();
-            residentsInDatabase.Should().NotBeEmpty();
-            residentsInDatabase.Count.Should().Be(1);
-
-            var externalReferencesInDatabase = ResidentContactContext.ExternalSystemIds.ToList();
-            externalReferencesInDatabase.Should().NotBeNull();
-            externalReferencesInDatabase.Should().NotBeEmpty();
-            externalReferencesInDatabase.Count.Should().Be(2);
-        }
-
-        [Test]
-        public void IfAResidentDoesNotExistItIsInsertedIntoDatabase()
-        {
-            //add external system lookup
-            var externalSystemLookup = new ExternalSystemLookup
-            {
-                Name = "CRM"
-            };
-            ResidentContactContext.ExternalSystemLookups.Add(externalSystemLookup);
-            ResidentContactContext.SaveChanges();
-
-            var request = new InsertResidentRequest
-            {
-                FirstName = "John",
-                LastName = "Smith",
-                DateOfBirth = DateTime.Parse("01-01-1950"),
-                ExternalReferences = new List<InsertExternalReferenceRequest> {
-                    new InsertExternalReferenceRequest {
-                        ExternalReferenceValue = _fixture.Create<string>(),
-                        ExternalReferenceName = "ContactGuid",
-                        ExternalSystemId = externalSystemLookup.Id
-                    }
-                 }
-            };
-
-            var result = _classUnderTest.InsertNewResident(request);
-
-            var residentInDatabase = ResidentContactContext.Residents.Where(x => x.Id == result.ResidentId).FirstOrDefault();
-
-            result.Should().NotBe(0);
-            residentInDatabase.Should().NotBeNull();
-            residentInDatabase.FirstName.Should().Be(request.FirstName);
-            residentInDatabase.LastName.Should().Be(request.LastName);
-            residentInDatabase.DateOfBirth.Should().Be(request.DateOfBirth);
-            residentInDatabase.Gender.Should().Be(request.Gender);
-        }
-        [Test]
-        public void IfReferencesDoNotExistAllAreInsertedIntoDatabase()
-        {
-            var resident = AddPersonRecordToDatabase();
-            //add external system lookup
-            var externalSystemLookup = new ExternalSystemLookup
-            {
-                Name = "CRM"
-            };
-            ResidentContactContext.ExternalSystemLookups.Add(externalSystemLookup);
-            ResidentContactContext.SaveChanges();
-
-            var request = new InsertResidentRequest
-            {
-                ExternalReferences = new List<InsertExternalReferenceRequest> {
-                    new InsertExternalReferenceRequest {
-                        ExternalReferenceValue = _fixture.Create<string>(),
-                        ExternalReferenceName = "ContactGuid",
-                        ExternalSystemId = externalSystemLookup.Id
-                    },
-                    new InsertExternalReferenceRequest {
-                        ExternalReferenceValue = _fixture.Create<string>(),
-                        ExternalReferenceName = "ContactId",
-                        ExternalSystemId = externalSystemLookup.Id
-                    }
-                 }
-            };
-
-            _classUnderTest.InsertExternalReferences(request, resident.Id);
-
-            var externalReferencesInDatabase = ResidentContactContext.ExternalSystemIds.Where(x => x.ResidentId == resident.Id).ToList();
-
-            externalReferencesInDatabase.Should().NotBeEmpty();
-            externalReferencesInDatabase.Count.Should().Be(2);
-            externalReferencesInDatabase[0].ExternalIdName.Should().Be(request.ExternalReferences[0].ExternalReferenceName);
-            externalReferencesInDatabase[0].ExternalIdValue.Should().Be(request.ExternalReferences[0].ExternalReferenceValue);
-            externalReferencesInDatabase[0].ExternalSystemLookupId.Should().Be(request.ExternalReferences[0].ExternalSystemId);
-            externalReferencesInDatabase[1].ExternalIdName.Should().Be(request.ExternalReferences[1].ExternalReferenceName);
-            externalReferencesInDatabase[1].ExternalIdValue.Should().Be(request.ExternalReferences[1].ExternalReferenceValue);
-            externalReferencesInDatabase[1].ExternalSystemLookupId.Should().Be(request.ExternalReferences[1].ExternalSystemId);
-        }
-        [Test]
-        public void IfExternalSystemLookupDoesNotExistAnExceptionShouldBeThrown()
-        {
-            var resident = AddPersonRecordToDatabase();
-            var request = new InsertResidentRequest
-            {
-                ExternalReferences = new List<InsertExternalReferenceRequest> {
-                    new InsertExternalReferenceRequest {
-                        ExternalReferenceValue = _fixture.Create<string>(),
-                        ExternalReferenceName = "ContactGuid",
-                        ExternalSystemId = 4 //random numbers
-                    },
-                    new InsertExternalReferenceRequest {
-                        ExternalReferenceValue = _fixture.Create<string>(),
-                        ExternalReferenceName = "ContactId",
-                        ExternalSystemId = 13
-                    }
-                 }
-            };
-
-            Assert.Throws<ExternalReferenceNotInsertedException>(() => _classUnderTest.InsertExternalReferences(request, resident.Id));
+            var saveContact = ResidentContactContext.ContactDetails.FirstOrDefault(con => con.Id == contact.Id);
+            saveContact.Should().NotBeNull();
+            saveContact.IsActive.Should().Be(false);
         }
 
         private static Func<EquivalencyAssertionOptions<Contact>, EquivalencyAssertionOptions<Contact>> IgnoreForeignDatabaseObjects()
@@ -502,25 +320,26 @@ namespace ResidentContactApi.Tests.V1.Gateways
             return domainEntity;
         }
 
-        private ExternalSystemId AddExternalReferencesForAResident(int residentId, string externalSystemLookupName, string externalReferenceName)
+        private string AddCrmContactIdForResident(Resident person)
         {
             var externalSystemLookup = new ExternalSystemLookup
             {
-                Name = externalSystemLookupName
+                Name = "CRM"
             };
             ResidentContactContext.ExternalSystemLookups.Add(externalSystemLookup);
             ResidentContactContext.SaveChanges();
-
             var externalLink = new ExternalSystemId
             {
-                ResidentId = residentId,
-                ExternalIdName = externalReferenceName,
+                ResidentId = person.Id,
+                ExternalIdName = "ContactId",
                 ExternalSystemLookupId = externalSystemLookup.Id,
                 ExternalIdValue = _fixture.Create<string>()
             };
             ResidentContactContext.ExternalSystemIds.Add(externalLink);
             ResidentContactContext.SaveChanges();
-            return externalLink;
+            return externalLink.ExternalIdValue;
         }
+
+
     }
 }

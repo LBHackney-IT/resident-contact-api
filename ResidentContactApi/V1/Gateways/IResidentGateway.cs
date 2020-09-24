@@ -2,6 +2,7 @@ using ResidentDomain = ResidentContactApi.V1.Domain.ResidentDomain;
 using System.Collections.Generic;
 using ResidentContactApi.V1.Domain;
 using ResidentContactApi.V1.Boundary.Requests;
+using System;
 using ResidentContactApi.V1.Boundary.Response;
 
 namespace ResidentContactApi.V1.Gateways
@@ -13,5 +14,6 @@ namespace ResidentContactApi.V1.Gateways
         int? InsertResidentContactDetails(int? residentId, string nccContactId, ContactDetailsDomain contactDetails);
         InsertResidentResponse InsertNewResident(InsertResidentRequest request);
         void InsertExternalReferences(InsertResidentRequest request, int residentId);
+        void InvalidateContactDetailsRecord(int? id);
     }
 }

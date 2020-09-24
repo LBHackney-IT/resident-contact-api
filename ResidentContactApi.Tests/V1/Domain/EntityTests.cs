@@ -13,7 +13,7 @@ namespace ResidentContactApi.Tests.V1.Domain
         public void EntitiesHaveAnId()
         {
             var entity = new ContactDetailsDomain();
-            entity.Id.Should().BeGreaterOrEqualTo(0);
+            entity.Id?.Should().BeGreaterOrEqualTo(0);
         }
 
         [Test]
