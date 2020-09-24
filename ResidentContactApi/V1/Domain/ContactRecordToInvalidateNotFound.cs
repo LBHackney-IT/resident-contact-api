@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ResidentContactApi.V1.Domain
 {
-    public class ResidentContactDetailsRecordToInvalidateNotFoundException : Exception
+    public class ContactRecordToInvalidateNotFoundException : Exception
     {
     }
 }

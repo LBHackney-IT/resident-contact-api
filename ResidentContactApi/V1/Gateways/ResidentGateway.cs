@@ -114,7 +114,7 @@ namespace ResidentContactApi.V1.Gateways
             }
             catch (DbUpdateException)
             {
-                throw new ResidentContactDetailsRecordToInvalidateNotFoundException();
+                throw new ContactRecordToInvalidateNotFoundException();
             }
         }
 
