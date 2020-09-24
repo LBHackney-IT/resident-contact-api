@@ -27,7 +27,7 @@ namespace ResidentContactApi.Tests.V1.Controllers
 
         private Mock<ICreateContactDetailsUseCase> _mockCreateContactDetails;
         private Mock<IInsertResidentRecordUseCase> _mockInsertResidentRecordUseCase;
-        private Mock<IInsertExternalResidentRecordUseCase> _mockInsertExternalResidentRecordUseCase;
+        private Mock<IInsertExternalReferenceRecordUseCase> _mockInsertExternalReferenceRecordUseCase;
 
 
         [SetUp]
@@ -37,11 +37,11 @@ namespace ResidentContactApi.Tests.V1.Controllers
             _mockGetByIdUseCase = new Mock<IGetByIdUseCase>();
             _mockCreateContactDetails = new Mock<ICreateContactDetailsUseCase>();
             _mockInsertResidentRecordUseCase = new Mock<IInsertResidentRecordUseCase>();
-            _mockInsertExternalResidentRecordUseCase = new Mock<IInsertExternalResidentRecordUseCase>();
+            _mockInsertExternalReferenceRecordUseCase = new Mock<IInsertExternalReferenceRecordUseCase>();
 
             _classUnderTest = new ResidentContactApiController(_mockGetAllUseCase.Object, _mockGetByIdUseCase.Object,
                                                                _mockCreateContactDetails.Object, _mockInsertResidentRecordUseCase.Object,
-                                                               _mockInsertExternalResidentRecordUseCase.Object);
+                                                               _mockInsertExternalReferenceRecordUseCase.Object);
         }
 
         [Test]
@@ -189,7 +189,7 @@ namespace ResidentContactApi.Tests.V1.Controllers
         public void IfExternalResidentToBeInsertedAlreadyExistsShouldReturn200StatusCode()
         {
             var response = new InsertResidentResponse { ResidentRecordAlreadyPresent = true };
-            _mockInsertExternalResidentRecordUseCase.Setup(x => x.Execute(It.IsAny<InsertResidentRequest>())).Returns(response);
+            _mockInsertExternalReferenceRecordUseCase.Setup(x => x.Execute(It.IsAny<InsertResidentRequest>())).Returns(response);
 
             var result = _classUnderTest.InsertExternalResident(It.IsAny<InsertResidentRequest>()) as OkObjectResult;
             result.Should().NotBeNull();
@@ -201,7 +201,7 @@ namespace ResidentContactApi.Tests.V1.Controllers
         public void IfExternalResidentToBeInsertedDoesNotAlreadyExistReturn201StatusCodeAndId()
         {
             var response = new InsertResidentResponse { ResidentId = 2, ResidentRecordAlreadyPresent = false };
-            _mockInsertExternalResidentRecordUseCase.Setup(x => x.Execute(It.IsAny<InsertResidentRequest>())).Returns(response);
+            _mockInsertExternalReferenceRecordUseCase.Setup(x => x.Execute(It.IsAny<InsertResidentRequest>())).Returns(response);
 
             var result = _classUnderTest.InsertExternalResident(It.IsAny<InsertResidentRequest>()) as CreatedAtActionResult;
             result.Should().NotBeNull();
@@ -211,7 +211,7 @@ namespace ResidentContactApi.Tests.V1.Controllers
         [Test]
         public void InsertExternalResidentReturns500StatusCodeIfResidentNotInsertExceptionIsRaised()
         {
-            _mockInsertExternalResidentRecordUseCase.Setup(x => x.Execute(It.IsAny<InsertResidentRequest>())).Throws(new ResidentNotInsertedException("error message"));
+            _mockInsertExternalReferenceRecordUseCase.Setup(x => x.Execute(It.IsAny<InsertResidentRequest>())).Throws(new ResidentNotInsertedException("error message"));
             var result = _classUnderTest.InsertExternalResident(It.IsAny<InsertResidentRequest>()) as ObjectResult;
 
             result.Should().NotBeNull();
@@ -221,7 +221,7 @@ namespace ResidentContactApi.Tests.V1.Controllers
         [Test]
         public void InsertExternalResidentReturns500StatusCodeIfExternalReferenceNotInsertExceptionIsRaised()
         {
-            _mockInsertExternalResidentRecordUseCase.Setup(x => x.Execute(It.IsAny<InsertResidentRequest>())).Throws(new ExternalReferenceNotInsertedException("error message"));
+            _mockInsertExternalReferenceRecordUseCase.Setup(x => x.Execute(It.IsAny<InsertResidentRequest>())).Throws(new ExternalReferenceNotInsertedException("error message"));
             var result = _classUnderTest.InsertExternalResident(It.IsAny<InsertResidentRequest>()) as ObjectResult;
 
             result.Should().NotBeNull();

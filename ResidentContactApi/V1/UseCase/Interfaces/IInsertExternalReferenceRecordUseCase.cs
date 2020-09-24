@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ResidentContactApi.V1.UseCase.Interfaces
 {
-    public interface IInsertExternalResidentRecordUseCase
+    public interface IInsertExternalReferenceRecordUseCase
     {
         InsertResidentResponse Execute(InsertResidentRequest request);
     }

@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace ResidentContactApi.V1.UseCase
 {
-    public class InsertExternalResidentRecordUseCase : IInsertExternalResidentRecordUseCase
+    public class InsertExternalReferenceRecordUseCase : IInsertExternalReferenceRecordUseCase
     {
         private IResidentGateway _residentGateway;
-        public InsertExternalResidentRecordUseCase(IResidentGateway gateway)
+        public InsertExternalReferenceRecordUseCase(IResidentGateway gateway)
         {
             _residentGateway = gateway;
         }

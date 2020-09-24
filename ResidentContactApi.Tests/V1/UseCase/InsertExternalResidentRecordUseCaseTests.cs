@@ -15,16 +15,16 @@ namespace ResidentContactApi.Tests.V1.UseCase
     public class InsertExternalResidentRecordUseCaseTests
     {
         private Mock<IResidentGateway> _mockExternalResidentGateway;
-        private InsertExternalResidentRecordUseCase _classUnderTest;
+        private InsertExternalReferenceRecordUseCase _classUnderTest;
         [SetUp]
         public void Setup()
         {
             _mockExternalResidentGateway = new Mock<IResidentGateway>();
-            _classUnderTest = new InsertExternalResidentRecordUseCase(_mockExternalResidentGateway.Object);
+            _classUnderTest = new InsertExternalReferenceRecordUseCase(_mockExternalResidentGateway.Object);
         }
 
         [Test]
-        public void EnsureThatInsertExternalResidentRecordUseCaseCallsGateway()
+        public void EnsureThatInsertExternalReferenceRecordUseCaseCallsGateway()
         {
             var request = new InsertResidentRequest();
             _mockExternalResidentGateway.Setup(x => x.InsertNewResident(request)).Returns(new InsertResidentResponse());

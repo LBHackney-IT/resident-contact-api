@@ -20,9 +20,9 @@ namespace ResidentContactApi.V1.Controllers
         private IGetByIdUseCase _getByIdUseCase;
         private ICreateContactDetailsUseCase _createContactDetails;
         private IInsertResidentRecordUseCase _insertResidentRecordUseCase;
-        private IInsertExternalResidentRecordUseCase _insertExternalResidentRecordUseCase;
+        private IInsertExternalReferenceRecordUseCase _insertExternalResidentRecordUseCase;
         public ResidentContactApiController(IGetAllUseCase getAllUseCase, IGetByIdUseCase getByIdUseCase,
-            ICreateContactDetailsUseCase createContactDetails, IInsertResidentRecordUseCase insertResidentRecordUseCase, IInsertExternalResidentRecordUseCase insertExternalResidentRecordUseCase)
+            ICreateContactDetailsUseCase createContactDetails, IInsertResidentRecordUseCase insertResidentRecordUseCase, IInsertExternalReferenceRecordUseCase insertExternalResidentRecordUseCase)
         {
             _getAllUseCase = getAllUseCase;
             _getByIdUseCase = getByIdUseCase;
