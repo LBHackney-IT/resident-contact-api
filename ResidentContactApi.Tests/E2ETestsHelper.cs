@@ -3,11 +3,13 @@ using ResidentContactApi.V1.Boundary.Response;
 using ResidentContactApi.V1.Infrastructure;
 using System.Collections.Generic;
 using AutoFixture;
+using Bogus;
 
 namespace ResidentContactApi.Tests
 {
     public static class E2ETestsHelper
     {
+        private static readonly Faker _faker = new Faker();
         public static ResidentResponse AddPersonWithRelatedEntitiesToDb(ResidentContactContext context, int? id = null,
             string firstname = null, string lastname = null, int? contactTypeLookupId = null, int? contactSubTypeLookupId = null)
         {
@@ -58,7 +60,7 @@ namespace ResidentContactApi.Tests
             };
         }
 
-        public static string AddCrmContactIdForResidentId(ResidentContactContext context, int residentId)
+        public static ExternalSystemId AddCrmContactIdForResidentId(ResidentContactContext context, int residentId)
         {
             var fixture = new Fixture();
             var externalSystemLookup = new ExternalSystemLookup
@@ -76,7 +78,21 @@ namespace ResidentContactApi.Tests
             };
             context.ExternalSystemIds.Add(externalLink);
             context.SaveChanges();
-            return externalLink.ExternalIdValue;
+            return externalLink;
+        }
+
+        public static Resident AddResidentRecordToTheDatabase(ResidentContactContext context)
+        {
+            var resident = new Resident
+            {
+                FirstName = _faker.Random.Word(),
+                LastName = _faker.Random.Word(),
+                DateOfBirth = _faker.Date.Past(),
+                Gender = _faker.Random.Char()
+            };
+            context.Residents.Add(resident);
+            context.SaveChanges();
+            return resident;
         }
     }
 }

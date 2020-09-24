@@ -72,7 +72,7 @@ namespace ResidentContactApi.Tests.V1.E2ETests
             var resident = E2ETestsHelper.AddPersonWithRelatedEntitiesToDb(ResidentContactContext,
                 contactTypeLookupId: contactRequest.TypeId,
                 contactSubTypeLookupId: contactRequest.SubtypeId);
-            contactRequest.NccContactId = E2ETestsHelper.AddCrmContactIdForResidentId(ResidentContactContext, resident.Id);
+            contactRequest.NccContactId = E2ETestsHelper.AddCrmContactIdForResidentId(ResidentContactContext, resident.Id).ExternalIdValue;
 
             var response = await CallPostEndpointWithRequest(contactRequest).ConfigureAwait(true);
 

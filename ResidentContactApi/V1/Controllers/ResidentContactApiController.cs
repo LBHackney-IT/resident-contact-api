@@ -19,12 +19,14 @@ namespace ResidentContactApi.V1.Controllers
         private IGetAllUseCase _getAllUseCase;
         private IGetByIdUseCase _getByIdUseCase;
         private ICreateContactDetailsUseCase _createContactDetails;
+        private IInsertResidentRecordUseCase _insertResidentRecordUseCase;
         public ResidentContactApiController(IGetAllUseCase getAllUseCase, IGetByIdUseCase getByIdUseCase,
-            ICreateContactDetailsUseCase createContactDetails)
+            ICreateContactDetailsUseCase createContactDetails, IInsertResidentRecordUseCase insertResidentRecordUseCase)
         {
             _getAllUseCase = getAllUseCase;
             _getByIdUseCase = getByIdUseCase;
             _createContactDetails = createContactDetails;
+            _insertResidentRecordUseCase = insertResidentRecordUseCase;
         }
         /// <summary>
         /// ...
@@ -86,6 +88,33 @@ namespace ResidentContactApi.V1.Controllers
             catch (ResidentNotFoundException)
             {
                 return BadRequest("Resident ID and/or NCC Contact ID do not link to a resident record");
+            }
+        }
+
+        /// <summary>
+        /// Create a new resident record
+        /// </summary>
+        /// <response code="201">Successful operation</response>
+        /// <response code="400">Contact not found for specified ID</response>
+        [ProducesResponseType(typeof(ResidentResponse), StatusCodes.Status201Created)]
+        [HttpPost]
+        [Route("residents")]
+        public IActionResult InsertResident([FromBody] InsertResidentRequest request)
+        {
+            try
+            {
+                var resident = _insertResidentRecordUseCase.Execute(request);
+                if (resident.ResidentRecordAlreadyPresent) return Ok(resident);
+
+                return CreatedAtAction("ViewResidentRecord", resident);
+            }
+            catch (ResidentNotInsertedException ex)
+            {
+                return StatusCode(500, $"Resident could not be inserted - {ex.Message}");
+            }
+            catch (ExternalReferenceNotInsertedException ex)
+            {
+                return StatusCode(500, $"External reference could not be inserted - {ex.Message}");
             }
         }
     }
