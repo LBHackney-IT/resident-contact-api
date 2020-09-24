@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ResidentContactApi.V1.Boundary.Response
 {
-    public class InsertExternalResidentResponse
+    public class InsertExternalReferenceResponse
     {
         public int ExternalReferenceId { get; set; }
         public bool AlreadyPresent { get; set; }

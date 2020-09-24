@@ -20,15 +20,15 @@ namespace ResidentContactApi.V1.Controllers
         private IGetByIdUseCase _getByIdUseCase;
         private ICreateContactDetailsUseCase _createContactDetails;
         private IInsertResidentRecordUseCase _insertResidentRecordUseCase;
-        private IInsertExternalReferenceRecordUseCase _insertExternalResidentRecordUseCase;
+        private IInsertExternalReferenceRecordUseCase _insertExternalReferenceRecordUseCase;
         public ResidentContactApiController(IGetAllUseCase getAllUseCase, IGetByIdUseCase getByIdUseCase,
-            ICreateContactDetailsUseCase createContactDetails, IInsertResidentRecordUseCase insertResidentRecordUseCase, IInsertExternalReferenceRecordUseCase insertExternalResidentRecordUseCase)
+            ICreateContactDetailsUseCase createContactDetails, IInsertResidentRecordUseCase insertResidentRecordUseCase, IInsertExternalReferenceRecordUseCase insertExternalReferenceRecordUseCase)
         {
             _getAllUseCase = getAllUseCase;
             _getByIdUseCase = getByIdUseCase;
             _createContactDetails = createContactDetails;
             _insertResidentRecordUseCase = insertResidentRecordUseCase;
-            _insertExternalResidentRecordUseCase = insertExternalResidentRecordUseCase;
+            _insertExternalReferenceRecordUseCase = insertExternalReferenceRecordUseCase;
         }
         /// <summary>
         /// ...
@@ -132,7 +132,7 @@ namespace ResidentContactApi.V1.Controllers
         {
             try
             {
-                var resident = _insertExternalResidentRecordUseCase.Execute(request);
+                var resident = _insertExternalReferenceRecordUseCase.Execute(request);
                 if (resident.ResidentRecordAlreadyPresent) return Ok(resident);
 
                 return CreatedAtAction("ViewResidentRecord", resident);
