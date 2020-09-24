@@ -20,13 +20,15 @@ namespace ResidentContactApi.V1.Controllers
         private IGetByIdUseCase _getByIdUseCase;
         private ICreateContactDetailsUseCase _createContactDetails;
         private IInsertResidentRecordUseCase _insertResidentRecordUseCase;
+        private IInsertExternalResidentRecordUseCase _insertExternalResidentRecordUseCase;
         public ResidentContactApiController(IGetAllUseCase getAllUseCase, IGetByIdUseCase getByIdUseCase,
-            ICreateContactDetailsUseCase createContactDetails, IInsertResidentRecordUseCase insertResidentRecordUseCase)
+            ICreateContactDetailsUseCase createContactDetails, IInsertResidentRecordUseCase insertResidentRecordUseCase, IInsertExternalResidentRecordUseCase insertExternalResidentRecordUseCase)
         {
             _getAllUseCase = getAllUseCase;
             _getByIdUseCase = getByIdUseCase;
             _createContactDetails = createContactDetails;
             _insertResidentRecordUseCase = insertResidentRecordUseCase;
+            _insertExternalResidentRecordUseCase = insertExternalResidentRecordUseCase;
         }
         /// <summary>
         /// ...
@@ -104,6 +106,33 @@ namespace ResidentContactApi.V1.Controllers
             try
             {
                 var resident = _insertResidentRecordUseCase.Execute(request);
+                if (resident.ResidentRecordAlreadyPresent) return Ok(resident);
+
+                return CreatedAtAction("ViewResidentRecord", resident);
+            }
+            catch (ResidentNotInsertedException ex)
+            {
+                return StatusCode(500, $"Resident could not be inserted - {ex.Message}");
+            }
+            catch (ExternalReferenceNotInsertedException ex)
+            {
+                return StatusCode(500, $"External reference could not be inserted - {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Create a new external resident record
+        /// </summary>
+        /// <response code="201">Successful operation</response>
+        /// <response code="400">Contact not found for specified ID</response>
+        [ProducesResponseType(typeof(ResidentResponse), StatusCodes.Status201Created)]
+        [HttpPost]
+        [Route("/residents/{residentId}/externalReferences")]
+        public IActionResult InsertExternalResident([FromBody] InsertResidentRequest request)
+        {
+            try
+            {
+                var resident = _insertExternalResidentRecordUseCase.Execute(request);
                 if (resident.ResidentRecordAlreadyPresent) return Ok(resident);
 
                 return CreatedAtAction("ViewResidentRecord", resident);
