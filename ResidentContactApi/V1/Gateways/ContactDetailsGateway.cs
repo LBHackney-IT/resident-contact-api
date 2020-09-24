@@ -32,7 +32,7 @@ namespace ResidentContactApi.V1.Gateways
           {
               _residentContactContext.SaveChanges();
           }
-          catch (DbUpdateException ex)
+          catch (DbUpdateException)
           {
             //We should log something out here
             return false;
