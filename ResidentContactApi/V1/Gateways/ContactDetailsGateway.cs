@@ -35,7 +35,6 @@ namespace ResidentContactApi.V1.Gateways
           catch (DbUpdateException ex)
           {
             //We should log something out here
-            System.Console.Write(ex.ToString());
             return false;
           }
 
