@@ -14,24 +14,24 @@ namespace ResidentContactApi.Tests.V1.UseCase
 {
     public class InsertExternalReferenceRecordUseCaseTests
     {
-        private Mock<IResidentGateway> _mockExternalResidentGateway;
+        private Mock<IResidentGateway> _mockResidentGateway;
         private InsertExternalReferenceRecordUseCase _classUnderTest;
         [SetUp]
         public void Setup()
         {
-            _mockExternalResidentGateway = new Mock<IResidentGateway>();
-            _classUnderTest = new InsertExternalReferenceRecordUseCase(_mockExternalResidentGateway.Object);
+            _mockResidentGateway = new Mock<IResidentGateway>();
+            _classUnderTest = new InsertExternalReferenceRecordUseCase(_mockResidentGateway.Object);
         }
 
         [Test]
         public void EnsureThatInsertExternalReferenceRecordUseCaseCallsGateway()
         {
             var request = new InsertResidentRequest();
-            _mockExternalResidentGateway.Setup(x => x.InsertNewResident(request)).Returns(new InsertResidentResponse());
+            _mockResidentGateway.Setup(x => x.InsertNewResident(request)).Returns(new InsertResidentResponse());
             _classUnderTest.Execute(request);
 
-            _mockExternalResidentGateway.Verify(x => x.InsertNewResident(request), Times.Once);
-            _mockExternalResidentGateway.Verify(x => x.InsertExternalReferences(request, It.IsAny<int>()), Times.Once);
+            _mockResidentGateway.Verify(x => x.InsertNewResident(request), Times.Once);
+            _mockResidentGateway.Verify(x => x.InsertExternalReferences(request, It.IsAny<int>()), Times.Once);
         }
 
 
@@ -40,7 +40,7 @@ namespace ResidentContactApi.Tests.V1.UseCase
         {
             var request = new InsertResidentRequest();
             var expectedId = 1;
-            _mockExternalResidentGateway.Setup(x => x.InsertNewResident(request)).Returns(new InsertResidentResponse { ResidentId = expectedId, ResidentRecordAlreadyPresent = false });
+            _mockResidentGateway.Setup(x => x.InsertNewResident(request)).Returns(new InsertResidentResponse { ResidentId = expectedId, ResidentRecordAlreadyPresent = false });
             var result = _classUnderTest.Execute(request);
 
             result.ResidentId.Should().Be(expectedId);
