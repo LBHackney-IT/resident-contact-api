@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ResidentContactApi.Tests.V1.UseCase
 {
-    public class InsertExternalResidentRecordUseCaseTests
+    public class InsertExternalReferenceRecordUseCaseTests
     {
         private Mock<IResidentGateway> _mockExternalResidentGateway;
         private InsertExternalReferenceRecordUseCase _classUnderTest;
