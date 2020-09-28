@@ -24,5 +24,6 @@ namespace ResidentContactApi.V1.Boundary.Requests
         /// </example>
         [Required]
         public string ExternalReferenceValue { get; set; }
+
     }
 }
