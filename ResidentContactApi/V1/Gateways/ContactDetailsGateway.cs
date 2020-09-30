@@ -19,26 +19,26 @@ namespace ResidentContactApi.V1.Gateways
 
         public bool UpdateContactIsDefault(int contactId, bool value)
         {
-          var contact = _residentContactContext.ContactDetails
-                  .FirstOrDefault(c => c.Id == contactId);
+            var contact = _residentContactContext.ContactDetails
+                    .FirstOrDefault(c => c.Id == contactId);
 
-          if (contact == null) return false;
-          
-          contact.IsDefault = value;
+            if (contact == null) return false;
 
-          _residentContactContext.ContactDetails.Update(contact);
-            
-          try
-          {
-              _residentContactContext.SaveChanges();
-          }
-          catch (DbUpdateException)
-          {
-            //We should log something out here
-            return false;
-          }
+            contact.IsDefault = value;
 
-          return true;
+            _residentContactContext.ContactDetails.Update(contact);
+
+            try
+            {
+                _residentContactContext.SaveChanges();
+            }
+            catch (DbUpdateException)
+            {
+                //We should log something out here
+                return false;
+            }
+
+            return true;
         }
 
         public ContactDetailsDomain GetContactById(int contactId)
@@ -49,7 +49,7 @@ namespace ResidentContactApi.V1.Gateways
             if (contact == null) return null;
 
             return contact.ToDomain();
-        } 
+        }
 
     }
 }

@@ -66,7 +66,7 @@ namespace ResidentContactApi.Tests.V1.Gateways
             Assert.AreEqual(domainEntity1.Contacts.FirstOrDefault().Id, _classUnderTest.GetContactById(domainEntity1.Contacts.FirstOrDefault().Id).Id);
             Assert.AreEqual(domainEntity2.Contacts.FirstOrDefault().Id, _classUnderTest.GetContactById(domainEntity2.Contacts.FirstOrDefault().Id).Id);
         }
-        
+
         [Test]
         public void GetContactByIdReturnsCorrectRecordMultipleContactsPerResident()
         {
@@ -81,18 +81,18 @@ namespace ResidentContactApi.Tests.V1.Gateways
         [Test]
         public void UpdateContactByIDToBeDefaultInverse()
         {
-          var domainEntity1 = AddResidentAndContactDetailsToDatabase("firstname");
-          var contactId = domainEntity1.Contacts.FirstOrDefault().Id;
-          var testBool = !_classUnderTest.GetContactById(contactId).IsDefault;
+            var domainEntity1 = AddResidentAndContactDetailsToDatabase("firstname");
+            var contactId = domainEntity1.Contacts.FirstOrDefault().Id;
+            var testBool = !_classUnderTest.GetContactById(contactId).IsDefault;
 
-          Assert.IsTrue(_classUnderTest.UpdateContactIsDefault(contactId, testBool));
-          Assert.AreEqual(testBool, _classUnderTest.GetContactById(contactId).IsDefault);
+            Assert.IsTrue(_classUnderTest.UpdateContactIsDefault(contactId, testBool));
+            Assert.AreEqual(testBool, _classUnderTest.GetContactById(contactId).IsDefault);
         }
 
         [Test]
         public void UpdateContactByIDFalseOnInvalidID()
         {
-          Assert.IsFalse(_classUnderTest.UpdateContactIsDefault(123, true));
+            Assert.IsFalse(_classUnderTest.UpdateContactIsDefault(123, true));
         }
 
         //NB. these come from ResidentGatewayTests and should be abstracted properly

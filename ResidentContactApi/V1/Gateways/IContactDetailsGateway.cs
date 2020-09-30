@@ -6,8 +6,8 @@ namespace ResidentContactApi.V1.Gateways
 {
     public interface IContactDetailsGateway
     {
-      bool UpdateContactIsDefault(int contactId, bool value);
+        bool UpdateContactIsDefault(int contactId, bool value);
 
-      ContactDetailsDomain GetContactById(int contactId);
+        ContactDetailsDomain GetContactById(int contactId);
     }
 }
