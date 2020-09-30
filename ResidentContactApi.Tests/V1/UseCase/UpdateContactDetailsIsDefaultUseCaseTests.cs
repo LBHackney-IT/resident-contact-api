@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using ResidentContactApi.V1.Boundary.Requests;
 using ResidentContactApi.V1.Domain;
 using ResidentContactApi.V1.Gateways;
@@ -8,7 +9,6 @@ using Moq;
 using NUnit.Framework;
 using System.Linq;
 using AutoFixture;
-using ResidentContactApi.V1.Boundary;
 
 namespace ResidentContactApi.Tests.V1.UseCase
 {
@@ -73,12 +73,10 @@ namespace ResidentContactApi.Tests.V1.UseCase
             var stubbedId = _fixture.Create<int>();
             var stubbedResidentId = _fixture.Create<int>();
 
-            IEnumerable<ContactDetailsDomain> list = new List<ContactDetailsDomain> { expectedDomain };
-
             var expectedResidentDomain = new ResidentDomain
             {
                 Id = stubbedResidentId,
-                Contacts = list,
+                Contacts = new List<ContactDetailsDomain> { expectedDomain },
 
             };
 
