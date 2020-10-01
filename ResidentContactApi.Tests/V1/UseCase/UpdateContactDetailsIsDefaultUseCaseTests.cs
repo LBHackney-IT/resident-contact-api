@@ -47,7 +47,7 @@ namespace ResidentContactApi.Tests.V1.UseCase
 
             _mockContactDetailsGateway.Setup(x => x.GetContactById(stubbedId)).Returns(expectedDomain).Verifiable();
             _mockContactDetailsGateway.Setup(x => x.UpdateContactIsDefault(stubbedId, It.IsAny<bool>())).Returns(true).Verifiable();
-            _classUnderTest.Execute(stubbedId, new ContactDetails{ IsDefault = false });
+            _classUnderTest.Execute(stubbedId, new ContactDetails { IsDefault = false });
             _mockContactDetailsGateway.Verify();
         }
 
@@ -59,7 +59,7 @@ namespace ResidentContactApi.Tests.V1.UseCase
 
             _mockContactDetailsGateway.Setup(x => x.GetContactById(stubbedId)).Returns(expectedDomain);
             _mockContactDetailsGateway.Setup(x => x.UpdateContactIsDefault(stubbedId, It.IsAny<bool>())).Returns(true).Verifiable();
-            _classUnderTest.Execute(stubbedId, new ContactDetails{ IsDefault = false });
+            _classUnderTest.Execute(stubbedId, new ContactDetails { IsDefault = false });
             _mockContactDetailsGateway.Verify();
         }
 
@@ -78,67 +78,106 @@ namespace ResidentContactApi.Tests.V1.UseCase
 
             _mockContactDetailsGateway.Setup(x => x.GetContactById(stubbedId)).Returns(expectedDomain);
             _mockContactDetailsGateway.Setup(x => x.UpdateContactIsDefault(stubbedId, It.IsAny<bool>())).Returns(true);
-            _classUnderTest.Execute(stubbedId,  new ContactDetails{ IsDefault = false });
+            _classUnderTest.Execute(stubbedId, new ContactDetails { IsDefault = false });
 
             _mockResidentGateway.Verify(x => x.GetResidentById(It.IsAny<int>()), Times.Never());
         }
-        
+
         [Test]
         public void ChangeSingleContactForResidentWithMultipleContactsShouldLoadAllContactsOnTrueChange()
         {
-          var expectedDomain = _fixture.CreateMany<ContactDetailsDomain>();
-          var stubbedId = _fixture.Create<int>();
-          var stubbedResidentId = _fixture.Create<int>();
+            var expectedDomain = _fixture.CreateMany<ContactDetailsDomain>();
+            var stubbedId = _fixture.Create<int>();
+            var stubbedResidentId = _fixture.Create<int>();
 
-          var expectedResidentDomain = new ResidentDomain
-          {
-              Id = stubbedResidentId,
-              Contacts = expectedDomain.ToList(),
-          };
+            var expectedResidentDomain = new ResidentDomain
+            {
+                Id = stubbedResidentId,
+                Contacts = expectedDomain.ToList(),
+            };
 
-          expectedDomain.First().ResidentId = stubbedResidentId;
+            expectedDomain.First().ResidentId = stubbedResidentId;
 
-          _mockContactDetailsGateway.Setup(x => x.GetContactById(stubbedId)).Returns(expectedDomain.ToList()[0]);
-          _mockContactDetailsGateway.Setup(x => x.UpdateContactIsDefault(It.IsAny<int>(), It.IsAny<bool>())).Returns(true);
-          _mockResidentGateway.Setup(x => x.GetResidentById(stubbedResidentId)).Returns(expectedResidentDomain);
+            _mockContactDetailsGateway.Setup(x => x.GetContactById(stubbedId)).Returns(expectedDomain.ToList()[0]);
+            _mockContactDetailsGateway.Setup(x => x.UpdateContactIsDefault(It.IsAny<int>(), It.IsAny<bool>())).Returns(true);
+            _mockResidentGateway.Setup(x => x.GetResidentById(stubbedResidentId)).Returns(expectedResidentDomain);
 
-          _classUnderTest.Execute(stubbedId,  new ContactDetails{ IsDefault = true });
+            _classUnderTest.Execute(stubbedId, new ContactDetails { IsDefault = true });
 
-          _mockResidentGateway.Verify(x => x.GetResidentById(stubbedResidentId), Times.Once());
+            _mockResidentGateway.Verify(x => x.GetResidentById(stubbedResidentId), Times.Once());
         }
 
         [Test]
         public void ChangeSingleContactForResidentWithMultipleContactsShouldChangeIsDefaultToFalseOnContactsOfSameType()
         {
-          var expectedDomain = _fixture.CreateMany<ContactDetailsDomain>();
-          var stubbedId = _fixture.Create<int>();
-          var stubbedResidentId = _fixture.Create<int>();
-          var stubbedTypeId = _fixture.Create<int>();
+            var expectedDomain = _fixture.CreateMany<ContactDetailsDomain>();
+            var stubbedId = _fixture.Create<int>();
+            var stubbedResidentId = _fixture.Create<int>();
+            var stubbedTypeId = _fixture.Create<int>();
 
-          var expectedResidentDomain = new ResidentDomain
-          {
-              Id = stubbedResidentId,
-              Contacts = expectedDomain.ToList(),
-          };
+            var expectedResidentDomain = new ResidentDomain
+            {
+                Id = stubbedResidentId,
+                Contacts = expectedDomain.ToList(),
+            };
 
-          foreach (var item in expectedDomain)
-          {
-              _mockContactDetailsGateway.Setup(x => x.UpdateContactIsDefault(item.Id, It.IsAny<bool>())).Returns(true);
-              item.ResidentId = stubbedResidentId;
-              item.TypeId = stubbedTypeId;
-          }
+            foreach (var item in expectedDomain)
+            {
+                _mockContactDetailsGateway.Setup(x => x.UpdateContactIsDefault(item.Id, It.IsAny<bool>())).Returns(true);
+                item.ResidentId = stubbedResidentId;
+                item.TypeId = stubbedTypeId;
+            }
 
-          _mockContactDetailsGateway.Setup(x => x.GetContactById(stubbedId)).Returns(expectedDomain.ToList()[0]);
-          _mockContactDetailsGateway.Setup(x => x.UpdateContactIsDefault(stubbedId, It.IsAny<bool>())).Returns(true);
-          _mockResidentGateway.Setup(x => x.GetResidentById(stubbedResidentId)).Returns(expectedResidentDomain);
+            _mockContactDetailsGateway.Setup(x => x.GetContactById(stubbedId)).Returns(expectedDomain.ToList()[0]);
+            _mockContactDetailsGateway.Setup(x => x.UpdateContactIsDefault(stubbedId, It.IsAny<bool>())).Returns(true);
+            _mockResidentGateway.Setup(x => x.GetResidentById(stubbedResidentId)).Returns(expectedResidentDomain);
 
-          _classUnderTest.Execute(stubbedId,  new ContactDetails{ IsDefault = true });
+            _classUnderTest.Execute(stubbedId, new ContactDetails { IsDefault = true });
 
-          foreach (var item in expectedDomain)
-          {
-            _mockContactDetailsGateway.Verify(x => x.UpdateContactIsDefault(item.Id, false), Times.Once());
-          }
-          
+            foreach (var item in expectedDomain)
+            {
+                _mockContactDetailsGateway.Verify(x => x.UpdateContactIsDefault(item.Id, false), Times.Once());
+            }
+
+        }
+
+        [Test]
+        public void ThowsInternalContactNotFoundExceptionIfFailsToUpdateContactIDSpecifiedInRequest()
+        {
+            var expectedDomain = _fixture.Create<ContactDetailsDomain>();
+            var stubbedId = _fixture.Create<int>();
+
+            _mockContactDetailsGateway.Setup(x => x.GetContactById(stubbedId)).Returns(expectedDomain);
+            _mockContactDetailsGateway.Setup(x => x.UpdateContactIsDefault(stubbedId, It.IsAny<bool>())).Returns(false);
+            Assert.Throws<InternalContactNotFoundException>(() => _classUnderTest.Execute(stubbedId, new ContactDetails { IsDefault = false }));
+        }
+
+
+        [Test]
+        public void ThowsInternalContactNotFoundExceptionIfFailsToUpdateContactIDsFromResidentRecord()
+        {
+            var expectedDomain = _fixture.CreateMany<ContactDetailsDomain>();
+            var stubbedId = _fixture.Create<int>();
+            var stubbedResidentId = _fixture.Create<int>();
+            var stubbedTypeId = _fixture.Create<int>();
+
+            var expectedResidentDomain = new ResidentDomain
+            {
+                Id = stubbedResidentId,
+                Contacts = expectedDomain.ToList(),
+            };
+
+            foreach (var item in expectedDomain)
+            {
+                _mockContactDetailsGateway.Setup(x => x.UpdateContactIsDefault(item.Id, It.IsAny<bool>())).Returns(true);
+                item.ResidentId = stubbedResidentId;
+                item.TypeId = stubbedTypeId;
+            }
+
+            _mockContactDetailsGateway.Setup(x => x.GetContactById(stubbedId)).Returns(expectedDomain.ToList()[0]);
+            _mockContactDetailsGateway.Setup(x => x.UpdateContactIsDefault(It.IsAny<int>(), It.IsAny<bool>())).Returns(false);
+            _mockResidentGateway.Setup(x => x.GetResidentById(stubbedResidentId)).Returns(expectedResidentDomain);
+            Assert.Throws<InternalContactNotFoundException>(() => _classUnderTest.Execute(stubbedId, new ContactDetails { IsDefault = true }));
         }
     }
 }

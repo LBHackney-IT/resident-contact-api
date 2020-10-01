@@ -22,7 +22,7 @@ namespace ResidentContactApi.V1.UseCase
         {
 
             var value = request.IsDefault;
-            
+
             var contact = _contactDetailsGateway.GetContactById(id);
 
             if (contact == null) throw new ContactNotFoundException();
@@ -35,12 +35,12 @@ namespace ResidentContactApi.V1.UseCase
                 {
                     if (item.TypeId == contact.TypeId)
                     {
-                        if (_contactDetailsGateway.UpdateContactIsDefault(item.Id, false) == false) throw new ContactNotFoundException();
+                        if (_contactDetailsGateway.UpdateContactIsDefault(item.Id, false) == false) throw new InternalContactNotFoundException();
                     }
                 }
             }
 
-            if (_contactDetailsGateway.UpdateContactIsDefault(id, value) == false) throw new ContactNotFoundException();
+            if (_contactDetailsGateway.UpdateContactIsDefault(id, value) == false) throw new InternalContactNotFoundException();
 
             return true;
         }
