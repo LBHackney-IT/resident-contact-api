@@ -240,10 +240,16 @@ jobs:
 workflows:
   check-and-deploy-staging-and-production:
     jobs:
-      - check-code-formatting
+      - check-code-formatting:
+          filters:
+            branches:
+              only: master
       - build-and-test:
           requires:
             - check-code-formatting
+          filters:
+            branches:
+              only: master
       - assume-role-development:
           context: api-assume-role-development-context
           requires:
