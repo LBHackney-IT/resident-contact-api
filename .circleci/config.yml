@@ -238,10 +238,12 @@ jobs:
           stage: "production"
 
 workflows:
-  check-and-deploy-development:
+  check-and-deploy-staging-and-production:
     jobs:
       - check-code-formatting
-      - build-and-test
+      - build-and-test:
+          requires:
+            - check-code-formatting
       - assume-role-development:
           context: api-assume-role-development-context
           requires:
@@ -249,9 +251,19 @@ workflows:
           filters:
             branches:
               only: development
-      - terraform-init-and-apply-to-development:
+      - preview-terraform-development:
           requires:
             - assume-role-development
+          filters:
+            branches:
+              only: master
+      - permit-development-terraform-release:
+          type: approval
+          requires:
+            - preview-terraform-development
+      - terraform-init-and-apply-to-development:
+          requires:
+            - permit-development-terraform-release
           filters:
             branches:
               only: development
@@ -268,9 +280,9 @@ workflows:
           filters:
             branches:
               only: development
-  check-and-deploy-staging-and-production:
-    jobs:
       - build-and-test:
+          requires:
+            - deploy-to-development
           filters:
             branches:
               only: master
