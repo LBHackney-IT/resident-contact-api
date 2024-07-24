@@ -56,6 +56,21 @@ commands:
           command: |
             cd ./terraform/<<parameters.environment>>/
             terraform apply -auto-approve
+  preview-terraform:
+    description: "Previews terraform configuration changes"
+    parameters:
+      environment:
+        type: string
+    steps:
+      - *attach_workspace
+      - checkout
+      - run:
+          command: |
+            cd ./terraform/<<parameters.environment>>/
+            terraform get -update=true
+            terraform init
+            terraform plan
+          name: get and init
   deploy-lambda:
     description: "Deploys API via Serverless"
     parameters:
@@ -135,7 +150,7 @@ jobs:
           command: dotnet tool install dotnet-format --tool-path ./dotnet-format-local/
       - run:
           name: Run formatter check
-          command: ./dotnet-format-local/dotnet-format --dry-run --check
+          command: ./dotnet-format-local/dotnet-format --check
   build-and-test:
     executor: docker-python
     steps:
@@ -176,6 +191,21 @@ jobs:
     executor: docker-terraform
     steps:
       - terraform-init-then-apply:
+          environment: "production"
+  preview-terraform-development:
+    executor: docker-terraform
+    steps:
+      - preview-terraform:
+          environment: "development"
+  preview-terraform-staging:
+    executor: docker-terraform
+    steps:
+      - preview-terraform:
+          environment: "staging"
+  preview-terraform-production:
+    executor: docker-terraform
+    steps:
+      - preview-terraform:
           environment: "production"
   deploy-to-development:
     executor: docker-dotnet
@@ -252,9 +282,19 @@ workflows:
          filters:
             branches:
               only: master
+     - preview-terraform-staging:
+         requires:
+             - build-and-test
+         filters:
+            branches:
+              only: master
+     - permit-staging-terraform-release:
+         type: approval
+         requires:
+           - preview-terraform-staging
      - terraform-init-and-apply-to-staging:
          requires:
-           - assume-role-staging
+           - permit-staging-terraform-release
          filters:
            branches:
              only: master
