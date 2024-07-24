@@ -69,7 +69,7 @@ commands:
             terraform get -update=true
             terraform init
             terraform plan
-          name: get and init
+          name: preview terraform plan
   deploy-lambda:
     description: "Deploys API via Serverless"
     parameters:
