@@ -250,7 +250,7 @@ workflows:
             - build-and-test
           filters:
             branches:
-              only: development
+              only: master
       - preview-terraform-development:
           requires:
             - assume-role-development
@@ -266,20 +266,20 @@ workflows:
             - permit-development-terraform-release
           filters:
             branches:
-              only: development
+              only: master
       - migrate-database-development:
           requires:
               - terraform-init-and-apply-to-development
               - assume-role-development
           filters:
             branches:
-              only: development
+              only: master
       - deploy-to-development:
           requires:
             - assume-role-development
           filters:
             branches:
-              only: development
+              only: master
       - build-and-test:
           requires:
             - deploy-to-development
