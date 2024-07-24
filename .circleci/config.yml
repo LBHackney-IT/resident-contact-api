@@ -238,12 +238,69 @@ jobs:
           stage: "production"
 
 workflows:
-  check-and-deploy-staging-and-production:
+  feature-workflow:
     jobs:
-      - check-code-formatting
+      - check-code-formatting:
+          filters:
+            branches:
+              ignore: master
       - build-and-test:
           requires:
             - check-code-formatting
+          filters:
+            branches:
+              ignore: master
+      - assume-role-development:
+          context: api-assume-role-development-context
+          requires:
+            - build-and-test
+          filters:
+            branches:
+              ignore: master
+      - preview-terraform-development:
+          requires:
+            - assume-role-development
+          filters:
+            branches:
+              ignore: master
+      - assume-role-staging:
+          context: api-assume-role-staging-context
+          requires:
+            - build-and-test
+          filters:
+            branches:
+              ignore: master
+      - preview-terraform-staging:
+          requires:
+            - assume-role-staging
+          filters:
+            branches:
+              ignore: master
+      - assume-role-production:
+          context: api-assume-role-production-context
+          requires:
+            - build-and-test
+          filters:
+            branches:
+              ignore: master
+      - preview-terraform-production:
+          requires:
+            - assume-role-production
+          filters:
+            branches:
+              ignore: master
+  check-and-deploy-staging-and-production:
+    jobs:
+      - check-code-formatting:
+          filters:
+            branches:
+              only: master
+      - build-and-test:
+          requires:
+            - check-code-formatting
+          filters:
+            branches:
+              only: master
       - assume-role-development:
           context: api-assume-role-development-context
           requires:
@@ -287,23 +344,16 @@ workflows:
           filters:
             branches:
               only: master
-      # TODO:
-      - build-and-test:
+      - assume-role-staging:
+          context: api-assume-role-staging-context
           requires:
             - start-staging-release
           filters:
             branches:
               only: master
-      - assume-role-staging:
-          context: api-assume-role-staging-context
-          requires:
-            - build-and-test
-          filters:
-            branches:
-              only: master
       - preview-terraform-staging:
           requires:
-            - build-and-test
+            - assume-role-staging
           filters:
             branches:
               only: master
