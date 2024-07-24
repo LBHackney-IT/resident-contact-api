@@ -344,17 +344,10 @@ workflows:
           filters:
             branches:
               only: master
-      # TODO:
-      - build-and-test-2:
-          requires:
-            - start-staging-release
-          filters:
-            branches:
-              only: master
       - assume-role-staging:
           context: api-assume-role-staging-context
           requires:
-            - build-and-test-2
+            - start-staging-release
           filters:
             branches:
               only: master
