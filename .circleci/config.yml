@@ -1,7 +1,6 @@
 version: 2.1
 
 orbs:
-  aws-ecr: circleci/aws-ecr@3.0.0
   aws_assume_role: lbh-hackit/aws_assume_role@0.1.0
 
 executors:
@@ -70,7 +69,7 @@ commands:
             terraform get -update=true
             terraform init
             terraform plan
-          name: get and init
+          name: preview terraform plan
   deploy-lambda:
     description: "Deploys API via Serverless"
     parameters:
@@ -270,82 +269,82 @@ workflows:
             branches:
               only: development
   check-and-deploy-staging-and-production:
-     jobs:
-     - build-and-test:
-         filters:
-           branches:
-             only: master
-     - assume-role-staging:
-         context: api-assume-role-staging-context
-         requires:
-             - build-and-test
-         filters:
+    jobs:
+      - build-and-test:
+          filters:
             branches:
               only: master
-     - preview-terraform-staging:
-         requires:
-             - build-and-test
-         filters:
+      - assume-role-staging:
+          context: api-assume-role-staging-context
+          requires:
+            - build-and-test
+          filters:
             branches:
               only: master
-     - permit-staging-terraform-release:
-         type: approval
-         requires:
-           - preview-terraform-staging
-     - terraform-init-and-apply-to-staging:
-         requires:
-           - permit-staging-terraform-release
-         filters:
-           branches:
-             only: master
-     - migrate-database-staging:
-         requires:
-           - terraform-init-and-apply-to-staging
-           - assume-role-staging
-         filters:
-           branches:
-             only: master
-     - deploy-to-staging:
-         requires:
-           - assume-role-staging
-         filters:
-           branches:
-             only: master
-     - permit-production-terraform-release:
-         type: approval
-         requires:
-           - deploy-to-staging
-     - assume-role-production:
-         context: api-assume-role-production-context
-         requires:
-             - permit-production-terraform-release
-         filters:
+      - preview-terraform-staging:
+          requires:
+            - build-and-test
+          filters:
             branches:
               only: master
-     - terraform-init-and-apply-to-production:
-         requires:
-           - assume-role-production
-         filters:
-           branches:
-             only: master
-     - migrate-database-production:
-         requires:
-           - terraform-init-and-apply-to-production
-           - assume-role-production
-         filters:
-           branches:
-             only: master
-     - permit-production-release:
-         type: approval
-         requires:
-           - deploy-to-staging
-         filters:
-           branches:
-             only: master
-     - deploy-to-production:
-         requires:
-           - permit-production-release
-           - assume-role-production
-         filters:
-           branches:
-             only: master
+      - permit-staging-terraform-release:
+          type: approval
+          requires:
+            - preview-terraform-staging
+      - terraform-init-and-apply-to-staging:
+          requires:
+            - permit-staging-terraform-release
+          filters:
+            branches:
+              only: master
+      - migrate-database-staging:
+          requires:
+            - terraform-init-and-apply-to-staging
+            - assume-role-staging
+          filters:
+            branches:
+              only: master
+      - deploy-to-staging:
+          requires:
+            - assume-role-staging
+          filters:
+            branches:
+              only: master
+      - permit-production-terraform-release:
+          type: approval
+          requires:
+            - deploy-to-staging
+      - assume-role-production:
+          context: api-assume-role-production-context
+          requires:
+            - permit-production-terraform-release
+          filters:
+            branches:
+              only: master
+      - terraform-init-and-apply-to-production:
+          requires:
+            - assume-role-production
+          filters:
+            branches:
+              only: master
+      - migrate-database-production:
+          requires:
+            - terraform-init-and-apply-to-production
+            - assume-role-production
+          filters:
+            branches:
+              only: master
+      - permit-production-release:
+          type: approval
+          requires:
+            - deploy-to-staging
+          filters:
+            branches:
+              only: master
+      - deploy-to-production:
+          requires:
+            - permit-production-release
+            - assume-role-production
+          filters:
+            branches:
+              only: master
