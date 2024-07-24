@@ -280,9 +280,17 @@ workflows:
           filters:
             branches:
               only: master
-      - build-and-test:
+      - start-staging-release:
+          type: approval
           requires:
             - deploy-to-development
+          filters:
+            branches:
+              only: master
+      # TODO:
+      - build-and-test:
+          requires:
+            - start-staging-release
           filters:
             branches:
               only: master
