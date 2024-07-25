@@ -166,11 +166,6 @@ jobs:
       - run:
           name: Run tests
           command: docker-compose run resident-contact-api-test
-  assume-role-development:
-    executor: docker-python
-    steps:
-      - assume-role-and-persist-workspace:
-          aws-account: $AWS_ACCOUNT_DEVELOPMENT
   assume-role-staging:
     executor: docker-python
     steps:
@@ -181,11 +176,6 @@ jobs:
     steps:
       - assume-role-and-persist-workspace:
           aws-account: $AWS_ACCOUNT_PRODUCTION
-  terraform-init-and-apply-to-development:
-    executor: docker-terraform
-    steps:
-      - terraform-init-then-apply:
-          environment: "development"
   terraform-init-and-apply-to-staging:
     executor: docker-terraform
     steps:
@@ -196,11 +186,6 @@ jobs:
     steps:
       - terraform-init-then-apply:
           environment: "production"
-  preview-terraform-development:
-    executor: docker-terraform
-    steps:
-      - preview-terraform:
-          environment: "development"
   preview-terraform-staging:
     executor: docker-terraform
     steps:
@@ -221,11 +206,6 @@ jobs:
     steps:
       - deploy-lambda:
           stage: "production"
-  migrate-database-development:
-    executor: docker-dotnet
-    steps:
-      - migrate-database:
-          stage: "development"
   migrate-database-staging:
     executor: docker-dotnet
     steps:
