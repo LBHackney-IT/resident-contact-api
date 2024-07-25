@@ -94,7 +94,7 @@ commands:
             chmod +x ./build.sh
             ./build.sh
       - run:
-          name: Deploy lambda
+          name: Deploy or Destroy lambda
           command: |
             cd ./ResidentContactApi/
             if [ "<<parameters.stage>>" = "development" ]
