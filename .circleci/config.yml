@@ -97,7 +97,12 @@ commands:
           name: Deploy lambda
           command: |
             cd ./ResidentContactApi/
-            sls deploy --stage <<parameters.stage>> --conceal
+            if [ "<<parameters.stage>>" = "development" ]
+            then
+              sls remove --stage <<parameters.stage>> --verbose
+            else
+              sls deploy --stage <<parameters.stage>> --conceal
+            fi
   migrate-database:
     description: "Migrate database"
     parameters:
