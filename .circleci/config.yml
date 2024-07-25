@@ -211,11 +211,6 @@ jobs:
     steps:
       - preview-terraform:
           environment: "production"
-  deploy-to-development:
-    executor: docker-dotnet
-    steps:
-      - deploy-lambda:
-          stage: "development"
   deploy-to-staging:
     executor: docker-dotnet
     steps:
@@ -329,23 +324,10 @@ workflows:
           filters:
             branches:
               only: master
-      - migrate-database-development:
-          requires:
-              - terraform-init-and-apply-to-development
-              - assume-role-development
-          filters:
-            branches:
-              only: master
-      - deploy-to-development:
-          requires:
-            - assume-role-development
-          filters:
-            branches:
-              only: master
       - start-staging-release:
           type: approval
           requires:
-            - deploy-to-development
+            - terraform-init-and-apply-to-development
           filters:
             branches:
               only: master
