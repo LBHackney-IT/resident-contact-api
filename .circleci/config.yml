@@ -301,40 +301,10 @@ workflows:
           filters:
             branches:
               only: master
-      - assume-role-development:
-          context: api-assume-role-development-context
-          requires:
-            - build-and-test
-          filters:
-            branches:
-              only: master
-      - preview-terraform-development:
-          requires:
-            - assume-role-development
-          filters:
-            branches:
-              only: master
-      - permit-development-terraform-release:
-          type: approval
-          requires:
-            - preview-terraform-development
-      - terraform-init-and-apply-to-development:
-          requires:
-            - permit-development-terraform-release
-          filters:
-            branches:
-              only: master
-      - start-staging-release:
-          type: approval
-          requires:
-            - terraform-init-and-apply-to-development
-          filters:
-            branches:
-              only: master
       - assume-role-staging:
           context: api-assume-role-staging-context
           requires:
-            - start-staging-release
+            - build-and-test
           filters:
             branches:
               only: master
