@@ -230,19 +230,6 @@ workflows:
           filters:
             branches:
               ignore: master
-      - assume-role-development:
-          context: api-assume-role-development-context
-          requires:
-            - build-and-test
-          filters:
-            branches:
-              ignore: master
-      - preview-terraform-development:
-          requires:
-            - assume-role-development
-          filters:
-            branches:
-              ignore: master
       - assume-role-staging:
           context: api-assume-role-staging-context
           requires:
