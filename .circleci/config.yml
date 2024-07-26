@@ -97,7 +97,7 @@ commands:
           name: Deploy or Destroy lambda
           command: |
             cd ./ResidentContactApi/
-            if [ "<<parameters.stage>>" = "environment" ]
+            if [ "<<parameters.stage>>" = "staging" ]
             then
               sls remove --stage <<parameters.stage>> --verbose
             else
