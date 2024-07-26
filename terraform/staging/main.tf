@@ -18,24 +18,3 @@ terraform {
   }
 }
 
-/*    POSTGRES SET UP    */
-data "aws_vpc" "staging_vpc" {
-  tags = {
-    Name = "apis-stg"
-  }
-}
-data "aws_subnet_ids" "staging" {
-  vpc_id = data.aws_vpc.staging_vpc.id
-  filter {
-    name   = "tag:Type"
-    values = ["private"] 
-  }
-}
-
-data "aws_ssm_parameter" "resident_contact_postgres_db_password" {
-  name = "/resident-contact-api/staging/postgres-password"
-}
-
-data "aws_ssm_parameter" "resident_contact_postgres_username" {
-  name = "/resident-contact-api/staging/postgres-username"
-}
