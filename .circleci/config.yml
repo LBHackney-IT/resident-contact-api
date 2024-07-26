@@ -257,25 +257,8 @@ workflows:
           filters:
             branches:
               only: master
-      - preview-terraform-staging:
-          requires:
-            - assume-role-staging
-          filters:
-            branches:
-              only: master
-      - permit-staging-terraform-release:
-          type: approval
-          requires:
-            - preview-terraform-staging
-      - terraform-init-and-apply-to-staging:
-          requires:
-            - permit-staging-terraform-release
-          filters:
-            branches:
-              only: master
       - migrate-database-staging:
           requires:
-            - terraform-init-and-apply-to-staging
             - assume-role-staging
           filters:
             branches:
