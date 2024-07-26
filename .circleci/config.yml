@@ -320,7 +320,7 @@ workflows:
       - permit-production-release:
           type: approval
           requires:
-            - deploy-to-staging
+            - migrate-database-production
           filters:
             branches:
               only: master
