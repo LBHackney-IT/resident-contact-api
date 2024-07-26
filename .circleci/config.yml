@@ -238,7 +238,7 @@ workflows:
           filters:
             branches:
               ignore: master
-  check-and-deploy-staging-and-production:
+  check-and-deploy-production:
     jobs:
       - check-code-formatting:
           filters:
