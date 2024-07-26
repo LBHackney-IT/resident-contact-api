@@ -97,7 +97,7 @@ commands:
           name: Deploy or Destroy lambda
           command: |
             cd ./ResidentContactApi/
-            if [ "<<parameters.stage>>" = "staging" ]
+            if [ "<<parameters.stage>>" = "environment" ]
             then
               sls remove --stage <<parameters.stage>> --verbose
             else
@@ -196,11 +196,6 @@ jobs:
     steps:
       - preview-terraform:
           environment: "production"
-  deploy-to-staging:
-    executor: docker-dotnet
-    steps:
-      - deploy-lambda:
-          stage: "staging"
   deploy-to-production:
     executor: docker-dotnet
     steps:
@@ -298,16 +293,10 @@ workflows:
           filters:
             branches:
               only: master
-      - deploy-to-staging:
-          requires:
-            - assume-role-staging
-          filters:
-            branches:
-              only: master
       - permit-production-terraform-release:
           type: approval
           requires:
-            - deploy-to-staging
+            - migrate-database-staging
       - assume-role-production:
           context: api-assume-role-production-context
           requires:
