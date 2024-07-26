@@ -196,11 +196,6 @@ jobs:
     steps:
       - preview-terraform:
           environment: "production"
-  deploy-to-staging:
-    executor: docker-dotnet
-    steps:
-      - deploy-lambda:
-          stage: "staging"
   deploy-to-production:
     executor: docker-dotnet
     steps:
