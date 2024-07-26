@@ -298,16 +298,10 @@ workflows:
           filters:
             branches:
               only: master
-      - deploy-to-staging:
-          requires:
-            - assume-role-staging
-          filters:
-            branches:
-              only: master
       - permit-production-terraform-release:
           type: approval
           requires:
-            - deploy-to-staging
+            - migrate-database-staging
       - assume-role-production:
           context: api-assume-role-production-context
           requires:
