@@ -248,6 +248,7 @@ workflows:
             branches:
               only: master
       - permit-database-migration:
+          type: approval
           requires:
             - terraform-init-and-apply-to-production
       - migrate-database-production:
