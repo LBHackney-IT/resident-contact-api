@@ -247,10 +247,13 @@ workflows:
           filters:
             branches:
               only: master
-      - migrate-database-production:
+      - permit-database-migration:
+          type: approval
           requires:
             - terraform-init-and-apply-to-production
-            - assume-role-production
+      - migrate-database-production:
+          requires:
+            - permit-database-migration
           filters:
             branches:
               only: master
