@@ -7,9 +7,6 @@ executors:
   docker-python:
     docker:
       - image: circleci/python:3.7
-  docker-terraform:
-    docker:
-      - image: "hashicorp/terraform:0.12.29"
   docker-dotnet:
     docker:
       - image: mcr.microsoft.com/dotnet/core/sdk:3.1
@@ -36,40 +33,6 @@ commands:
           root: *workspace_root
           paths:
             - .aws
-  terraform-init-then-apply:
-    description: "Initializes and applies terraform configuration"
-    parameters:
-      environment:
-        type: string
-    steps:
-      - *attach_workspace
-      - checkout
-      - run:
-          command: |
-            cd ./terraform/<<parameters.environment>>/
-            terraform get -update=true
-            terraform init
-          name: get and init
-      - run:
-          name: apply
-          command: |
-            cd ./terraform/<<parameters.environment>>/
-            terraform apply -auto-approve
-  preview-terraform:
-    description: "Previews terraform configuration changes"
-    parameters:
-      environment:
-        type: string
-    steps:
-      - *attach_workspace
-      - checkout
-      - run:
-          command: |
-            cd ./terraform/<<parameters.environment>>/
-            terraform get -update=true
-            terraform init
-            terraform plan
-          name: preview terraform plan
   deploy-lambda:
     description: "Deploys API via Serverless"
     parameters:
@@ -130,16 +93,6 @@ jobs:
     steps:
       - assume-role-and-persist-workspace:
           aws-account: $AWS_ACCOUNT_PRODUCTION
-  terraform-init-and-apply-to-production:
-    executor: docker-terraform
-    steps:
-      - terraform-init-then-apply:
-          environment: "production"
-  preview-terraform-production:
-    executor: docker-terraform
-    steps:
-      - preview-terraform:
-          environment: "production"
   deploy-to-production:
     executor: docker-dotnet
     steps:
@@ -165,12 +118,6 @@ workflows:
           filters:
             branches:
               ignore: master
-      - preview-terraform-production:
-          requires:
-            - assume-role-production
-          filters:
-            branches:
-              ignore: master
   check-and-deploy-production:
     jobs:
       - check-code-formatting:
@@ -183,27 +130,17 @@ workflows:
           filters:
             branches:
               only: master
-      - permit-production-terraform-release:
-          type: approval
-          requires:
-            - build-and-test
       - assume-role-production:
           context: api-assume-role-production-context
           requires:
-            - permit-production-terraform-release
-          filters:
-            branches:
-              only: master
-      - terraform-init-and-apply-to-production:
-          requires:
-            - assume-role-production
+            - build-and-test
           filters:
             branches:
               only: master
       - permit-production-release:
           type: approval
           requires:
-            - terraform-init-and-apply-to-production
+            - assume-role-production
           filters:
             branches:
               only: master
