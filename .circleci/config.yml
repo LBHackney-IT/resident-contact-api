@@ -111,13 +111,6 @@ workflows:
           filters:
             branches:
               ignore: master
-      - assume-role-production:
-          context: api-assume-role-production-context
-          requires:
-            - build-and-test
-          filters:
-            branches:
-              ignore: master
   check-and-deploy-production:
     jobs:
       - check-code-formatting:
