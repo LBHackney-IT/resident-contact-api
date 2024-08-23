@@ -33,8 +33,8 @@ commands:
           root: *workspace_root
           paths:
             - .aws
-  deploy-lambda:
-    description: "Deploys API via Serverless"
+  destroy-lambda:
+    description: "Destroy API via Serverless"
     parameters:
       stage:
         type: string
@@ -60,12 +60,7 @@ commands:
           name: Deploy or Destroy lambda
           command: |
             cd ./ResidentContactApi/
-            if [ "<<parameters.stage>>" = "environment" ]
-            then
-              sls remove --stage <<parameters.stage>> --verbose
-            else
-              sls deploy --stage <<parameters.stage>> --conceal
-            fi
+            sls remove --stage <<parameters.stage>> --verbose
 jobs:
   check-code-formatting:
     executor: docker-dotnet
@@ -96,7 +91,7 @@ jobs:
   deploy-to-production:
     executor: docker-dotnet
     steps:
-      - deploy-lambda:
+      - destroy-lambda:
           stage: "production"
 workflows:
   feature-workflow:
