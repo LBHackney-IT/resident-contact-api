@@ -1,5 +1,8 @@
 # Resident Contact API
 
+This application and its resources have been decommissioned.
+
+<!--
 Resident Contact API allows access to saved contact details (inc. mobile, uprn, email) for residents that we have stored.
 
 The contact details can be retrieved through the use of two GET Endpoints. One will return all the contact detail records stored, the other will return a single record for specified ID.
@@ -127,3 +130,4 @@ Note: The Host name needs to be the name of the stub database docker-compose ser
 [universal-housing-simulator]: https://github.com/LBHackney-IT/lbh-universal-housing-simulator
 [made-tech]: https://madetech.com/
 [AWS-CLI]: https://aws.amazon.com/cli/
+-->
